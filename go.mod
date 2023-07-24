@@ -1,8 +1,8 @@
-module github.com/WindMillCode/vscode-extension-libraries/windmillcode-extension-pack-0/task_files/go_scripts
+module github.com/WindMillCode/go_scripts
 
 go 1.20
 
-replace github.com/WindMillCode/vscode-extension-libraries/windmillcode-extension-pack-0/task_files/go_scripts/utils => /go_scripts/utils
+replace github.com/WindMillCode/go_scripts/utils => /go_scripts/utils
 
 require (
 	github.com/charmbracelet/bubbletea v0.24.2
