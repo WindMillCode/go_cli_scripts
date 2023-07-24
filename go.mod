@@ -2,7 +2,6 @@ module github.com/windmillcode/go_scripts
 
 go 1.20
 
-
 replace github.com/windmillcode/go_scripts => /go_scripts/utils
 
 require (
