@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/WindMillCode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/utils"
 )
 
 type Task struct {
