@@ -10,6 +10,7 @@ import (
 func main() {
 
 	utils.CDToWorkspaceRooot()
+
 	initScript := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
 			Prompt:  []string{"docker init script to run relative to workspace root "},
@@ -19,7 +20,10 @@ func main() {
 	initScriptArgs := utils.TakeVariableArgs(
 		utils.TakeVariableArgsStruct{},
 	)
-	fmt.Println(fmt.Sprintf("%s %s", initScript, initScriptArgs))
+	initScriptArgs  = fmt.Sprintf("%s %s",filepath.Join("..","..",".."), initScriptArgs)
+	initScriptLocation := filepath.Dir(initScript)
+	utils.CDToLocation(initScriptLocation)
+	initScript  = filepath.Base(initScript)
 
 	utils.RunCommand("windmillcode_go", []string{"run", initScript, initScriptArgs})
 }

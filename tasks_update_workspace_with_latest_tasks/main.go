@@ -3,11 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 
 	"github.com/windmillcode/go_scripts/utils"
 )
@@ -52,12 +52,10 @@ func main() {
 		Choices: []string{"TRUE", "FALSE"},
 	}
 	proceed := utils.ShowMenu(cliInfo, nil)
-	if proceed == "FALSE" {
-		return
-	}
+
 	tasksJsonFilePath := filepath.Join(extensionFolder, tasksJsonRelativeFilePath)
 
-	content, err := ioutil.ReadFile(tasksJsonFilePath)
+	content, err := os.ReadFile(tasksJsonFilePath)
 	if err != nil {
 		fmt.Println("Error reading file:", err)
 		return
@@ -71,49 +69,95 @@ func main() {
 		fmt.Println("Error unmarshalling JSON:", err)
 		return
 	}
-	for index, task := range tasksJSON.Tasks {
-		pattern0 := ":"
-		regex0 := regexp.MustCompile(pattern0)
-		programLocation0 := regex0.Split(task.Label, -1)
-		pattern1 := " "
-		regex1 := regexp.MustCompile(pattern1)
-		programLocation1 := regex1.Split(strings.Join(programLocation0, ""), -1)
-		programLocation2 := strings.Join(programLocation1, "_")
-		programLocation3 := "ignore//${input:current_user_0}//go_scripts//" + programLocation2
-		linuxCommand0 := "cd " + programLocation3 + " ; " + goExecutable + " run . "
-		windowsCommand0 := "cd " + strings.Replace(programLocation3, "//", "\\", -1) + " ; " + goExecutable + " run . "
-
-		tasksJSON.Tasks[index].Windows.Command = windowsCommand0
-		tasksJSON.Tasks[index].Osx.Command = linuxCommand0
-		tasksJSON.Tasks[index].Linux.Command = linuxCommand0
-	}
-
-	tasksJSONData, err := json.MarshalIndent(tasksJSON, "", "  ")
-	if err != nil {
-		fmt.Println("Error marshalling JSON:", err)
-		return
-	}
-
-	workspaceTasksJSONFilePath := filepath.Join(workSpaceFolder, "/.vscode/tasks.json")
-	workspaceTasksJSONFile, err := os.OpenFile(workspaceTasksJSONFilePath, os.O_WRONLY|os.O_TRUNC, 0644)
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
-	defer workspaceTasksJSONFile.Close()
-
-	_, err = workspaceTasksJSONFile.Write(tasksJSONData)
-	if err != nil {
-		fmt.Println("Error writing to file:", err)
-		return
-	}
-
 	goScriptsSourceDirPath := filepath.Join(extensionFolder, "task_files/go_scripts")
 	goScriptsDestDirPath := filepath.Join(workSpaceFolder, "ignore/Windmillcode/go_scripts")
 
-	if err := os.RemoveAll(goScriptsDestDirPath); err != nil {
-		fmt.Println("Error:", err)
-		return
+	if proceed == "TRUE" {
+
+		for index, task := range tasksJSON.Tasks {
+
+			pattern0 := ":"
+			regex0 := regexp.MustCompile(pattern0)
+			programLocation0 := regex0.Split(task.Label, -1)
+			pattern1 := " "
+			regex1 := regexp.MustCompile(pattern1)
+			programLocation1 := regex1.Split(strings.Join(programLocation0, ""), -1)
+			programLocation2 := strings.Join(programLocation1, "_")
+			programLocation3 := "ignore//${input:current_user_0}//go_scripts//" + programLocation2
+			linuxTaskExecutable := ".//main"
+			linuxCommand0 := "cd " + programLocation3 + " ; " + linuxTaskExecutable
+			windowsCommand0 := "cd " + strings.Replace(programLocation3, "//", "\\", -1) + " ; "+strings.Replace(linuxTaskExecutable, "//", "\\", -1)
+
+
+			tasksJSON.Tasks[index].Windows.Command = windowsCommand0
+			tasksJSON.Tasks[index].Osx.Command = linuxCommand0
+			tasksJSON.Tasks[index].Linux.Command = linuxCommand0
+
+		}
+
+		tasksJSONData, err := json.MarshalIndent(tasksJSON, "", "  ")
+		if err != nil {
+			fmt.Println("Error marshalling JSON:", err)
+			return
+		}
+
+		workspaceTasksJSONFilePath := filepath.Join(workSpaceFolder, "/.vscode/tasks.json")
+		workspaceTasksJSONFile, err := os.OpenFile(workspaceTasksJSONFilePath, os.O_WRONLY|os.O_TRUNC, 0644)
+		if err != nil {
+			fmt.Println("Error opening file:", err)
+			return
+		}
+		defer workspaceTasksJSONFile.Close()
+		_, err = workspaceTasksJSONFile.Write(tasksJSONData)
+		if err != nil {
+			fmt.Println("Error writing to file:", err)
+			return
+		}
+
+
+		utils.CopyDir(goScriptsSourceDirPath, goScriptsDestDirPath)
 	}
-	utils.CopyDir(goScriptsSourceDirPath, goScriptsDestDirPath)
+
+	var rebuild string
+	if proceed == "TRUE"{
+		rebuild= "TRUE"
+	} else{
+		cliInfo = utils.ShowMenuModel{
+			Prompt: "Do you want to rebuild the go programs into binary exectuables ",
+			Choices:[]string{"TRUE","FALSE"},
+		}
+		rebuild = utils.ShowMenu(cliInfo,nil)
+	}
+
+	if rebuild == "TRUE" {
+		var wg sync.WaitGroup
+		fmt.Print(len(tasksJSON.Tasks))
+		for _, task := range tasksJSON.Tasks {
+			wg.Add(1)
+
+			pattern0 := ":"
+			regex0 := regexp.MustCompile(pattern0)
+			programLocation0 := regex0.Split(task.Label, -1)
+			pattern1 := " "
+			regex1 := regexp.MustCompile(pattern1)
+			programLocation1 := regex1.Split(strings.Join(programLocation0, ""), -1)
+			programLocation2 := strings.Join(programLocation1, "_")
+			absProgramLocation := filepath.Join(goScriptsDestDirPath,programLocation2)
+			go func() {
+				defer wg.Done()
+				buildGoCLIProgram(absProgramLocation, goExecutable)
+			}()
+		}
+		wg.Wait()
+	}
+
+}
+
+func buildGoCLIProgram(programLocation string, goExecutable string) {
+
+
+	fmt.Printf("%s \n",programLocation)
+	utils.RunCommandInSpecificDirectory(goExecutable, []string{"build", "main.go"},programLocation)
+	fmt.Printf("Finished building %s \n",programLocation)
+
 }

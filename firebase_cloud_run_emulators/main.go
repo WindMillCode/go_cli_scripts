@@ -10,5 +10,5 @@ func main() {
 	utils.CDToFirebaseApp()
 
 	utils.RunCommand("yarn", []string{"cleanup"})
-	utils.RunCommand("npx", []string{"firebase", "emulators:start", "--import='devData'", "--export-on-exit"})
+	utils.RunCommand("npx", []string{"firebase", "emulators:start", "--import=devData", "--export-on-exit"})
 }

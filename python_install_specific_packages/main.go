@@ -2,11 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
-	"regexp"
 	"runtime"
-	"sync"
 
 	"github.com/windmillcode/go_scripts/utils"
 )
@@ -14,23 +11,13 @@ import (
 func main() {
 
 	utils.CDToWorkspaceRooot()
-	workspaceRoot,err:= os.Getwd()
-	if err !=nil {
-		fmt.Println("there was an error while trying to receive the current dir")
-	}
-	projectsCLIString := utils.TakeVariableArgs(
-		utils.TakeVariableArgsStruct{
-			Prompt: "Provide the paths of all the projects where you want the actions to take place",
-			Default:workspaceRoot,
-		},
-	)
-
 	cliInfo := utils.ShowMenuModel{
 		Other: true,
 		Prompt: "Choose an option:",
 		Choices:[]string{".\\apps\\backend\\FlaskApp"},
 	}
 	appLocation := utils.ShowMenu(cliInfo,nil)
+	appLocation = filepath.Join(appLocation)
 
 	pythonVersion := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
@@ -39,6 +26,14 @@ func main() {
 		},
 	)
 	utils.RunCommand("pyenv", []string{"shell", pythonVersion})
+
+	packageList := utils.TakeVariableArgs(
+		utils.TakeVariableArgsStruct{
+			Prompt: "Provide the names of the packages you would like to install",
+			ErrMsg: "You must provide packages for installation",
+		},
+	)
+
 	cliInfo = utils.ShowMenuModel{
 		Prompt:  "reinstall?",
 		Choices: []string{"true", "false"},
@@ -48,11 +43,10 @@ func main() {
 	var sitePackages string;
 	targetOs := runtime.GOOS;
 	requirementsFile := targetOs +"-requirements.txt"
-	switch targetOs {
+	switch  targetOs {
 	case "windows":
 
 		sitePackages = filepath.Join(".", "site-packages", "windows")
-
 
 	case "linux", "darwin":
 		sitePackages = filepath.Join(".", "site-packages", "linux")
@@ -61,27 +55,10 @@ func main() {
 	default:
 		fmt.Println("Unknown Operating System:", targetOs)
 	}
-
-	var wg sync.WaitGroup
-	regex0 := regexp.MustCompile(" ")
-	projectsList  := regex0.Split(projectsCLIString, -1)
-	for _,project := range projectsList{
-		app := filepath.Join(project,appLocation)
-		sitePackagesAbsPath :=  filepath.Join(app,sitePackages)
-		wg.Add(1)
-		go func(){
-			if reinstall == "true" {
-				if err := os.RemoveAll(sitePackagesAbsPath); err != nil {
-					fmt.Println("Error:", err)
-					return
-				}
-			}
-			utils.RunCommandInSpecificDirectory("pip", []string{"install", "-r", requirementsFile, "--target", sitePackages,"--upgrade"},app)
-		}()
-
+	if reinstall == "true" {
+		utils.RunCommand("pip", []string{"uninstall", packageList})
 	}
-	wg.Wait()
-
-
+	utils.RunCommand("pip", []string{"install",packageList, "--target", sitePackages})
+	utils.RunCommand("pip", []string{"freeze","--all","--path",sitePackages, ">", requirementsFile})
 
 }

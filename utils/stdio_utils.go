@@ -16,8 +16,11 @@ type TakeVariableArgsStruct struct{
 
 func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 	var innerScriptArguments []string
-
-	fmt.Println(obj.Prompt)
+	prompt0 := obj.Prompt
+	if(obj.Default != ""){
+		prompt0 =fmt.Sprintf("%s (Default is %s)",obj.Prompt,obj.Default)
+	}
+	fmt.Println(prompt0)
 	fmt.Println("Enter the arguments to pass to the script (press ENTER to enter another argument, leave blank and press ENTER once done):")
 	for {
 		var argument string
@@ -32,6 +35,8 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 	input := strings.Join(innerScriptArguments," ")
 	if(input == "" && obj.ErrMsg != ""){
 		panic(obj.ErrMsg)
+	} else if (input == "" && obj.Default !=""){
+		input = obj.Default
 	}
 	return input
 }
@@ -92,11 +97,44 @@ func RunCommand(command string,args []string) {
 	}
 }
 
+func RunCommandInSpecificDirectory(command string,args []string,targetDir string) {
+
+	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
+	fmt.Println(fullCommand)
+	cmd := exec.Command(command, args...)
+	cmd.Dir = targetDir
+	// cmd.Stdout = ShellCommandOutput{}
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+
+		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
+		fmt.Println(msg)
+	}
+}
+
+
 func RunCommandAndGetOutput(command string,args []string) string {
 
 	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
 	fmt.Println(fullCommand)
 	output,err := exec.Command(command, args...).Output()
+	if err != nil {
+		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
+		panic(msg)
+
+	}
+	return string(output)
+}
+
+func RunCommandInSpecifcDirectoryAndGetOutput(command string,args []string,targetDir string) string {
+
+	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
+	fmt.Println(fullCommand)
+	cmd := exec.Command(command, args...)
+	cmd.Dir = targetDir
+	output,err := cmd.Output()
 	if err != nil {
 		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
 		panic(msg)
