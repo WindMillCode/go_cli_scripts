@@ -1,0 +1,30 @@
+// See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+{
+	"version": "2.0.0",
+	"tasks": [
+
+
+		{
+      "label":"misc: package project",
+      "type":"shell",
+      "dependsOn":"misc: rm all vsix",
+      "windows":{
+        "command":"git add .;git commit -m \"[UPDATE] addtl work\";git push or ${input:misc_package_project_0};"
+      }
+    },
+
+	],
+  "inputs":[
+    {
+      "id": "misc_package_project_0",
+      "description": "the version for the package",
+      "type": "promptString"
+    },
+    {
+      "id": "misc_make_new_command_0",
+      "description": "name of the command",
+      "type": "promptString"
+    }
+  ]
+}
