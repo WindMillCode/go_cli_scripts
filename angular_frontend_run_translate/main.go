@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	workspaceRoot, _ := os.Getwd()
 	i18nLocation := filepath.Join(workspaceRoot, "apps", "frontend", "AngularApp", "src", "assets", "i18n")
 	settings, err := utils.GetSettingsJSON(workspaceRoot)

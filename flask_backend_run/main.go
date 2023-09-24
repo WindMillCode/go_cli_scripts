@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,8 +11,12 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
-	workspaceFolder, err := os.Getwd()
+	utils.CDToWorkspaceRoot()
+	workspaceFolder,err:= os.Getwd()
+	if err !=nil {
+		fmt.Println("there was an error while trying to receive the current dir")
+	}
+	settings, err := utils.GetSettingsJSON(workspaceFolder)
 	if err != nil {
 		return
 	}
@@ -20,6 +25,9 @@ func main() {
 	if err != nil {
 		return
 	}
+
+
+
 	envVarsFile := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
 			Prompt:  []string{"where are the env vars located"},
@@ -29,7 +37,7 @@ func main() {
 	pythonVersion := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
 			Prompt:  []string{"provide a python version for pyenv to use"},
-			Default: "3.11.4",
+			Default: settings.ExtensionPack.PythonVersion0,
 		},
 	)
 	if pythonVersion != "" {

@@ -10,7 +10,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	cliInfo := utils.ShowMenuModel{
 		Prompt:  "run with cache?",
 		Choices: []string{"true", "false"},

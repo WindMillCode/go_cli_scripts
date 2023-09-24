@@ -45,21 +45,22 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		// restoreImages(dockerImgPath, &wg, batchSizeNum)
+		restoreImages(dockerImgPath, &wg, batchSizeNum)
 	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		restoreCtnrs(dockerContainerPath, &wg, batchSizeNum)
-	}()
+	// wg.Add(1)
+	// go func() {
+	// 	defer wg.Done()
+	// 	restoreCtnrs(dockerContainerPath, &wg, batchSizeNum)
+	// }()
 	wg.Wait()
 }
 
 func restoreImages(targetPath string, wg *sync.WaitGroup, batchSize int) {
 	fileNames, _ := utils.GetItemsInFolder(targetPath, []string{})
 	batchDone := make(chan bool, batchSize)
-
+	fmt.Println("fire")
 	for index, tarImage := range fileNames {
+		fmt.Println(tarImage)
 		i := index + 1
 		wg.Add(1)
 

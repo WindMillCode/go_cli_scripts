@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	utils.CDToAngularApp()
 
 	utils.RunCommand("yarn", []string{"compodoc:build-and-serve"})

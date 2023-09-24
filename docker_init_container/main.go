@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 
 	initScript := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
@@ -20,10 +20,10 @@ func main() {
 	initScriptArgs := utils.TakeVariableArgs(
 		utils.TakeVariableArgsStruct{},
 	)
-	initScriptArgs  = fmt.Sprintf("%s %s",filepath.Join("..","..",".."), initScriptArgs)
+	initScriptArgs = fmt.Sprintf("%s %s", filepath.Join("..", "..", ".."), initScriptArgs)
 	initScriptLocation := filepath.Dir(initScript)
 	utils.CDToLocation(initScriptLocation)
-	initScript  = filepath.Base(initScript)
+	initScript = filepath.Base(initScript)
 
 	utils.RunCommand("windmillcode_go", []string{"run", initScript, initScriptArgs})
 }

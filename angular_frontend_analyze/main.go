@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	cliInfo := utils.ShowMenuModel{
 		Prompt:  "Choose an option:",
 		Choices: []string{"dev", "preview", "prod"},

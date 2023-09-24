@@ -12,28 +12,32 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
-	workspaceRoot,err:= os.Getwd()
-	if err !=nil {
+	utils.CDToWorkspaceRoot()
+	workspaceRoot, err := os.Getwd()
+	if err != nil {
 		fmt.Println("there was an error while trying to receive the current dir")
 	}
 	projectsCLIString := utils.TakeVariableArgs(
 		utils.TakeVariableArgsStruct{
-			Prompt: "Provide the paths of all the projects where you want the actions to take place",
-			Default:workspaceRoot,
+			Prompt:  "Provide the paths of all the projects where you want the actions to take place",
+			Default: workspaceRoot,
 		},
 	)
 
 	cliInfo := utils.ShowMenuModel{
-		Prompt: "choose the package manager",
-		Choices:[]string{"npm","yarn"},
-		Default:"npm",
+		Prompt:  "choose the package manager",
+		Choices: []string{"npm", "yarn"},
+		Default: "npm",
 	}
-	packageManager := utils.ShowMenu(cliInfo,nil)
+	packageManager := utils.ShowMenu(cliInfo, nil)
 	cliInfo = utils.ShowMenuModel{
-		Other: true,
+		Other:   true,
 		Prompt:  "Choose the node.js app",
-		Choices: []string{filepath.Join("./apps/frontend/AngularApp"), filepath.Join(".\\apps\\cloud\\FirebaseApp")},
+		Choices: []string{
+			filepath.Join("./apps/frontend/AngularApp"),
+			filepath.Join(".\\apps\\cloud\\FirebaseApp"),
+			filepath.Join("."),
+		},
 	}
 	appLocation := utils.ShowMenu(cliInfo, nil)
 
@@ -51,38 +55,45 @@ func main() {
 	depType := utils.ShowMenu(cliInfo, nil)
 
 	cliInfo = utils.ShowMenuModel{
-		Prompt:  "reinstall?",
+		Prompt:  "uninstall?",
 		Choices: []string{"true", "false"},
 	}
-	reinstall := utils.ShowMenu(cliInfo, nil)
+	uninstall := utils.ShowMenu(cliInfo, nil)
+	cliInfo = utils.ShowMenuModel{
+		Prompt:  "install?",
+		Choices: []string{"true", "false"},
+	}
+	install := utils.ShowMenu(cliInfo, nil)
 
 	var wg sync.WaitGroup
 	regex0 := regexp.MustCompile(" ")
-	projectsList  := regex0.Split(projectsCLIString, -1)
+	projectsList := regex0.Split(projectsCLIString, -1)
 
-	packagesList  := regex0.Split(packagesCLIString, -1)
-	for _,project := range projectsList{
-		app := filepath.Join(project,appLocation)
+	packagesList := regex0.Split(packagesCLIString, -1)
+	for _, project := range projectsList {
+		app := filepath.Join(project, appLocation)
 		wg.Add(1)
-		go func(){
+		go func() {
 			defer wg.Done()
-			if reinstall == "true" {
+			if uninstall == "true" {
 				if packageManager == "npm" {
-					utils.RunCommandInSpecificDirectory(packageManager,  append([]string{"uninstall"} ,packagesList...),app)
-				} else{
-					utils.RunCommandInSpecificDirectory(packageManager, append( []string{"remove"} ,packagesList...),app)
+					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"uninstall"}, packagesList...), app)
+				} else {
+					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"remove"}, packagesList...), app)
 				}
 			}
 
-			if packageManager == "npm" {
-				utils.RunCommandInSpecificDirectory(packageManager, append( []string{"install",depType,"--verbose"} ,packagesList...),app)
-			} else{
-				utils.RunCommandInSpecificDirectory(packageManager, append( []string{"add", depType} ,packagesList...),app)
+			if install == "true"{
+				if packageManager == "npm" {
+					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"install", depType, "--verbose"}, packagesList...), app)
+				} else {
+					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"add", depType}, packagesList...), app)
+				}
 			}
+
 		}()
 
 	}
 	wg.Wait()
-
 
 }

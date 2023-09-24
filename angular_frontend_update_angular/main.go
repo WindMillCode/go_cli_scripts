@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	workspaceRoot, err := os.Getwd()
 	if err != nil {
 		fmt.Println("there was an error while trying to receive the current dir")
@@ -26,7 +26,7 @@ func main() {
 	)
 	angularAppLocation := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
-			Prompt:  []string{"provide the relative path to the angular app (note : for every project  the relative path should be the same other wi)"},
+			Prompt:  []string{"provide the relative path to the angular app (note : for every project  the relative path should be the same other )"},
 			Default: "apps/frontend/AngularApp",
 		},
 	)

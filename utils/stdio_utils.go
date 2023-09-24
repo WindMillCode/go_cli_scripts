@@ -12,11 +12,15 @@ type TakeVariableArgsStruct struct{
 	Prompt string
 	ErrMsg string
 	Default string
+	Delimiter string
 }
 
 func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 	var innerScriptArguments []string
 	prompt0 := obj.Prompt
+	if(obj.Delimiter == ""){
+		obj.Delimiter = " "
+	}
 	if(obj.Default != ""){
 		prompt0 =fmt.Sprintf("%s (Default is %s)",obj.Prompt,obj.Default)
 	}
@@ -32,7 +36,7 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 
 		innerScriptArguments = append(innerScriptArguments, argument)
 	}
-	input := strings.Join(innerScriptArguments," ")
+	input := strings.Join(innerScriptArguments,obj.Delimiter)
 	if(input == "" && obj.ErrMsg != ""){
 		panic(obj.ErrMsg)
 	} else if (input == "" && obj.Default !=""){

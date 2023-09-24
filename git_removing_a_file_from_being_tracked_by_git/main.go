@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	cliInfo := utils.ShowMenuModel{
 		Prompt:  "Is it a file or directory:",
 		Choices: []string{"file", "directory"},

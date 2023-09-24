@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	cliInfo := utils.ShowMenuModel{
 		Prompt: "choose a location to push to git remote",
 		Choices: []string{

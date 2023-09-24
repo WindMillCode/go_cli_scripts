@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	workSpaceFolder, err := os.Getwd()
 	if err != nil {
 		return

@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	utils.CDToTestNGApp()
 
 	utils.RunCommand("", []string{})

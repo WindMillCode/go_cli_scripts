@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	utils.CDToWorkspaceRooot()
+	utils.CDToWorkspaceRoot()
 	utils.CDToFirebaseApp()
 
 	utils.RunCommand("yarn", []string{"cleanup"})
