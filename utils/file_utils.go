@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+
 func ReadFile(filePath string) (string, error) {
 	// Read the entire content of the file
 	content, err := ioutil.ReadFile(filePath)
