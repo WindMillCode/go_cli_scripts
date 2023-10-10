@@ -134,3 +134,12 @@ func IsFileOrFolder(path string) (string, error) {
 
 	return "file", nil
 }
+
+func ConvertPathToOSFormat(inputPath string) string {
+	return filepath.FromSlash(inputPath)
+}
+
+func JoinAndConvertPathToOSFormat(inputPathParts ...string) string {
+	inputPath := filepath.Join(inputPathParts...)
+	return ConvertPathToOSFormat(inputPath)
+}
