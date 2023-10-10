@@ -47,6 +47,12 @@ func main() {
 	}
 	reinstall := utils.ShowMenu(cliInfo, nil)
 
+	cliInfo = utils.ShowMenuModel{
+		Prompt: "force?",
+		Choices:[]string{"true","false"},
+	}
+	force := utils.ShowMenu(cliInfo,nil)
+
 	var wg sync.WaitGroup
 	regex0 := regexp.MustCompile(" ")
 	projectsList := regex0.Split(projectsCLIString, -1)
@@ -65,8 +71,16 @@ func main() {
 				utils.RunCommandInSpecificDirectory("rm", []string{"-r", "node_modules"}, app)
 			}
 			if packageManager == "npm" {
-				utils.RunCommandInSpecificDirectory(packageManager, []string{"install", "-s"}, app)
+				command :=[]string{"install", "-s"}
+				if force == "true"{
+					command =append(command,"--force")
+				}
+				utils.RunCommandInSpecificDirectory(packageManager, command, app)
 			} else {
+				command :=[]string{"install"}
+				if force == "true"{
+					command =append(command,"--force")
+				}
 				utils.RunCommandInSpecificDirectory(packageManager, []string{"install"}, app)
 			}
 		}()

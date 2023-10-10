@@ -28,6 +28,10 @@ func main() {
 			Default: gitCloneSubDirs.StagingDir,
 		},
 	)
+	if stagingDir == ""{
+		stagingDir = os.TempDir()
+		fmt.Println("using Temp for staging, this is risky and can end up replacing your files as folders! reach out to assist on how to get this fixed:)")
+	}
 	cliInfo := utils.ShowMenuModel{
 		Prompt: "deleteStaging Dir on Finish?",
 		Choices:[]string{"YES","NO"},
@@ -69,7 +73,7 @@ func main() {
 	for i, element := range newBranches {
 		newBranches[i] = strings.TrimSpace(element)
 	}
-	cliInfo := utils.ShowMenuModel{
+	cliInfo = utils.ShowMenuModel{
 		Prompt:  "select the branch name",
 		Choices: newBranches,
 		Other:   true,

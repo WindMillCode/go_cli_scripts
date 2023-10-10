@@ -183,6 +183,8 @@ class OpenAIManager():
   """
   language_codes = {
     'zh': 'Mandarin Chinese',
+    'ja': 'Japanese',
+    'pt': 'Portuguese',
     'es': 'Spanish',
     'hi': 'Hindi',
     'uk': 'Ukrainian',

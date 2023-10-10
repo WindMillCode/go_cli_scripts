@@ -65,6 +65,12 @@ func main() {
 	}
 	install := utils.ShowMenu(cliInfo, nil)
 
+	cliInfo = utils.ShowMenuModel{
+		Prompt: "force",
+		Choices:[]string{"true","false"},
+	}
+	force := utils.ShowMenu(cliInfo,nil)
+
 	var wg sync.WaitGroup
 	regex0 := regexp.MustCompile(" ")
 	projectsList := regex0.Split(projectsCLIString, -1)
@@ -75,25 +81,50 @@ func main() {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			if uninstall == "true" {
-				if packageManager == "npm" {
-					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"uninstall"}, packagesList...), app)
-				} else {
-					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"remove"}, packagesList...), app)
-				}
-			}
+			uninstallPackages(uninstall, packageManager, force, packagesList, app)
 
-			if install == "true"{
-				if packageManager == "npm" {
-					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"install", depType, "--verbose"}, packagesList...), app)
-				} else {
-					utils.RunCommandInSpecificDirectory(packageManager, append([]string{"add", depType}, packagesList...), app)
-				}
-			}
+			installPackages(install, packageManager, depType, force, packagesList, app)
 
 		}()
 
 	}
 	wg.Wait()
 
+}
+
+func installPackages(
+	install string, packageManager string, depType string, force string, packagesList []string, app string) {
+	if install == "true" {
+		if packageManager == "npm" {
+			commands := []string{"install", depType, "--verbose"}
+			if force == "true" {
+				commands = append(commands, "--force")
+			}
+			utils.RunCommandInSpecificDirectory(packageManager, append(commands, packagesList...), app)
+		} else {
+			commands := []string{"add", depType, "--verbose"}
+			if force == "true" {
+				commands = append(commands, "--force")
+			}
+			utils.RunCommandInSpecificDirectory(packageManager, append(commands, packagesList...), app)
+		}
+	}
+}
+
+func uninstallPackages(uninstall string, packageManager string, force string, packagesList []string, app string) {
+	if uninstall == "true" {
+		if packageManager == "npm" {
+			commands := []string{"uninstall"}
+			if force == "true" {
+				commands = append(commands, "--force")
+			}
+			utils.RunCommandInSpecificDirectory(packageManager, append(commands, packagesList...), app)
+		} else {
+			commands := []string{"remove"}
+			if force == "true" {
+				commands = append(commands, "--force")
+			}
+			utils.RunCommandInSpecificDirectory(packageManager, append([]string{"remove", "-f"}, packagesList...), app)
+		}
+	}
 }
