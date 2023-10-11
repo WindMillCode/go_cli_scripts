@@ -40,7 +40,7 @@ func FolderExists(path string) bool {
 	}
 }
 
-func GetItemsInFolder(folderPath string, itemsToRetrieve []string) ([]string, error) {
+func GetItemsInFolder(folderPath string) ([]string, error) {
 	files, err := os.ReadDir(folderPath)
 	if err != nil {
 		return nil, err

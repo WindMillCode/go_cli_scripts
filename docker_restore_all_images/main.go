@@ -56,7 +56,7 @@ func main() {
 }
 
 func restoreImages(targetPath string, wg *sync.WaitGroup, batchSize int) {
-	fileNames, _ := utils.GetItemsInFolder(targetPath, []string{})
+	fileNames, _ := utils.GetItemsInFolder(targetPath)
 	batchDone := make(chan bool, batchSize)
 	fmt.Println("fire")
 	for index, tarImage := range fileNames {
@@ -82,7 +82,7 @@ func restoreImages(targetPath string, wg *sync.WaitGroup, batchSize int) {
 
 func restoreCtnrs(targetPath string, wg *sync.WaitGroup, batchSize int) {
 
-	fileNames, _ := utils.GetItemsInFolder(targetPath, []string{})
+	fileNames, _ := utils.GetItemsInFolder(targetPath)
 	batchDone := make(chan bool, batchSize)
 
 	for index, tarImage := range fileNames {

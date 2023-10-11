@@ -21,7 +21,7 @@ func main() {
 	}
 	docLocation := utils.ShowMenu(cliInfo, nil)
 	docLocation = filepath.Join(docLocation)
-	entityNames,err := utils.GetItemsInFolder(docLocation,[]string{})
+	entityNames,err := utils.GetItemsInFolder(docLocation)
 	if err != nil {
 
 		fmt.Println("Error retrieving file names please check the spelling of the provided/selected folder")

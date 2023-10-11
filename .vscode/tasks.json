@@ -14,7 +14,7 @@
   "inputs":[
     {
       "id": "misc_package_project_0",
-      "description": "the version for the package",
+      "description": "the version for the package, remember to prefix with v so it can show up on pkg.go.dev",
       "type": "promptString"
     }
   ]
