@@ -2,3 +2,8 @@
 
 ## v1.0.0
 * utils.GetItemsInFolder now has just one argument for convenience
+
+## v1.0.1
+
+* added FilterArray which makes it more convenient to filter an array given an array and predicate(condition function)
+* added methods that would cast the interface to the appropriate type
