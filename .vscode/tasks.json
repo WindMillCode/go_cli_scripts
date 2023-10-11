@@ -3,23 +3,19 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-
-
 		{
       "label":"misc: package project",
       "type":"shell",
       "windows":{
-        "command":"git add .;git commit -m'[UPDATE] addtl work';git tag ${input:misc_package_project_0};git push -u origin HEAD;"
+        "command":"git add .;git commit -m'[UPDATE] addtl work';git tag ${input:misc_package_project_0};git push -u origin HEAD;git push --tags"
       }
-    },
-
+    }
 	],
   "inputs":[
     {
       "id": "misc_package_project_0",
       "description": "the version for the package",
       "type": "promptString"
-    },
-
+    }
   ]
 }
