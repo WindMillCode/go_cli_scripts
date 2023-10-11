@@ -1,6 +1,6 @@
 package utils
 
-func FilterArray(arr []interface{}, condition func(interface{}) bool) []interface{} {
+func FilterArray[T any](arr []T, condition func(interface{}) bool) []interface{} {
 	var filtered []interface{}
 	for _, element := range arr {
 			if condition(element) {
@@ -8,6 +8,14 @@ func FilterArray(arr []interface{}, condition func(interface{}) bool) []interfac
 			}
 	}
 	return filtered
+}
+
+func ConvertToInterfaceArray[T any](input []T) []interface{} {
+	var result []interface{}
+	for _, v := range input {
+			result = append(result, v)
+	}
+	return result
 }
 
 func ConvertToIntArray(input []interface{}) []int {

@@ -7,3 +7,6 @@
 
 * added FilterArray which makes it more convenient to filter an array given an array and predicate(condition function)
 * added methods that would cast the interface to the appropriate type
+
+## v1.0.2
+* made a slight change
