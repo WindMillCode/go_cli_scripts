@@ -10,3 +10,6 @@
 
 ## v1.0.2
 * made a slight change
+
+## v1.0.3
+* added index to element

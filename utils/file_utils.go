@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,7 +11,7 @@ import (
 
 func ReadFile(filePath string) (string, error) {
 	// Read the entire content of the file
-	content, err := ioutil.ReadFile(filePath)
+	content, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Printf("Error reading from file", err)
 		return "", err
@@ -23,7 +22,7 @@ func ReadFile(filePath string) (string, error) {
 }
 
 func OverwriteFile(filePath string, content string) error {
-	err := ioutil.WriteFile(filePath, []byte(content), 0644)
+	err := os.WriteFile(filePath, []byte(content), 0644)
 	if err != nil {
 		fmt.Printf("Error reading from file", err)
 	}

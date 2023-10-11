@@ -1,9 +1,9 @@
 package utils
 
-func FilterArray[T any](arr []T, condition func(interface{}) bool) []interface{} {
+func FilterArray[T any](arr []T, condition func(interface{},int) bool) []interface{} {
 	var filtered []interface{}
-	for _, element := range arr {
-			if condition(element) {
+	for index, element := range arr {
+			if condition(element,index) {
 					filtered = append(filtered, element)
 			}
 	}
