@@ -1,3 +1,4 @@
+// 19 types
 package utils
 
 func FilterArray[T any](arr []T, condition func(interface{},int) bool) []interface{} {

@@ -13,3 +13,6 @@
 
 ## v1.0.3
 * added index to element
+
+## v1.1.0
+* added FilterMapByKeys all all the respective casting fns
