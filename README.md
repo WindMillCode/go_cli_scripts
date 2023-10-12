@@ -19,3 +19,9 @@
 
 ## v1.1.1
 * added func OverwriteMap which is like js Object.assign
+
+## v1.1.2
+* added func OverwriteMap which is like js Object.assign
+
+## v2.0.0
+* replaced FilterMapByKeys with FilterMap where its predicate fn accepts key,val
