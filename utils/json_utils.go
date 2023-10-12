@@ -1,8 +1,8 @@
 package utils
 
 import (
+	"bytes"
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -39,32 +39,24 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 	defer file.Close()
 
 	var dataBytes []byte
-
+	var out bytes.Buffer
 	switch d := data.(type) {
 	case []byte:
-		// If data is a byte slice, unmarshal it to a data structure
-		var jsonData interface{}
-		err := json.Unmarshal(d, &jsonData)
-		if err != nil {
-			return err
-		}
+		dataBytes = d
 
-		dataBytes, err = json.MarshalIndent(jsonData, "", indentString)
-		if err != nil {
-			return err
-		}
-	case interface{}:
-		// If data is not a byte slice, marshal it to JSON
+	default:
+		// If data is not a byte slice, marshal it to JSON with formatting
 		var err error
 		dataBytes, err = json.MarshalIndent(d, "", indentString)
 		if err != nil {
 			return err
 		}
-	default:
-		return fmt.Errorf("unsupported data type")
 	}
+	json.Indent(&out, UnicodeUnquote(dataBytes), "", indentString)
+	// customOut   := &CustomBuffer{}
 
-	_, err = file.Write(dataBytes)
+	// customOut.ReadFrom(&out)
+	out.WriteTo(file)
 	if err != nil {
 		return err
 	}
@@ -74,3 +66,5 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 func WriteFormattoJSONFile(data interface{}, filename string){
 	WriteCustomFormattedJSONToFile(data,filename,"    ")
 }
+
+
