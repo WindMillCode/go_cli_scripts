@@ -1,5 +1,11 @@
 package utils
 
+func OverwriteMap[T any](oldMap, newMap map[string]T) {
+	for key, value := range newMap {
+			oldMap[key] = value
+	}
+}
+
 func FilterMapByKeys[T any](originalMap map[string]T, predicate func(string) bool) map[string]interface{} {
 	filteredMap := make(map[string]interface{})
 

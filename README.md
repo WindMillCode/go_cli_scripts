@@ -16,3 +16,6 @@
 
 ## v1.1.0
 * added FilterMapByKeys all all the respective casting fns
+
+## v1.1.1
+* added func OverwriteMap which is like js Object.assign
