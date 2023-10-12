@@ -186,6 +186,18 @@ func ConvertToStringBoolMap(originalMap map[string]interface{}) map[string]bool 
 	return boolMap
 }
 
+func ConvertToStringInterfaceMap(originalMap map[string]interface{}) map[string]string {
+	stringMap := make(map[string]string)
+
+	for key, value := range originalMap {
+			if strValue, ok := value.(string); ok {
+					stringMap[key] = strValue
+			}
+	}
+
+	return stringMap
+}
+
 func ConvertToStringStringMap(originalMap map[string]interface{}) map[string]string {
 	stringMap := make(map[string]string)
 

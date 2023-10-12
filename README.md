@@ -27,3 +27,5 @@
 * replaced FilterMapByKeys with FilterMap where its predicate fn accepts key,val
 
 
+## v2.0.1
+* added FilterJSONByPredicate
