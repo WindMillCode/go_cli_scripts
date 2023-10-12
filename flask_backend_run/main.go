@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
 
 	utils.CDToWorkspaceRoot()
-	workspaceFolder,err:= os.Getwd()
-	if err !=nil {
+	workspaceFolder, err := os.Getwd()
+	if err != nil {
 		fmt.Println("there was an error while trying to receive the current dir")
 	}
 	settings, err := utils.GetSettingsJSON(workspaceFolder)
@@ -25,8 +25,6 @@ func main() {
 	if err != nil {
 		return
 	}
-
-
 
 	envVarsFile := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
@@ -45,7 +43,7 @@ func main() {
 	}
 	for {
 		utils.CDToLocation(workspaceFolder)
-		envVars := utils.RunCommandAndGetOutput("windmillcode_go", []string{"run", envVarsFile, filepath.Dir(envVarsFile), workspaceFolder })
+		envVars := utils.RunCommandAndGetOutput("windmillcode_go", []string{"run", envVarsFile, filepath.Dir(envVarsFile), workspaceFolder})
 		envVarsArray := strings.Split(envVars, ",")
 		for _, x := range envVarsArray {
 			keyPair := []string{}

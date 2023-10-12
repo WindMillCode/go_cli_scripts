@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"sync"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -31,8 +31,8 @@ func main() {
 	}
 	packageManager := utils.ShowMenu(cliInfo, nil)
 	cliInfo = utils.ShowMenuModel{
-		Other:   true,
-		Prompt:  "Choose the node.js app",
+		Other:  true,
+		Prompt: "Choose the node.js app",
 		Choices: []string{
 			filepath.Join("./apps/frontend/AngularApp"),
 			filepath.Join(".\\apps\\cloud\\FirebaseApp"),
@@ -66,10 +66,10 @@ func main() {
 	install := utils.ShowMenu(cliInfo, nil)
 
 	cliInfo = utils.ShowMenuModel{
-		Prompt: "force",
-		Choices:[]string{"true","false"},
+		Prompt:  "force",
+		Choices: []string{"true", "false"},
 	}
-	force := utils.ShowMenu(cliInfo,nil)
+	force := utils.ShowMenu(cliInfo, nil)
 
 	var wg sync.WaitGroup
 	regex0 := regexp.MustCompile(" ")

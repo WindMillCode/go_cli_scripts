@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/iancoleman/strcase"
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -17,8 +17,8 @@ func main() {
 		return
 	}
 	templateLocation := filepath.Join(scriptLocation, "template")
-	templateEndpointFile := filepath.Join(templateLocation,"template_endpoint.py")
-	templateHandlerFile := filepath.Join(templateLocation,"template_handler.py")
+	templateEndpointFile := filepath.Join(templateLocation, "template_endpoint.py")
+	templateHandlerFile := filepath.Join(templateLocation, "template_handler.py")
 	utils.CDToWorkspaceRoot()
 	utils.CDToFlaskApp()
 	targetApp, err := os.Getwd()
@@ -26,8 +26,8 @@ func main() {
 		return
 	}
 
-	endpointsFolder := filepath.Join(targetApp,"endpoints")
-	handlersFolder := filepath.Join(targetApp,"handlers")
+	endpointsFolder := filepath.Join(targetApp, "endpoints")
+	handlersFolder := filepath.Join(targetApp, "handlers")
 
 	targetName := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
@@ -37,18 +37,18 @@ func main() {
 	)
 	urlPrefix := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
-			Prompt: []string{"provide the url prefix for the controller"},
+			Prompt:  []string{"provide the url prefix for the controller"},
 			Default: targetName,
 		},
 	)
-	snakeCaseUrlPrefix:= strcase.ToSnake(urlPrefix)
+	snakeCaseUrlPrefix := strcase.ToSnake(urlPrefix)
 	snakeCaseTargetName := strcase.ToSnake(targetName)
-	snakeCaseEndpointTargetName  := strcase.ToSnake(targetName+"_endpoint")
-	snakeCaseHandlersTargetName  := strcase.ToSnake(targetName+"_handler")
-	endpointsFile := filepath.Join(endpointsFolder,fmt.Sprintf("%s.py", snakeCaseEndpointTargetName))
-	handlersFile  := filepath.Join(handlersFolder,fmt.Sprintf("%s.py", snakeCaseHandlersTargetName))
-	utils.CopyFile(templateEndpointFile,endpointsFile)
-	utils.CopyFile(templateHandlerFile,handlersFile)
+	snakeCaseEndpointTargetName := strcase.ToSnake(targetName + "_endpoint")
+	snakeCaseHandlersTargetName := strcase.ToSnake(targetName + "_handler")
+	endpointsFile := filepath.Join(endpointsFolder, fmt.Sprintf("%s.py", snakeCaseEndpointTargetName))
+	handlersFile := filepath.Join(handlersFolder, fmt.Sprintf("%s.py", snakeCaseHandlersTargetName))
+	utils.CopyFile(templateEndpointFile, endpointsFile)
+	utils.CopyFile(templateHandlerFile, handlersFile)
 
 	for _, path := range []string{endpointsFile, handlersFile} {
 		fileString, err := utils.ReadFile(path)
@@ -62,8 +62,6 @@ func main() {
 	}
 
 	updateAppFile(targetApp)
-
-
 
 }
 

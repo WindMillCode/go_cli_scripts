@@ -9,7 +9,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -69,7 +69,7 @@ func backupImages(targetPath string, wg *sync.WaitGroup, batchSize int) {
 	batchDone := make(chan bool, batchSize)
 
 	for index, repoTag := range dockerImagesArray {
-		i := index+1
+		i := index + 1
 		if !strings.Contains(repoTag, "<none>") {
 			wg.Add(1)
 			repoTagWithoutQuotes := strings.Replace(repoTag, "'", "", -1)
@@ -86,7 +86,6 @@ func backupImages(targetPath string, wg *sync.WaitGroup, batchSize int) {
 				batchDone <- true
 
 			}()
-
 
 			decreaseChannelBatchFn(i, batchSize, batchDone, dockerImagesArray)
 
@@ -111,15 +110,15 @@ func decreaseChannelBatchFn(i int, batchSize int, batchDone chan bool, targetArr
 	}
 }
 
-func backupContainers(targetPath string, wg *sync.WaitGroup,batchSize int) {
+func backupContainers(targetPath string, wg *sync.WaitGroup, batchSize int) {
 
 	dockerContainers := utils.RunCommandAndGetOutput("docker", []string{"ps", "--format", "'{{.ID}}---{{.Names}}'", "-a"})
 
 	dockerContainersArray := strings.Split(dockerContainers, "\n")
 	batchDone := make(chan bool, batchSize)
-	fmt.Printf("docker container length is %s\n",len(dockerContainersArray))
+	fmt.Printf("docker container length is %s\n", len(dockerContainersArray))
 	for index, containerInfo := range dockerContainersArray {
-		i := index+1
+		i := index + 1
 		containerInfoWOQuotes := strings.Replace(containerInfo, "'", "", -1)
 		containerInfoArray := strings.Split(containerInfoWOQuotes, "---")
 		if len(containerInfoArray) == 2 {
@@ -135,7 +134,6 @@ func backupContainers(targetPath string, wg *sync.WaitGroup,batchSize int) {
 			}()
 
 			decreaseChannelBatchFn(i, batchSize, batchDone, dockerContainersArray)
-
 
 		}
 

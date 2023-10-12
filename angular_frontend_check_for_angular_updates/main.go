@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"sync"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -29,7 +29,6 @@ func main() {
 			Default: "apps/frontend/AngularApp",
 		},
 	)
-
 
 	var wg sync.WaitGroup
 	regex0 := regexp.MustCompile(" ")

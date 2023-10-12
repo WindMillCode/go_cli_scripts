@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/windmillcode/go_scripts/utils/v2"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {

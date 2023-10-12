@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"sync"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -48,10 +48,10 @@ func main() {
 	reinstall := utils.ShowMenu(cliInfo, nil)
 
 	cliInfo = utils.ShowMenuModel{
-		Prompt: "force?",
-		Choices:[]string{"true","false"},
+		Prompt:  "force?",
+		Choices: []string{"true", "false"},
 	}
-	force := utils.ShowMenu(cliInfo,nil)
+	force := utils.ShowMenu(cliInfo, nil)
 
 	var wg sync.WaitGroup
 	regex0 := regexp.MustCompile(" ")
@@ -71,15 +71,15 @@ func main() {
 				utils.RunCommandInSpecificDirectory("rm", []string{"-r", "node_modules"}, app)
 			}
 			if packageManager == "npm" {
-				command :=[]string{"install", "-s"}
-				if force == "true"{
-					command =append(command,"--force")
+				command := []string{"install", "-s"}
+				if force == "true" {
+					command = append(command, "--force")
 				}
 				utils.RunCommandInSpecificDirectory(packageManager, command, app)
 			} else {
-				command :=[]string{"install"}
-				if force == "true"{
-					command =append(command,"--force")
+				command := []string{"install"}
+				if force == "true" {
+					command = append(command, "--force")
 				}
 				utils.RunCommandInSpecificDirectory(packageManager, []string{"install"}, app)
 			}

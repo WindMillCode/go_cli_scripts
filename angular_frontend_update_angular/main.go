@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {

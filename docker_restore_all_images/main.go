@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -106,8 +106,8 @@ func restoreCtnrs(targetPath string, wg *sync.WaitGroup, batchSize int) {
 			if len(matches) >= 2 {
 				ctnrImgName := matches[1]
 
-				utils.RunCommand("docker", []string{"run","-d", "--name", ctnrName, ctnrImgName})
-				utils.RunCommand("docker", []string{"rmi", ctnrImgName,"--force"})
+				utils.RunCommand("docker", []string{"run", "-d", "--name", ctnrName, ctnrImgName})
+				utils.RunCommand("docker", []string{"rmi", ctnrImgName, "--force"})
 			}
 
 			batchDone <- true

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
@@ -24,21 +24,21 @@ func main() {
 	// stagingDir := os.TempDir()
 	stagingDir := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
-			Prompt: []string{"Provide the staging dir"},
+			Prompt:  []string{"Provide the staging dir"},
 			Default: gitCloneSubDirs.StagingDir,
 		},
 	)
-	if stagingDir == ""{
+	if stagingDir == "" {
 		stagingDir = os.TempDir()
 		fmt.Println("using Temp for staging, this is risky and can end up replacing your files as folders! reach out to assist on how to get this fixed:)")
 	}
 	cliInfo := utils.ShowMenuModel{
-		Prompt: "deleteStaging Dir on Finish?",
-		Choices:[]string{"YES","NO"},
+		Prompt:  "deleteStaging Dir on Finish?",
+		Choices: []string{"YES", "NO"},
 	}
-	deleteStagingDir := utils.ShowMenu(cliInfo,nil)
-	if stagingDir == ""{
-		stagingDir =  os.TempDir()
+	deleteStagingDir := utils.ShowMenu(cliInfo, nil)
+	if stagingDir == "" {
+		stagingDir = os.TempDir()
 	}
 	repoURL := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
@@ -87,20 +87,20 @@ func main() {
 	entriesToRemove := []string{}
 	entriesToKeep := []string{}
 	for _, entry := range directories {
-		absEntryPathList := strings.Split(entry,string(os.PathSeparator))
+		absEntryPathList := strings.Split(entry, string(os.PathSeparator))
 		for _, subdir := range subdirs {
 			absSubdirPath := filepath.Join(stagingDir, subdir)
-			absSubdirPathList := strings.Split(absSubdirPath,string(os.PathSeparator))
+			absSubdirPathList := strings.Split(absSubdirPath, string(os.PathSeparator))
 
 			removeEntry := false
 			for i, part := range absSubdirPathList {
 
-				if i >= 0 && i < len(absEntryPathList)  {
+				if i >= 0 && i < len(absEntryPathList) {
 
 					if absEntryPathList[i] != part {
-							entriesToRemove = append(entriesToRemove, entry)
-							removeEntry = true
-							break
+						entriesToRemove = append(entriesToRemove, entry)
+						removeEntry = true
+						break
 					}
 				}
 			}
@@ -127,32 +127,31 @@ func main() {
 	for _, src := range entriesToKeep {
 		suffix := ""
 		for _, subdir := range subdirs {
-			prefix := filepath.Join(stagingDir,subdir)
-			suffix= utils.HasPrefixInArray(src,[]string{prefix},true)
-			if suffix != ""{
+			prefix := filepath.Join(stagingDir, subdir)
+			suffix = utils.HasPrefixInArray(src, []string{prefix}, true)
+			if suffix != "" {
 				break
 			}
 		}
 
-
-		if suffix!= "" {
-			dest := filepath.Join(destDir,suffix)
-			entryType,_ := utils.IsFileOrFolder(src)
+		if suffix != "" {
+			dest := filepath.Join(destDir, suffix)
+			entryType, _ := utils.IsFileOrFolder(src)
 			// fmt.Println(entryType)
 			// fmt.Println(dest)
 			// fmt.Println(src)
-			if entryType =="dir" {
-				utils.CopyDir(src,dest)
-			} else{
-				utils.CopyFile(src,dest)
+			if entryType == "dir" {
+				utils.CopyDir(src, dest)
+			} else {
+				utils.CopyFile(src, dest)
 			}
 		}
 
 	}
 
-	if(deleteStagingDir =="YES"){
+	if deleteStagingDir == "YES" {
 		os.RemoveAll(stagingDir)
-	} else{
+	} else {
 		fmt.Println(stagingDir)
 	}
 

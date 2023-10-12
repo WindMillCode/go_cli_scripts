@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/windmillcode/go_scripts/utils"
+	"github.com/windmillcode/go_scripts/v2/utils"
 )
 
 func main() {
 
 	utils.CDToWorkspaceRoot()
-	workspaceFolder,err:= os.Getwd()
-	if err !=nil {
+	workspaceFolder, err := os.Getwd()
+	if err != nil {
 		fmt.Println("there was an error while trying to receive the current dir")
 	}
 	settings, err := utils.GetSettingsJSON(workspaceFolder)
