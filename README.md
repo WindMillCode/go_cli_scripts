@@ -29,3 +29,6 @@
 
 ## v2.0.1
 * added FilterJSONByPredicate
+
+## v2.0.2
+* added WriteCustomFormattedJSONToFile to help format files

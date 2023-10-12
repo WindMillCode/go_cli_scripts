@@ -1,6 +1,9 @@
 package utils
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"os"
+)
 
 func FilterJSONByPredicate(inputJSON []byte, predicate func(key string, value interface{}) bool) ([]byte, error) {
 	var jsonData map[string]interface{}
@@ -23,4 +26,27 @@ func FilterJSONByPredicate(inputJSON []byte, predicate func(key string, value in
 	}
 
 	return filteredJSON, nil
+}
+
+
+
+func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentString string) error {
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", indentString)
+
+	if err := encoder.Encode(data); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func WriteFormattoJSONFile(data interface{}, filename string){
+	WriteCustomFormattedJSONToFile(data,filename,"    ")
 }
