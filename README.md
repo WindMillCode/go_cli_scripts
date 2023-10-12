@@ -25,3 +25,5 @@
 
 ## v2.0.0
 * replaced FilterMapByKeys with FilterMap where its predicate fn accepts key,val
+
+
