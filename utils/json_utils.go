@@ -46,7 +46,7 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 		dataBytes = d
 	case interface{}:
 		var err error
-		dataBytes, err = json.Marshal(d)
+		dataBytes, err = json.MarshalIndent(d, "", indentString)
 		if err != nil {
 			return err
 		}
@@ -54,10 +54,8 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 		return fmt.Errorf("unsupported data type")
 	}
 
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", indentString)
-
-	if err := encoder.Encode(dataBytes); err != nil {
+	_, err = file.Write(dataBytes)
+	if err != nil {
 		return err
 	}
 
