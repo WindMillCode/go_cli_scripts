@@ -40,11 +40,21 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 
 	var dataBytes []byte
 
-	// Check the type of the data parameter
 	switch d := data.(type) {
 	case []byte:
-		dataBytes = d
+		// If data is a byte slice, unmarshal it to a data structure
+		var jsonData interface{}
+		err := json.Unmarshal(d, &jsonData)
+		if err != nil {
+			return err
+		}
+
+		dataBytes, err = json.MarshalIndent(jsonData, "", indentString)
+		if err != nil {
+			return err
+		}
 	case interface{}:
+		// If data is not a byte slice, marshal it to JSON
 		var err error
 		dataBytes, err = json.MarshalIndent(d, "", indentString)
 		if err != nil {
@@ -61,7 +71,6 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 
 	return nil
 }
-
 func WriteFormattoJSONFile(data interface{}, filename string){
 	WriteCustomFormattedJSONToFile(data,filename,"    ")
 }
