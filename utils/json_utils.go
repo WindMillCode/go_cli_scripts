@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -37,10 +38,26 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 	}
 	defer file.Close()
 
+	var dataBytes []byte
+
+	// Check the type of the data parameter
+	switch d := data.(type) {
+	case []byte:
+		dataBytes = d
+	case interface{}:
+		var err error
+		dataBytes, err = json.Marshal(d)
+		if err != nil {
+			return err
+		}
+	default:
+		return fmt.Errorf("unsupported data type")
+	}
+
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", indentString)
 
-	if err := encoder.Encode(data); err != nil {
+	if err := encoder.Encode(dataBytes); err != nil {
 		return err
 	}
 

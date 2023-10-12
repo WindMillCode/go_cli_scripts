@@ -32,3 +32,6 @@
 
 ## v2.0.2
 * added WriteCustomFormattedJSONToFile to help format files
+
+## v2.0.3
+* WriteCustomFormattedJSONToFile supports bytes
