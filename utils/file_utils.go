@@ -1,13 +1,14 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
-
 
 func ReadFile(filePath string) (string, error) {
 	// Read the entire content of the file
@@ -79,13 +80,13 @@ func GetItemsInFolderRecursive(folderPath string, recursive bool) ([]string, err
 	return filenames, nil
 }
 
-func HasSuffixInArray(str string, suffixes []string,removeSuffix bool) string {
+func HasSuffixInArray(str string, suffixes []string, removeSuffix bool) string {
 	for _, suffix := range suffixes {
 		if strings.HasSuffix(str, suffix) {
 			if removeSuffix == true {
 
 				return strings.TrimSuffix(str, suffix)
-			} else{
+			} else {
 				return str
 			}
 		}
@@ -93,13 +94,13 @@ func HasSuffixInArray(str string, suffixes []string,removeSuffix bool) string {
 	return ""
 }
 
-func HasPrefixInArray(str string, prefixes []string,removeSuffix bool) string {
+func HasPrefixInArray(str string, prefixes []string, removeSuffix bool) string {
 	for _, prefix := range prefixes {
 		if strings.HasPrefix(str, prefix) {
 			if removeSuffix == true {
 
 				return strings.TrimPrefix(str, prefix)
-			} else{
+			} else {
 				return str
 			}
 		}
@@ -107,14 +108,13 @@ func HasPrefixInArray(str string, prefixes []string,removeSuffix bool) string {
 	return ""
 }
 
-
-func RemoveDrivePath(folderPath string) (string) {
+func RemoveDrivePath(folderPath string) string {
 
 	folderPath = filepath.ToSlash(folderPath)
 	parts := strings.Split(folderPath, "/")
 	if len(parts) >= 2 && strings.HasSuffix(parts[0], ":") {
 
-			parts = parts[1:]
+		parts = parts[1:]
 	}
 	resultPath := filepath.Join(parts...)
 	resultPath = filepath.FromSlash(resultPath)
@@ -124,11 +124,11 @@ func RemoveDrivePath(folderPath string) (string) {
 func IsFileOrFolder(path string) (string, error) {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-			return "", err
+		return "", err
 	}
 
 	if fileInfo.IsDir() {
-			return "dir", nil
+		return "dir", nil
 	}
 
 	return "file", nil
@@ -141,4 +141,108 @@ func ConvertPathToOSFormat(inputPath string) string {
 func JoinAndConvertPathToOSFormat(inputPathParts ...string) string {
 	inputPath := filepath.Join(inputPathParts...)
 	return ConvertPathToOSFormat(inputPath)
+}
+
+func ProcessFilesMatchingPattern(directory, pattern string, predicateFn func(string)) error {
+	// Compile the regular expression pattern
+	regex, err := regexp.Compile(pattern)
+	if err != nil {
+		return err
+	}
+
+	// Walk the directory and apply the predicate function to matching files
+	err = filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() && regex.MatchString(info.Name()) {
+			// Apply the predicate function to the full path of the matching file
+			// fmt.Println(path)
+			predicateFn(path)
+		}
+
+		return nil
+	})
+
+	return err
+}
+
+func AddContentToFile(filePath, valueToAdd string,positon string) error {
+	// Read the original file content
+	originalContent, err := os.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	// Prepend the prefix to the content
+	var newContent []byte
+	if positon == "prefix"{
+		newContent = []byte(valueToAdd + string(originalContent))
+	} else {
+		newContent = []byte(  string(originalContent)+valueToAdd)
+	}
+
+	// Write the modified content back to the file
+	err = os.WriteFile(filePath, newContent, os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Modified file: %s\n", filePath)
+	return nil
+}
+
+func AddContentToEachLineInFile(filePath string, predicate func(string) string) error {
+	// Open the file for reading and writing
+	file, err := os.OpenFile(filePath, os.O_RDWR, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Create a temporary file to store modified content
+	tempFile, err := os.CreateTemp("", "tempfile")
+	if err != nil {
+		return err
+	}
+	defer tempFile.Close()
+
+	// Create a scanner to read from the original file
+	scanner := bufio.NewScanner(file)
+
+	// Create a writer for the temporary file
+	writer := bufio.NewWriter(tempFile)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		newLine := predicate(line)
+
+		// Write the modified line to the temporary file
+		_, err := writer.WriteString(newLine + "\n")
+		if err != nil {
+			return err
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
+	// Flush any remaining data to the temporary file
+	if err := writer.Flush(); err != nil {
+		return err
+	}
+
+	// Close both files before replacing the original with the temporary file
+	file.Close()
+	tempFile.Close()
+
+	// Replace the original file with the temporary file
+	err = os.Rename(tempFile.Name(), filePath)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

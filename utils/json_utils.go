@@ -45,7 +45,6 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 		dataBytes = d
 
 	default:
-		// If data is not a byte slice, marshal it to JSON with formatting
 		var err error
 		dataBytes, err = json.MarshalIndent(d, "", indentString)
 		if err != nil {
@@ -53,9 +52,7 @@ func WriteCustomFormattedJSONToFile(data interface{}, filename string, indentStr
 		}
 	}
 	json.Indent(&out, UnicodeUnquote(dataBytes), "", indentString)
-	// customOut   := &CustomBuffer{}
 
-	// customOut.ReadFrom(&out)
 	out.WriteTo(file)
 	if err != nil {
 		return err

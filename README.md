@@ -34,6 +34,7 @@
 * added WriteCustomFormattedJSONToFile to help format files
 
 ## v2.0.5
-* WriteCustomFormattedJSONToFile supports bytes and interface strcutures
+* WriteCustomFormattedJSONToFile supports bytes and interface strcutures, added UnicodeUnquote which will remove all unicode from a string when writing from bytes to a file,
 
-
+## v2.0.6
+* added AddContentToEachLineInFile AddContentToFile, which takes a predicate function and updates the file based on  the return of the predicate fn
