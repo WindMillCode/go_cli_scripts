@@ -39,5 +39,5 @@
 ## v2.0.6
 * added AddContentToEachLineInFile AddContentToFile, which takes a predicate function and updates the file based on  the return of the predicate fn
 
-## v2.0.7
+## v2.1.1
 * added MergeDirectories fn which would merge all files and folders from target dir into source dir w/o overrting anything

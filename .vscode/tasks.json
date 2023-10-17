@@ -15,6 +15,9 @@
       "type":"shell",
       "windows":{
         "command":"git push origin --delete  $(git tag -l '${input:git_delete_tag_0}');git tag -d $(git tag -l '${input:git_delete_tag_0}')"
+      },
+      "runOptions": {
+        "instanceLimit": 10
       }
     }
 	],
