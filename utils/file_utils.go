@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	copyUtils "go_scripts/v2/utils"
 )
 
 
@@ -272,7 +271,7 @@ func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
 				return nil
 			}
 
-			if err := copyUtils.CopyFile(srcPath, destPath); err != nil {
+			if err := CopyFile(srcPath, destPath); err != nil {
 				return err
 			}
 		}
