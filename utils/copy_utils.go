@@ -66,6 +66,8 @@ func CopyFile(src, dest string) error {
 	return nil
 }
 
+
+
 type CopySelectFilesToDestinationStruct struct {
 	SourceFiles  []string
 	GlobPattern string //regex

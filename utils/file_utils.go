@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
 )
 
 func ReadFile(filePath string) (string, error) {
@@ -245,4 +246,41 @@ func AddContentToEachLineInFile(filePath string, predicate func(string) string) 
 	}
 
 	return nil
+}
+
+func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
+	return filepath.Walk(sourceDir, func(srcPath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Calculate the destination path based on the target directory
+		relPath, err := filepath.Rel(sourceDir, srcPath)
+		if err != nil {
+			return err
+		}
+
+		destPath := filepath.Join(targetDir, relPath)
+
+		if info.IsDir() {
+			// Create the directory in the target if it doesn't exist
+			if err := os.MkdirAll(destPath, os.ModePerm); err != nil {
+				return err
+			}
+		} else {
+			// Check if the file already exists in the target directory
+			_, err := os.Stat(destPath)
+			if err == nil && !overwrite {
+				// Skip the file if it exists and overwrite is false
+				return nil
+			}
+
+			// Copy the file from source to target
+			if err := CopyFile(srcPath, destPath); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
 }
