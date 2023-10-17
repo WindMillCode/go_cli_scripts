@@ -254,7 +254,6 @@ func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
 			return err
 		}
 
-		// Calculate the destination path based on the target directory
 		relPath, err := filepath.Rel(sourceDir, srcPath)
 		if err != nil {
 			return err
@@ -263,19 +262,15 @@ func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
 		destPath := filepath.Join(targetDir, relPath)
 
 		if info.IsDir() {
-			// Create the directory in the target if it doesn't exist
 			if err := os.MkdirAll(destPath, os.ModePerm); err != nil {
 				return err
 			}
 		} else {
-			// Check if the file already exists in the target directory
 			_, err := os.Stat(destPath)
 			if err == nil && !overwrite {
-				// Skip the file if it exists and overwrite is false
 				return nil
 			}
 
-			// Copy the file from source to target
 			if err := CopyFile(srcPath, destPath); err != nil {
 				return err
 			}
