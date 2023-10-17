@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	copyUtils "github.com/windmillcode/go_scripts/v2/utils"
+	copyUtils "go_scripts/v2/utils"
 )
 
 
