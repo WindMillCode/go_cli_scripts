@@ -8,8 +8,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-
+	copyUtils "github.com/windmillcode/go_scripts/v2/utils/copy_utils.go"
 )
+
 
 func ReadFile(filePath string) (string, error) {
 	// Read the entire content of the file
@@ -248,4 +249,34 @@ func AddContentToEachLineInFile(filePath string, predicate func(string) string) 
 	return nil
 }
 
+func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
+	return filepath.Walk(sourceDir, func(srcPath string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 
+		relPath, err := filepath.Rel(sourceDir, srcPath)
+		if err != nil {
+			return err
+		}
+
+		destPath := filepath.Join(targetDir, relPath)
+
+		if info.IsDir() {
+			if err := os.MkdirAll(destPath, os.ModePerm); err != nil {
+				return err
+			}
+		} else {
+			_, err := os.Stat(destPath)
+			if err == nil && !overwrite {
+				return nil
+			}
+
+			if err := copyUtils.CopyFile(srcPath, destPath); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
