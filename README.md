@@ -44,3 +44,6 @@
 
 ## v2.1.2
 * added RunCommandWithOptions fn which supports optional target dir,optional get output, and panic on error
+
+## v2.1.3
+* added TraverseDirectory with a predicate fn 

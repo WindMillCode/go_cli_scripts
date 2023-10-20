@@ -279,3 +279,26 @@ func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
 		return nil
 	})
 }
+
+type TraverseDirectoryParams struct {
+	RootDir   string
+	Predicate func(string, os.FileInfo)
+	Filter    func(string, os.FileInfo) bool
+}
+
+
+func TraverseDirectory(config TraverseDirectoryParams) error {
+	return filepath.Walk(config.RootDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err // Return any error that occurs during traversal
+		}
+
+		// Apply the filter function if provided
+		if config.Filter != nil && !config.Filter(path, info) {
+			return nil // Skip entries that don't match the filter
+		}
+
+		config.Predicate(path, info)
+		return nil
+	})
+}
