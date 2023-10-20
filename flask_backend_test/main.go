@@ -28,7 +28,7 @@ func main() {
 	envVarsFile := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
 			Prompt:  []string{"where are the env vars located"},
-			Default: filepath.Join(workspaceFolder, ".\\ignore\\Local\\flask_backend_shared.go"),
+			Default: filepath.Join(workspaceFolder, settings.ExtensionPack.FlaskBackendTestHelperScript),
 		},
 	)
 	pythonVersion := utils.GetInputFromStdin(
@@ -50,7 +50,10 @@ func main() {
 		}
 		os.Setenv(keyPair[0], keyPair[1])
 	}
-	utils.CDToLocation(flaskAppFolder)
-	utils.RunCommand("python", []string{filepath.Join("unit_tests", "run_tests.py")})
+	flaskAppUnitTestFolder := utils.JoinAndConvertPathToOSFormat(
+		flaskAppFolder,"unit_tests",
+	)
+	utils.CDToLocation(flaskAppUnitTestFolder)
+	utils.RunCommand("python", []string{"run_tests.py"})
 
 }

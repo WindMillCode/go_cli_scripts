@@ -98,6 +98,7 @@ func RunCommand(command string,args []string) {
 
 		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
 		fmt.Println(msg)
+		// panic(msg)
 	}
 }
 
@@ -115,9 +116,9 @@ func RunCommandInSpecificDirectory(command string,args []string,targetDir string
 
 		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
 		fmt.Println(msg)
+		// panic(msg)
 	}
 }
-
 
 func RunCommandAndGetOutput(command string,args []string) string {
 
@@ -126,7 +127,8 @@ func RunCommandAndGetOutput(command string,args []string) string {
 	output,err := exec.Command(command, args...).Output()
 	if err != nil {
 		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
-		panic(msg)
+		fmt.Println(msg)
+		// panic(msg)
 
 	}
 	return string(output)
@@ -141,12 +143,62 @@ func RunCommandInSpecifcDirectoryAndGetOutput(command string,args []string,targe
 	output,err := cmd.Output()
 	if err != nil {
 		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
-		panic(msg)
+		fmt.Println(msg)
+		// panic(msg)
 
 	}
 	return string(output)
 }
 
+type CommandOptions struct {
+	Command      string
+	Args         []string
+	TargetDir    string
+	GetOutput    bool
+	PanicOnError bool
+}
+
+func RunCommandWithOptions(options CommandOptions) (string, error) {
+	fullCommand := fmt.Sprintf("Running command: %s %s", options.Command, strings.Join(options.Args, " "))
+	fmt.Println(fullCommand)
+
+	cmd := exec.Command(options.Command, options.Args...)
+	if options.TargetDir != "" {
+		cmd.Dir = options.TargetDir
+	}
+
+	if options.GetOutput {
+		output, err := cmd.Output()
+		if err != nil {
+			msg := fmt.Sprintf("Could not run command %s %s\nThis was the err: %s", options.Command, strings.Join(options.Args, " "), err.Error())
+			fmt.Println(msg)
+
+			if options.PanicOnError {
+				panic(msg)
+			}
+
+			return "", err
+		}
+		return string(output), nil
+	}
+
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		msg := fmt.Sprintf("Could not run command %s %s\nThis was the err: %s", options.Command, strings.Join(options.Args, " "), err.Error())
+		fmt.Println(msg)
+
+		if options.PanicOnError {
+			panic(msg)
+		}
+
+		return "", err
+	}
+
+	return "", nil
+}
 
 
 

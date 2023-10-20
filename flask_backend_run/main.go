@@ -29,7 +29,7 @@ func main() {
 	envVarsFile := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
 			Prompt:  []string{"where are the env vars located"},
-			Default: filepath.Join(workspaceFolder, ".\\ignore\\Local\\flask_backend_shared.go"),
+			Default: filepath.Join(workspaceFolder, settings.ExtensionPack.FlaskBackendDevHelperScript),
 		},
 	)
 	pythonVersion := utils.GetInputFromStdin(

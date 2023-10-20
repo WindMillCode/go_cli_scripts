@@ -21,14 +21,16 @@ type GitCloneSubdirsStruct  struct {
 }
 
 type WindmillcodeExtensionPack struct {
-	SQLDockerContainerName string                   `json:"sqlDockerContainerName"`
-	DatabaseName           string                   `json:"databaseName"`
-	DatabaseOptions        []string                 `json:"databaseOptions"`
-	OpenAIAPIKey0          string                   `json:"openAIAPIKey0"`
-	LangCodes0	           string                   `json:"langCodes0"`
-	PythonVersion0         string                   `json:"pythonVersion0"`
-	GitCloneSubdirs        GitCloneSubdirsStruct    `json:"gitCloneSubdirs"`
-	MiscOptimizeImages     MiscOptimizeImagesStruct `json:"miscOptimizeImages"`
+	FlaskBackendDevHelperScript                   string                   `json:"flaskBackendDevHelperScript"`
+	FlaskBackendTestHelperScript                  string                   `json:"flaskBackendTestHelperScript"`
+	SQLDockerContainerName 												string                   `json:"sqlDockerContainerName"`
+	DatabaseName           												string                   `json:"databaseName"`
+	DatabaseOptions        												[]string                 `json:"databaseOptions"`
+	OpenAIAPIKey0          												string                   `json:"openAIAPIKey0"`
+	LangCodes0	           												string                   `json:"langCodes0"`
+	PythonVersion0         												string                   `json:"pythonVersion0"`
+	GitCloneSubdirs        												GitCloneSubdirsStruct    `json:"gitCloneSubdirs"`
+	MiscOptimizeImages     												MiscOptimizeImagesStruct `json:"miscOptimizeImages"`
 }
 
 type VSCodeSettings struct {

@@ -41,3 +41,6 @@
 
 ## v2.1.1
 * added MergeDirectories fn which would merge all files and folders from target dir into source dir w/o overrting anything
+
+## v2.1.2
+* added RunCommandWithOptions fn which supports optional target dir,optional get output, and panic on error
