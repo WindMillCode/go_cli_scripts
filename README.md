@@ -46,4 +46,8 @@
 * added RunCommandWithOptions fn which supports optional target dir,optional get output, and panic on error
 
 ## v2.1.3
-* added TraverseDirectory with a predicate fn 
+* added TraverseDirectory with a predicate fn
+
+## v2.1.4
+* added TruncateStringByRegex fn which allows the end user to provide a regex and has a predicate fn for every match in the pattern matcher which if returns true removes the substr from the array
+

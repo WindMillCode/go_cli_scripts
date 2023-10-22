@@ -26,3 +26,36 @@ func UnicodeUnquote(bs []byte) []byte {
 		return runeBytes
 	})
 }
+
+
+
+type TruncateStringByRegexOptions struct {
+	InputString  string
+	RegexPattern string
+	Predicate    func(int) bool
+}
+
+func TruncateStringByRegex(options TruncateStringByRegexOptions) string {
+
+	regex := regexp.MustCompile(options.RegexPattern)
+	matches := regex.FindAllStringIndex(options.InputString, -1)
+	currentIndex := 0
+	var modifiedString string
+
+	for i := 0; i < len(matches); i++ {
+			matchStart, matchEnd := matches[i][0], matches[i][1]
+
+			shouldRemove := true
+			if options.Predicate != nil {
+				shouldRemove = options.Predicate(i)
+			}
+
+			if shouldRemove {
+				modifiedString += options.InputString[currentIndex:matchStart]
+				currentIndex = matchEnd
+			}
+	}
+
+	modifiedString += options.InputString[currentIndex:]
+	return modifiedString
+}
