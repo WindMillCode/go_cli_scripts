@@ -63,25 +63,27 @@ func main() {
 		go func() {
 			defer wg.Done()
 			if reinstall == "true" {
-				utils.RunCommandInSpecificDirectory("rm", []string{"package-lock.json"}, app)
-				utils.RunCommandInSpecificDirectory("rm", []string{"yarn.lock"}, app)
+				os.Remove(utils.JoinAndConvertPathToOSFormat(app,"package-lock.json"))
+				os.Remove(utils.JoinAndConvertPathToOSFormat(app,"yarn.lock"))
 				if packageManager == "yarn" {
 					utils.RunCommandInSpecificDirectory(packageManager, []string{"cache", "clean"}, app)
 				}
-				utils.RunCommandInSpecificDirectory("rm", []string{"-r", "node_modules"}, app)
+				os.RemoveAll(utils.JoinAndConvertPathToOSFormat(app,"node_modules"))
 			}
 			if packageManager == "npm" {
 				command := []string{"install", "-s"}
 				if force == "true" {
 					command = append(command, "--force")
 				}
+				command = append(command, "--verbose")
 				utils.RunCommandInSpecificDirectory(packageManager, command, app)
 			} else {
 				command := []string{"install"}
 				if force == "true" {
 					command = append(command, "--force")
 				}
-				utils.RunCommandInSpecificDirectory(packageManager, []string{"install"}, app)
+				command = append(command, "--verbose")
+				utils.RunCommandInSpecificDirectory(packageManager, command, app)
 			}
 		}()
 	}

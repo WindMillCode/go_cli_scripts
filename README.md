@@ -51,3 +51,6 @@
 ## v2.1.4
 * added TruncateStringByRegex fn which allows the end user to provide a regex and has a predicate fn for every match in the pattern matcher which if returns true removes the substr from the array
 
+
+## v2.1.5
+* additional updates

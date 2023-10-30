@@ -26,6 +26,15 @@ func main() {
 			Default: settings.ExtensionPack.OpenAIAPIKey0,
 		},
 	)
+	if settings.ExtensionPack.OpenAIAPIBase0 ==""{
+		settings.ExtensionPack.OpenAIAPIBase0 ="https://api.openai.com/v1"
+	}
+	openAIBase := utils.GetInputFromStdin(
+		utils.GetInputFromStdinStruct{
+			Prompt: []string{"Provide the open ai url"},
+			Default: settings.ExtensionPack.OpenAIAPIBase0,
+		},
+	)
 	langCodes := utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
 			Prompt:  []string{" Provide a list of lang codes to run \n translation script. \n Provide them in comma separated format according to the options below. \n Example: 'zh, es, hi, bn' \n It's best to do 4 at a time. \n Options: zh, es, hi, uk, ar, bn, ms, fr, de, sw, am"},
@@ -34,6 +43,7 @@ func main() {
 		},
 	)
 
+	os.Setenv("OPENAI_API_BASE",openAIBase)
 	os.Setenv("OPENAI_API_KEY_0", openAIAPIKey)
 	utils.CDToLocation(filepath.Join(workspaceRoot, "ignore", "Windmillcode", "go_scripts", "i18n_script_via_ai"))
 	// pathSeparator := string(filepath.Separator)

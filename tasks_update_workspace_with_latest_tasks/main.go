@@ -55,9 +55,8 @@ func main() {
 
 	tasksJsonFilePath := filepath.Join(extensionFolder, tasksJsonRelativeFilePath)
 
-	content, err := os.ReadFile(tasksJsonFilePath)
-	if err != nil {
-		fmt.Println("Error reading file:", err)
+	content, err, shouldReturn := createTasksJson(tasksJsonFilePath,false)
+	if shouldReturn {
 		return
 	}
 	// fileContent := string(content)
@@ -150,6 +149,27 @@ func main() {
 	}
 
 }
+
+func createTasksJson(tasksJsonFilePath string, triedCreateOnError bool) ([]byte, error, bool) {
+	content, err := os.ReadFile(tasksJsonFilePath)
+	if err != nil {
+		if triedCreateOnError {
+			return nil, err, true
+		}
+
+		// If the file doesn't exist, create it.
+		_, createErr := os.Create(tasksJsonFilePath)
+		if createErr != nil {
+			return nil, createErr, true
+		}
+
+		// Recursively attempt to read the file after creating it.
+		return createTasksJson(tasksJsonFilePath, true)
+	}
+
+	return content, nil, false
+}
+
 
 func buildGoCLIProgram(programLocation string, goExecutable string) {
 
