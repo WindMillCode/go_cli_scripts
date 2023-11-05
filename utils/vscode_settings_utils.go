@@ -3,8 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"path/filepath"
+	"os"
 )
 
 
@@ -46,9 +45,9 @@ type VSCodeSettings struct {
 }
 
 func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
-	settingsJSONFilePath := filepath.Join(workSpaceFolder, "/.vscode/settings.json")
+	settingsJSONFilePath := JoinAndConvertPathToOSFormat(workSpaceFolder, "/.vscode/settings.json")
 	var settings VSCodeSettings
-	content, err := ioutil.ReadFile(settingsJSONFilePath)
+	content, err := os.ReadFile(settingsJSONFilePath)
 	if err != nil {
 		fmt.Println("Error reading file:", err.Error())
 		return settings, err

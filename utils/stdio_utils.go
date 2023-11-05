@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -159,7 +160,7 @@ type CommandOptions struct {
 }
 
 func RunCommandWithOptions(options CommandOptions) (string, error) {
-	fullCommand := fmt.Sprintf("Running command: %s %s", options.Command, strings.Join(options.Args, " "))
+	fullCommand := fmt.Sprintf("Running command: %s %s\n", options.Command, strings.Join(options.Args, " "))
 	fmt.Println(fullCommand)
 
 	cmd := exec.Command(options.Command, options.Args...)
@@ -167,38 +168,40 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 		cmd.Dir = options.TargetDir
 	}
 
-	if options.GetOutput {
-		output, err := cmd.Output()
-		if err != nil {
-			msg := fmt.Sprintf("Could not run command %s %s\nThis was the err: %s", options.Command, strings.Join(options.Args, " "), err.Error())
-			fmt.Println(msg)
-
-			if options.PanicOnError {
-				panic(msg)
-			}
-
-			return "", err
-		}
-		return string(output), nil
-	}
-
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
 	if err := cmd.Run(); err != nil {
-		msg := fmt.Sprintf("Could not run command %s %s\nThis was the err: %s", options.Command, strings.Join(options.Args, " "), err.Error())
+		msg := fmt.Sprintf(
+			"Could not run command %s %s\n\nThis was the err: %s \n %s\n\n",
+			options.Command,
+			strings.Join(options.Args, " "),
+			err.Error(),
+			fmt.Sprintf("Standard Error: %s\n", stderr.String()),
+		)
 		fmt.Println(msg)
+
 
 		if options.PanicOnError {
 			panic(msg)
 		}
 
+
 		return "", err
+	}
+
+	if options.GetOutput{
+		return stdout.String(),nil
 	}
 
 	return "", nil
 }
+
 
 
 

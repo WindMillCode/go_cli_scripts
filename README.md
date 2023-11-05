@@ -57,3 +57,6 @@
 
 ## v3.0.0
 * added cli and changed name to go_cli_scripts
+
+## v3.1.0
+* updated RunCommandWithOptions to print out standard err along with the reason why the command failed
