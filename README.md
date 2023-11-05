@@ -54,3 +54,6 @@
 
 ## v2.1.5
 * additional updates
+
+## v3.0.0
+* added cli and changed name to go_cli_scripts

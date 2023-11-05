@@ -1,8 +1,8 @@
-module github.com/windmillcode/go_scripts/v2
+module github.com/windmillcode/go_cli_scripts/v3
 
 go 1.21
 
-replace github.com/windmillcode/go_scripts/utils => /go_scripts/utils
+replace github.com/windmillcode/go_cli_scripts/utils => /go_cli_scripts/utils
 
 require (
 	github.com/charmbracelet/bubbles v0.16.1
