@@ -86,6 +86,8 @@ func (c ShellCommandOutput) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
+// Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
+// +build deprecated
 func RunCommand(command string,args []string) {
 
 	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
@@ -103,6 +105,8 @@ func RunCommand(command string,args []string) {
 	}
 }
 
+// Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
+// +build deprecated
 func RunCommandInSpecificDirectory(command string,args []string,targetDir string) {
 
 	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
@@ -121,6 +125,8 @@ func RunCommandInSpecificDirectory(command string,args []string,targetDir string
 	}
 }
 
+// Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
+// +build deprecated
 func RunCommandAndGetOutput(command string,args []string) string {
 
 	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
@@ -135,6 +141,8 @@ func RunCommandAndGetOutput(command string,args []string) string {
 	return string(output)
 }
 
+// Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
+// +build deprecated
 func RunCommandInSpecifcDirectoryAndGetOutput(command string,args []string,targetDir string) string {
 
 	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))

@@ -60,3 +60,6 @@
 
 ## v3.1.0
 * updated RunCommandWithOptions to print out standard err along with the reason why the command failed
+
+## v3.1.1
+* indicated all RunCommand fns are deprecated and RunCommandWithOptions should be used instead
