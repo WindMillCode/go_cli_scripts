@@ -63,3 +63,6 @@
 
 ## v3.1.1
 * indicated all RunCommand fns are deprecated and RunCommandWithOptions should be used instead
+
+## v3.1.2
+* added ProcessFoldersMatchingPattern just like ProcessFilesMatchingPattern

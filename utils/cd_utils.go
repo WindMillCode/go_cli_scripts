@@ -31,4 +31,8 @@ func CDToTestNGApp() {
 
 func CDToFlutterApp() {
 	CDToLocation(filepath.Join("apps", "mobile", "FlutterApp"))
+	os.Getwd()
 }
+
+
+

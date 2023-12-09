@@ -169,6 +169,31 @@ func ProcessFilesMatchingPattern(directory, pattern string, predicateFn func(str
 	return err
 }
 
+func ProcessFoldersMatchingPattern(directory, pattern string, predicateFn func(string)) error {
+	// Compile the regular expression pattern
+	regex, err := regexp.Compile(pattern)
+	if err != nil {
+		return err
+	}
+
+	// Walk the directory and apply the predicate function to matching files
+	err = filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() && regex.MatchString(info.Name()) {
+			// Apply the predicate function to the full path of the matching file
+			// fmt.Println(path)
+			predicateFn(path)
+		}
+
+		return nil
+	})
+
+	return err
+}
+
 func AddContentToFile(filePath, valueToAdd string,positon string) error {
 	// Read the original file content
 	originalContent, err := os.ReadFile(filePath)
