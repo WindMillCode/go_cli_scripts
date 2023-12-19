@@ -67,13 +67,12 @@
 ## v3.1.2
 * added ProcessFoldersMatchingPattern just like ProcessFilesMatchingPattern
 
-## v3.1.3
+
+
+## v3.1.5
 added CreateStringObject an object that will give all sorts of cases
   camelCase
   kebab
   snakeCase
   classify
-
-
-## v3.1.4
 * fixied CreateStringObject

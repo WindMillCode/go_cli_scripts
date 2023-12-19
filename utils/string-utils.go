@@ -76,32 +76,42 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 	}
 
 	result.CamelCase = func(stripSuffix bool, suffix string) string {
-		return strcase.ToLowerCamel(result.Prefix())
+
+
+		return strcase.ToLowerCamel(grabString(stripSuffix, result))+suffix
 	}
 
 	result.Classify = func(stripSuffix bool, suffix string) string {
-		return strcase.ToCamel(result.Prefix())
+		return strcase.ToCamel(grabString(stripSuffix, result))+suffix
 	}
 
 	result.Capitalize = func(stripSuffix bool, suffix string) string {
-		return strings.ToTitle(result.Prefix())
+		return strings.ToTitle(grabString(stripSuffix, result))+suffix
 	}
 
 	result.Dasherize = func(stripSuffix bool, suffix string) string {
-		return strcase.ToKebab(result.Prefix())
+		return strcase.ToKebab(grabString(stripSuffix, result))+suffix
 	}
 
 	result.Lowercase = func(stripSuffix bool, suffix string) string {
-		return strings.ToLower(result.Prefix())
+		return strings.ToLower(grabString(stripSuffix, result))+suffix
 	}
 
 	result.Snakecase = func(stripSuffix bool, suffix string) string {
-		return strcase.ToSnake(result.Prefix())
+		return strcase.ToSnake(grabString(stripSuffix, result))+suffix
 	}
 
 
 
 	return result, nil
+}
+
+func grabString(stripSuffix bool, result CreateStringObjectType) (string) {
+	if stripSuffix {
+		return  result.Prefix()
+	} else {
+		return  result.Orig
+	}
 }
 
 // CreateStringObjectType represents the structure of the string object.
