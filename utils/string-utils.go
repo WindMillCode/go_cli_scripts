@@ -1,10 +1,12 @@
 package utils
 
 import (
+	"errors"
 	"regexp"
 	"strconv"
+	"strings"
 	"unicode/utf8"
-
+	"github.com/iancoleman/strcase"
 	"github.com/chzyer/readline/runes"
 )
 
@@ -58,4 +60,50 @@ func TruncateStringByRegex(options TruncateStringByRegexOptions) string {
 
 	modifiedString += options.InputString[currentIndex:]
 	return modifiedString
+}
+
+func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectType, error) {
+	if myStr == "" {
+		return CreateStringObjectType{}, errors.New("class name is missing or misspelled or the script is having issues finding the class name")
+	}
+
+	result := CreateStringObjectType{
+		Orig: myStr,
+		Prefix: func() string {
+			return strings.Split(myStr, entitySuffix)[0]
+		},
+	}
+
+	result.CamelCase = func(stripSuffix bool, suffix string) string {
+		return strcase.ToCamel(result.Prefix())
+	}
+
+	result.Classify = func(stripSuffix bool, suffix string) string {
+		return strcase.ToCamel(result.Prefix())
+	}
+
+	result.Capitalize = func(stripSuffix bool, suffix string) string {
+		return strcase.ToCamel(result.Prefix())
+	}
+
+	result.Dasherize = func(stripSuffix bool, suffix string) string {
+		return strcase.ToKebab(result.Prefix())
+	}
+
+	result.Lowercase = func(stripSuffix bool, suffix string) string {
+		return strcase.ToLowerCamel(result.Prefix())
+	}
+
+	return result, nil
+}
+
+// CreateStringObjectType represents the structure of the string object.
+type CreateStringObjectType struct {
+	Orig      string
+	Prefix    func() string
+	CamelCase func(stripSuffix bool, suffix string) string
+	Classify  func(stripSuffix bool, suffix string) string
+	Capitalize func(stripSuffix bool, suffix string) string
+	Dasherize  func(stripSuffix bool, suffix string) string
+	Lowercase  func(stripSuffix bool, suffix string) string
 }
