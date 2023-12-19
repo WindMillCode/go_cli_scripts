@@ -73,3 +73,7 @@ added CreateStringObject an object that will give all sorts of cases
   kebab
   snakeCase
   classify
+
+
+## v3.1.4
+* fixied CreateStringObject

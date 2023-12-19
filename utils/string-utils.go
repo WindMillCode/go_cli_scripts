@@ -6,8 +6,9 @@ import (
 	"strconv"
 	"strings"
 	"unicode/utf8"
-	"github.com/iancoleman/strcase"
+
 	"github.com/chzyer/readline/runes"
+	"github.com/iancoleman/strcase"
 )
 
 func Reverse(targetArray []string) []string {
@@ -75,7 +76,7 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 	}
 
 	result.CamelCase = func(stripSuffix bool, suffix string) string {
-		return strcase.ToCamel(result.Prefix())
+		return strcase.ToLowerCamel(result.Prefix())
 	}
 
 	result.Classify = func(stripSuffix bool, suffix string) string {
@@ -83,7 +84,7 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 	}
 
 	result.Capitalize = func(stripSuffix bool, suffix string) string {
-		return strcase.ToCamel(result.Prefix())
+		return strings.ToTitle(result.Prefix())
 	}
 
 	result.Dasherize = func(stripSuffix bool, suffix string) string {
@@ -91,8 +92,14 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 	}
 
 	result.Lowercase = func(stripSuffix bool, suffix string) string {
-		return strcase.ToLowerCamel(result.Prefix())
+		return strings.ToLower(result.Prefix())
 	}
+
+	result.Snakecase = func(stripSuffix bool, suffix string) string {
+		return strcase.ToSnake(result.Prefix())
+	}
+
+
 
 	return result, nil
 }
@@ -106,4 +113,5 @@ type CreateStringObjectType struct {
 	Capitalize func(stripSuffix bool, suffix string) string
 	Dasherize  func(stripSuffix bool, suffix string) string
 	Lowercase  func(stripSuffix bool, suffix string) string
+	Snakecase  func(stripSuffix bool, suffix string) string
 }
