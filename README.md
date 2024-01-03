@@ -76,3 +76,6 @@ added CreateStringObject an object that will give all sorts of cases
   snakeCase
   classify
 * fixied CreateStringObject
+
+## v3.1.6
+added IsRunningInDocker to see whether the given go script is running in a docker container or not

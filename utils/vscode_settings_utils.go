@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 )
 
 
@@ -58,4 +60,21 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 		return settings, err
 	}
 	return settings, nil
+}
+
+func IsRunningInDocker() bool {
+	file, err := os.Open("/proc/1/cgroup")
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), "docker") {
+			return true
+		}
+	}
+
+	return false
 }
