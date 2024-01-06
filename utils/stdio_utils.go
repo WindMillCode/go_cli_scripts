@@ -1,3 +1,6 @@
+//go:build deprecated && deprecated && deprecated && deprecated
+// +build deprecated,deprecated,deprecated,deprecated
+
 package utils
 
 import (
@@ -9,21 +12,21 @@ import (
 	"strings"
 )
 
-type TakeVariableArgsStruct struct{
-	Prompt string
-	ErrMsg string
-	Default string
+type TakeVariableArgsStruct struct {
+	Prompt    string
+	ErrMsg    string
+	Default   string
 	Delimiter string
 }
 
 func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 	var innerScriptArguments []string
 	prompt0 := obj.Prompt
-	if(obj.Delimiter == ""){
+	if obj.Delimiter == "" {
 		obj.Delimiter = " "
 	}
-	if(obj.Default != ""){
-		prompt0 =fmt.Sprintf("%s (Default is %s)",obj.Prompt,obj.Default)
+	if obj.Default != "" {
+		prompt0 = fmt.Sprintf("%s (Default is %s)", obj.Prompt, obj.Default)
 	}
 	fmt.Println(prompt0)
 	fmt.Println("Enter the arguments to pass to the script (press ENTER to enter another argument, leave blank and press ENTER once done):")
@@ -37,42 +40,47 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 
 		innerScriptArguments = append(innerScriptArguments, argument)
 	}
-	input := strings.Join(innerScriptArguments,obj.Delimiter)
-	if(input == "" && obj.ErrMsg != ""){
+	input := strings.Join(innerScriptArguments, obj.Delimiter)
+	if input == "" && obj.ErrMsg != "" {
 		panic(obj.ErrMsg)
-	} else if (input == "" && obj.Default !=""){
+	} else if input == "" && obj.Default != "" {
 		input = obj.Default
 	}
 	return input
 }
 
-type GetInputFromStdinStruct struct{
-	Prompt []string
-	ErrMsg string
+type GetInputFromStdinStruct struct {
+	Prompt  []string
+	ErrMsg  string
 	Default string
 }
 
 func GetInputFromStdin(obj GetInputFromStdinStruct) string {
 	if len(obj.Prompt) == 0 {
 		obj.Prompt = []string{"Enter your input: "} // Default value
-	} else  {
+	} else {
 		obj.Prompt[0] += " "
 	}
+
 	// Create a new scanner to read from stdin
 	scanner := bufio.NewScanner(os.Stdin)
 
 	if obj.Default != "" {
-		fmt.Print(fmt.Sprintf("%s (Default is %s) ",obj.Prompt[0] , obj.Default))
+		fmt.Printf("%s (Default is %s) ", obj.Prompt[0], obj.Default)
 	} else {
-		fmt.Print(fmt.Sprintf("%s",obj.Prompt[0]))
+		fmt.Print(obj.Prompt[0])
 	}
 
 	// Read the next line of input from stdin
-	scanner.Scan()
+	if !scanner.Scan() && scanner.Err() != nil {
+		fmt.Println("Error reading input:", scanner.Err())
+		return ""
+	}
 	input := scanner.Text()
-	if (input == "" && obj.Default != ""){
+
+	if input == "" && obj.Default != "" {
 		input = obj.Default
-	} else if(input == "" && obj.ErrMsg != ""){
+	} else if input == "" && obj.ErrMsg != "" {
 		panic(obj.ErrMsg)
 	}
 
@@ -82,15 +90,14 @@ func GetInputFromStdin(obj GetInputFromStdinStruct) string {
 type ShellCommandOutput struct{}
 
 func (c ShellCommandOutput) Write(p []byte) (int, error) {
-	fmt.Println( string(p))
+	fmt.Println(string(p))
 	return len(p), nil
 }
 
 // Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
-// +build deprecated
-func RunCommand(command string,args []string) {
+func RunCommand(command string, args []string) {
 
-	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
+	fullCommand := fmt.Sprintf("Running command: %s %s", command, strings.Join(args, " "))
 	fmt.Println(fullCommand)
 	cmd := exec.Command(command, args...)
 	// cmd.Stdout = ShellCommandOutput{}
@@ -99,17 +106,16 @@ func RunCommand(command string,args []string) {
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 
-		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
+		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command, strings.Join(args, " "), err.Error())
 		fmt.Println(msg)
 		// panic(msg)
 	}
 }
 
 // Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
-// +build deprecated
-func RunCommandInSpecificDirectory(command string,args []string,targetDir string) {
+func RunCommandInSpecificDirectory(command string, args []string, targetDir string) {
 
-	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
+	fullCommand := fmt.Sprintf("Running command: %s %s", command, strings.Join(args, " "))
 	fmt.Println(fullCommand)
 	cmd := exec.Command(command, args...)
 	cmd.Dir = targetDir
@@ -119,21 +125,20 @@ func RunCommandInSpecificDirectory(command string,args []string,targetDir string
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 
-		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
+		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command, strings.Join(args, " "), err.Error())
 		fmt.Println(msg)
 		// panic(msg)
 	}
 }
 
 // Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
-// +build deprecated
-func RunCommandAndGetOutput(command string,args []string) string {
+func RunCommandAndGetOutput(command string, args []string) string {
 
-	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
+	fullCommand := fmt.Sprintf("Running command: %s %s", command, strings.Join(args, " "))
 	fmt.Println(fullCommand)
-	output,err := exec.Command(command, args...).Output()
+	output, err := exec.Command(command, args...).Output()
 	if err != nil {
-		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
+		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command, strings.Join(args, " "), err.Error())
 		fmt.Println(msg)
 		// panic(msg)
 
@@ -142,16 +147,15 @@ func RunCommandAndGetOutput(command string,args []string) string {
 }
 
 // Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
-// +build deprecated
-func RunCommandInSpecifcDirectoryAndGetOutput(command string,args []string,targetDir string) string {
+func RunCommandInSpecifcDirectoryAndGetOutput(command string, args []string, targetDir string) string {
 
-	fullCommand :=  fmt.Sprintf("Running command: %s %s", command,strings.Join(args," "))
+	fullCommand := fmt.Sprintf("Running command: %s %s", command, strings.Join(args, " "))
 	fmt.Println(fullCommand)
 	cmd := exec.Command(command, args...)
 	cmd.Dir = targetDir
-	output,err := cmd.Output()
+	output, err := cmd.Output()
 	if err != nil {
-		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command,strings.Join(args," "),err.Error())
+		msg := fmt.Sprintf("Could not run command %s %s \n This was the err %s", command, strings.Join(args, " "), err.Error())
 		fmt.Println(msg)
 		// panic(msg)
 
@@ -194,22 +198,16 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 		)
 		fmt.Println(msg)
 
-
 		if options.PanicOnError {
 			panic(msg)
 		}
 
-
 		return "", err
 	}
 
-	if options.GetOutput{
-		return stdout.String(),nil
+	if options.GetOutput {
+		return stdout.String(), nil
 	}
 
 	return "", nil
 }
-
-
-
-

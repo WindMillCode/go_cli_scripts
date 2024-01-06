@@ -82,7 +82,8 @@ func (m ShowMenuModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			// These keys should exit the program.
 			case "ctrl+c", "q":
-				panic("Exiting program")
+				os.Exit(1)
+				
 
 			// The "up" and "k" keys move the cursor up
 			case "up", "k":
