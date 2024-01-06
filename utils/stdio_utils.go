@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -161,11 +162,11 @@ func RunCommandInSpecifcDirectoryAndGetOutput(command string, args []string, tar
 }
 
 type CommandOptions struct {
-	Command      string
-	Args         []string
-	TargetDir    string
-	GetOutput    bool
-	PanicOnError bool
+	Command        string
+	Args           []string
+	TargetDir      string
+	GetOutput      bool
+	PanicOnError   bool
 }
 
 func RunCommandWithOptions(options CommandOptions) (string, error) {
@@ -182,7 +183,7 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	cmd.Stderr = os.Stderr
 
 	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
+	cmd.Stdout = io.MultiWriter(os.Stdout, &stdout)
 	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {

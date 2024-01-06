@@ -97,6 +97,10 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 		return strings.ToLower(grabString(stripSuffix, result))+suffix
 	}
 
+	result.Uppercase = func(stripSuffix bool, suffix string) string {
+		return strings.ToUpper(grabString(stripSuffix, result))+suffix
+	}
+
 	result.Snakecase = func(stripSuffix bool, suffix string) string {
 		return strcase.ToSnake(grabString(stripSuffix, result))+suffix
 	}
@@ -123,5 +127,6 @@ type CreateStringObjectType struct {
 	Capitalize func(stripSuffix bool, suffix string) string
 	Dasherize  func(stripSuffix bool, suffix string) string
 	Lowercase  func(stripSuffix bool, suffix string) string
+	Uppercase  func(stripSuffix bool, suffix string) string
 	Snakecase  func(stripSuffix bool, suffix string) string
 }

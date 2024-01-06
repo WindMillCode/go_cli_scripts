@@ -83,5 +83,9 @@ added IsRunningInDocker to see whether the given go script is running in a docke
 ## v3.2.0
 * [PATCH] updated GetInputFromStdin and ShowMenu to immediately cancel when the user hits Ctrl+C
 
-## v3.2.1
-* [PATCH] build mechanism seems to unexpectedly add
+## v3.2.1 [1/5/24]
+* [PATCH] build mechanism seems to unexpectedly add unwanted code this patch should fix that
+
+## v3.3.0 [1/6/24]
+* [PATCH] fixed issue with RunCommandWithOptions where output gets returned from the program and printed to console
+* added Uppercase method to CreateStringObjectType
