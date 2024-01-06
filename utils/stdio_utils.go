@@ -1,6 +1,3 @@
-//go:build deprecated && deprecated && deprecated && deprecated
-// +build deprecated,deprecated,deprecated,deprecated
-
 package utils
 
 import (

@@ -82,3 +82,6 @@ added IsRunningInDocker to see whether the given go script is running in a docke
 
 ## v3.2.0
 * [PATCH] updated GetInputFromStdin and ShowMenu to immediately cancel when the user hits Ctrl+C
+
+## v3.2.1
+* [PATCH] build mechanism seems to unexpectedly add
