@@ -89,3 +89,6 @@ added IsRunningInDocker to see whether the given go script is running in a docke
 ## v3.3.0 [1/6/24]
 * [PATCH] fixed issue with RunCommandWithOptions where output gets returned from the program and printed to console
 * added Uppercase method to CreateStringObjectType
+
+## v3.3.1 [1/11\/24]
+* [PATCH] IsRunningInDocker will able to detect for macbooks as well
