@@ -30,7 +30,7 @@ type AngularFrontendStruct struct{
 type WindmillcodeExtensionPack struct {
 	FlaskBackendDevHelperScript  			string                   `json:"flaskBackendDevHelperScript"`
 	FlaskBackendTestHelperScript 			string                   `json:"flaskBackendTestHelperScript"`
-	FlaskBackendURL              			string                   `json:"flaskBackendURL"`
+	ProxyURLs                    			string                   `json:"proxyURLs"`
 	SQLDockerContainerName       			string                   `json:"sqlDockerContainerName"`
 	DatabaseName                 			string                   `json:"databaseName"`
 	DatabaseOptions              			[]string                 `json:"databaseOptions"`
