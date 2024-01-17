@@ -17,13 +17,13 @@ type TakeVariableArgsStruct struct {
 	Delimiter string
 }
 
-// type TakeVariableArgsResultStruct struct{
-// 	inputString  string
-// 	inputArray   []string
-// }
+type TakeVariableArgsResultStruct struct{
+	inputString  string
+	inputArray   []string
+}
 
 
-func TakeVariableArgs(obj TakeVariableArgsStruct) (string) {
+func TakeVariableArgs(obj TakeVariableArgsStruct) (TakeVariableArgsResultStruct) {
 	var innerScriptArguments []string
 	prompt0 := obj.Prompt
 
@@ -51,11 +51,10 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) (string) {
 	} else if input == "" && obj.Default != "" {
 		input = obj.Default
 	}
-	return input
-	// return  TakeVariableArgsResultStruct{
-	// 	inputString: input,
-	// 	inputArray: innerScriptArguments,
-	// }
+	return  TakeVariableArgsResultStruct{
+		inputString: input,
+		inputArray: innerScriptArguments,
+	}
 
 }
 

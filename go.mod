@@ -1,4 +1,4 @@
-module github.com/windmillcode/go_cli_scripts/v3
+module github.com/windmillcode/go_cli_scripts/v4
 
 go 1.21
 

@@ -1,15 +1,14 @@
 package main
 
 import (
-
-	"github.com/windmillcode/go_cli_scripts/v3/utils"
+	"github.com/windmillcode/go_cli_scripts/v4/utils"
 )
 
 func main() {
 
 	utils.GetInputFromStdin(
 		utils.GetInputFromStdinStruct{
-			Prompt: []string{"Cancel porgram on ctrl+c"},
+			Prompt:  []string{"Cancel porgram on ctrl+c"},
 			Default: "",
 		},
 	)
@@ -20,7 +19,6 @@ func main() {
 		Choices: []string{"A", "B", "C"},
 	}
 	utils.ShowMenu(cliInfo, nil)
-
 
 	cliInfo = utils.ShowMenuModel{
 		Prompt:  "Progra, is continuing ",
