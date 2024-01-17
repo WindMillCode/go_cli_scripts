@@ -90,5 +90,9 @@ added IsRunningInDocker to see whether the given go script is running in a docke
 * [PATCH] fixed issue with RunCommandWithOptions where output gets returned from the program and printed to console
 * added Uppercase method to CreateStringObjectType
 
-## v3.3.1 [1/11\/24]
+## v3.3.1 [1/11/24]
 * [PATCH] IsRunningInDocker will able to detect for macbooks as well
+
+## v3.3.2 [1/17/24]
+* [UPDATE] added 	FlaskBackendURL string `json:"flaskBackendURL"`
+for the VSCodeSettings.ExtensionPack struct

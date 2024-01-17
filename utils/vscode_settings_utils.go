@@ -28,18 +28,19 @@ type AngularFrontendStruct struct{
 }
 
 type WindmillcodeExtensionPack struct {
-	FlaskBackendDevHelperScript  string                   `json:"flaskBackendDevHelperScript"`
-	FlaskBackendTestHelperScript string                   `json:"flaskBackendTestHelperScript"`
-	SQLDockerContainerName       string                   `json:"sqlDockerContainerName"`
-	DatabaseName                 string                   `json:"databaseName"`
-	DatabaseOptions              []string                 `json:"databaseOptions"`
-	OpenAIAPIKey0                string                   `json:"openAIAPIKey0"`
-	OpenAIAPIBase0               string                   `json:"openAIAPIBase0"`
-	LangCodes0                   string                   `json:"langCodes0"`
-	PythonVersion0               string                   `json:"pythonVersion0"`
-	GitCloneSubdirs              GitCloneSubdirsStruct    `json:"gitCloneSubdirs"`
-	MiscOptimizeImages           MiscOptimizeImagesStruct `json:"miscOptimizeImages"`
-	AngularFrontend              AngularFrontendStruct    `json:"angularFrontend"`
+	FlaskBackendDevHelperScript  			string                   `json:"flaskBackendDevHelperScript"`
+	FlaskBackendTestHelperScript 			string                   `json:"flaskBackendTestHelperScript"`
+	FlaskBackendURL              			string                   `json:"flaskBackendURL"`
+	SQLDockerContainerName       			string                   `json:"sqlDockerContainerName"`
+	DatabaseName                 			string                   `json:"databaseName"`
+	DatabaseOptions              			[]string                 `json:"databaseOptions"`
+	OpenAIAPIKey0                			string                   `json:"openAIAPIKey0"`
+	OpenAIAPIBase0               			string                   `json:"openAIAPIBase0"`
+	LangCodes0                   			string                   `json:"langCodes0"`
+	PythonVersion0               			string                   `json:"pythonVersion0"`
+	GitCloneSubdirs              			GitCloneSubdirsStruct    `json:"gitCloneSubdirs"`
+	MiscOptimizeImages           			MiscOptimizeImagesStruct `json:"miscOptimizeImages"`
+	AngularFrontend              			AngularFrontendStruct    `json:"angularFrontend"`
 }
 
 type VSCodeSettings struct {
