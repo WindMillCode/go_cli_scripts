@@ -18,8 +18,8 @@ type TakeVariableArgsStruct struct {
 }
 
 type TakeVariableArgsResultStruct struct{
-	inputString  string
-	inputArray   []string
+	InputString  string
+	InputArray   []string
 }
 
 
@@ -52,8 +52,8 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) (TakeVariableArgsResultStruct)
 		input = obj.Default
 	}
 	return  TakeVariableArgsResultStruct{
-		inputString: input,
-		inputArray: innerScriptArguments,
+		InputString: input,
+		InputArray: innerScriptArguments,
 	}
 
 }

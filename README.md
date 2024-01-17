@@ -97,7 +97,7 @@ added IsRunningInDocker to see whether the given go script is running in a docke
 * [UPDATE] added 	ProxyURLs string `json:"proxyURLs"`
 for the VSCodeSettings.ExtensionPack struct
 
-## v4.0.0 [1/17/24]
+## v4.0.1 [1/17/24]
 * [BREAKING CHANGE] TakeVariableArgs returns TakeVariableArgsResultStruct
 ```go
 type TakeVariableArgsResultStruct struct{
