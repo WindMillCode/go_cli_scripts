@@ -50,6 +50,7 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) (TakeVariableArgsResultStruct)
 		panic(obj.ErrMsg)
 	} else if input == "" && obj.Default != "" {
 		input = obj.Default
+		innerScriptArguments = strings.Split(obj.Default,obj.Delimiter)
 	}
 	return  TakeVariableArgsResultStruct{
 		InputString: input,
