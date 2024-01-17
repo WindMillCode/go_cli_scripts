@@ -17,9 +17,16 @@ type TakeVariableArgsStruct struct {
 	Delimiter string
 }
 
-func TakeVariableArgs(obj TakeVariableArgsStruct) string {
+// type TakeVariableArgsResultStruct struct{
+// 	inputString  string
+// 	inputArray   []string
+// }
+
+
+func TakeVariableArgs(obj TakeVariableArgsStruct) (string) {
 	var innerScriptArguments []string
 	prompt0 := obj.Prompt
+
 	if obj.Delimiter == "" {
 		obj.Delimiter = " "
 	}
@@ -45,6 +52,11 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) string {
 		input = obj.Default
 	}
 	return input
+	// return  TakeVariableArgsResultStruct{
+	// 	inputString: input,
+	// 	inputArray: innerScriptArguments,
+	// }
+
 }
 
 type GetInputFromStdinStruct struct {

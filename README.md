@@ -94,5 +94,5 @@ added IsRunningInDocker to see whether the given go script is running in a docke
 * [PATCH] IsRunningInDocker will able to detect for macbooks as well
 
 ## v3.3.3 [1/17/24]
-* [UPDATE] added 	ProxyURLs string `json:"roxyURLs"`
+* [UPDATE] added 	ProxyURLs string `json:"proxyURLs"`
 for the VSCodeSettings.ExtensionPack struct
