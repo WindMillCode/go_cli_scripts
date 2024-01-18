@@ -105,3 +105,17 @@ type TakeVariableArgsResultStruct struct{
 	inputArray   []string
 }
 ```
+
+## v4.1.0 [1/17/24]
+* added github_utils and
+
+* file_utils
+FindExecutable
+GetSourceFilePath
+ExtractArchive
+DownloadFile
+
+* string_utils
+ContainsAny
+
+methods

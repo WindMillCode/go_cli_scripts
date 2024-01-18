@@ -3,10 +3,13 @@ package utils
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/fs"
+	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 )
 
@@ -15,7 +18,7 @@ func ReadFile(filePath string) (string, error) {
 	// Read the entire content of the file
 	content, err := os.ReadFile(filePath)
 	if err != nil {
-		fmt.Printf("Error reading from file", err)
+		fmt.Printf("Error reading from file %s", err)
 		return "", err
 	}
 
@@ -311,7 +314,6 @@ type TraverseDirectoryParams struct {
 	Filter    func(string, os.FileInfo) bool
 }
 
-
 func TraverseDirectory(config TraverseDirectoryParams) error {
 	return filepath.Walk(config.RootDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -326,4 +328,120 @@ func TraverseDirectory(config TraverseDirectoryParams) error {
 		config.Predicate(path, info)
 		return nil
 	})
+}
+
+func DownloadFile(url, localPath string) error {
+	outFile, err := os.Create(localPath)
+	if err != nil {
+			return fmt.Errorf("error creating file: %v", err)
+	}
+	defer outFile.Close()
+
+	response, err := http.Get(url)
+	if err != nil {
+			return fmt.Errorf("error making GET request: %v", err)
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+			return fmt.Errorf("bad status: %s", response.Status)
+	}
+
+	_, err = io.Copy(outFile, response.Body)
+	if err != nil {
+			return fmt.Errorf("error writing to file: %v", err)
+	}
+
+	return nil
+}
+
+func ExtractArchive(archiveURL string,removeArchiveFile bool) string {
+	// Get the filename from the URL
+	segments := strings.Split(archiveURL, "/")
+	filename := segments[len(segments)-1]
+
+	// Get the current working directory
+	sourceDir, err := GetSourceFilePath()
+	if err != nil {
+			return fmt.Sprintf("error getting source file directory: %v", err)
+	}
+
+	// Construct the full path for the archive
+	archivePath := JoinAndConvertPathToOSFormat(sourceDir, filename)
+
+	// Check if the file exists locally, if not, download it
+	if _, err := os.Stat(archivePath); os.IsNotExist(err) {
+			fmt.Printf("File not found locally. Downloading from %s\n", archiveURL)
+			if err := DownloadFile(archiveURL, archivePath); err != nil {
+					return fmt.Sprintf("error downloading file: %v", err)
+			}
+	}
+
+	// Extract the archive using 7z
+	sevenZCommandOptions :=CommandOptions{
+		Command: "7z",
+		Args: []string{"x",archivePath,"-aoa"},
+		TargetDir: filepath.Dir(archivePath),
+	}
+	RunCommandWithOptions(sevenZCommandOptions)
+
+	fmt.Printf("Archive extracted successfully: %s\n", archivePath)
+	if removeArchiveFile == true{
+		if err := os.Remove(archivePath); err != nil {
+			return fmt.Sprintf("error removing archive file: %v", err)
+	}
+
+	fmt.Println("Archive file deleted successfully")
+	}
+
+	return filepath.Dir(archivePath)
+}
+
+func GetSourceFilePath() (string, error) {
+	executable, err := os.Executable()
+	if err != nil {
+			return "", fmt.Errorf("unable to get this programs executable path")
+	}
+	return filepath.Dir(executable), nil
+}
+
+func FindExecutable(executablePrefix, searchDir string) string {
+	var executablePath string
+	var found bool
+
+	// Define the executable name pattern based on the OS
+	executablePattern := executablePrefix
+	if runtime.GOOS == "windows" {
+			executablePattern += ".exe"
+	}
+
+	// Define the filter function to limit the search to executable files
+	filterFunc := func(path string, info os.FileInfo) bool {
+			return !info.IsDir() && filepath.Base(path) == executablePattern
+	}
+
+	// Define the predicate function to capture the path of the first matching file
+	predicateFunc := func(path string, info os.FileInfo) {
+			executablePath = path
+			found = true
+	}
+
+	// Traverse the directory
+	err := TraverseDirectory(
+		TraverseDirectoryParams{
+			RootDir:   searchDir,
+			Predicate: predicateFunc,
+			Filter:    filterFunc,
+		},
+	)
+
+	if err != nil {
+			return  fmt.Sprintf("error traversing directory: %v", err)
+	}
+
+	if !found {
+			return  fmt.Sprintf("NOTFOUND")
+	}
+
+	return executablePath
 }

@@ -130,3 +130,12 @@ type CreateStringObjectType struct {
 	Uppercase  func(stripSuffix bool, suffix string) string
 	Snakecase  func(stripSuffix bool, suffix string) string
 }
+
+func ContainsAny(s string, substrs []string) bool {
+	for _, substr := range substrs {
+			if strings.Contains(s, substr) {
+					return true
+			}
+	}
+	return false
+}
