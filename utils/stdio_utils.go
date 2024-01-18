@@ -178,6 +178,7 @@ type CommandOptions struct {
 	Args           []string
 	TargetDir      string
 	GetOutput      bool
+	PrintOutput    bool
 	PanicOnError   bool
 }
 
@@ -218,6 +219,9 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	stderrWriter := DualWriter{TerminalWriter: os.Stderr, Buffer: &stderrBuffer}
 
 	cmd.Stdout = stdoutWriter
+	if options.PrintOutput == false {
+		cmd.Stdout = &stdoutBuffer
+	}
 	cmd.Stderr = stderrWriter
 
 	if err := cmd.Run(); err != nil {
