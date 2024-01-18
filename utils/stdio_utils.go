@@ -181,6 +181,26 @@ type CommandOptions struct {
 	PanicOnError   bool
 }
 
+type DualWriter struct {
+	TerminalWriter io.Writer
+	Buffer         *bytes.Buffer
+}
+
+func (w DualWriter) Write(p []byte) (n int, err error) {
+	n, err = w.TerminalWriter.Write(p)
+	if err != nil {
+		return n, err
+	}
+
+	// Write to the buffer as well
+	bufferBytes, bufferErr := w.Buffer.Write(p)
+	if bufferErr != nil {
+		return bufferBytes, bufferErr
+	}
+
+	return n, nil
+}
+
 func RunCommandWithOptions(options CommandOptions) (string, error) {
 	fullCommand := fmt.Sprintf("Running command: %s %s\n", options.Command, strings.Join(options.Args, " "))
 	fmt.Println(fullCommand)
@@ -191,20 +211,23 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	}
 
 	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
 
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = io.MultiWriter(os.Stdout, &stdout)
-	cmd.Stderr = &stderr
+	// Creating buffers and DualWriters for stdout and stderr
+	var stdoutBuffer, stderrBuffer bytes.Buffer
+	stdoutWriter := DualWriter{TerminalWriter: os.Stdout, Buffer: &stdoutBuffer}
+	stderrWriter := DualWriter{TerminalWriter: os.Stderr, Buffer: &stderrBuffer}
+
+	cmd.Stdout = stdoutWriter
+	cmd.Stderr = stderrWriter
 
 	if err := cmd.Run(); err != nil {
+		// Construct error message
 		msg := fmt.Sprintf(
 			"Could not run command %s %s\n\nThis was the err: %s \n %s\n\n",
 			options.Command,
 			strings.Join(options.Args, " "),
 			err.Error(),
-			fmt.Sprintf("Standard Error: %s\n", stderr.String()),
+			fmt.Sprintf("Standard Error: %s\n", stderrBuffer.String()),
 		)
 		fmt.Println(msg)
 
@@ -216,8 +239,9 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	}
 
 	if options.GetOutput {
-		return stdout.String(), nil
+		return stdoutBuffer.String(), nil
 	}
 
 	return "", nil
 }
+

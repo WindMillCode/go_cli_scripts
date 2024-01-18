@@ -119,3 +119,8 @@ DownloadFile
 ContainsAny
 
 methods
+
+## v4.2.0 [1/18/24]
+* Major update and change
+finally got RunCommandWithOptions to work as intended
+stdout prints to terminal in addition to returning output from the inner running program to the main program
