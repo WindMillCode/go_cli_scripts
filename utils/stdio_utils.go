@@ -174,12 +174,13 @@ func RunCommandInSpecifcDirectoryAndGetOutput(command string, args []string, tar
 }
 
 type CommandOptions struct {
-	Command        string
-	Args           []string
-	TargetDir      string
-	GetOutput      bool
-	PrintOutput    bool
-	PanicOnError   bool
+	Command            string
+	Args               []string
+	TargetDir          string
+	GetOutput          bool
+	PrintOutput        bool
+	PrintOutputOnly    bool
+	PanicOnError       bool
 }
 
 type DualWriter struct {
@@ -221,6 +222,9 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	cmd.Stdout = stdoutWriter
 	if options.PrintOutput == false {
 		cmd.Stdout = &stdoutBuffer
+	}
+	if options.PrintOutputOnly == true{
+		cmd.Stdout = os.Stdout
 	}
 	cmd.Stderr = stderrWriter
 
