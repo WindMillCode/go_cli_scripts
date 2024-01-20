@@ -28,7 +28,7 @@ type AngularFrontendStruct struct{
 }
 
 type WindmillcodeExtensionPack struct {
-	TasksToRunOnFolderOpen            string                   `json:"tasksToRunOnFolderOpen"`
+	TasksToRunOnFolderOpen            []string                   `json:"tasksToRunOnFolderOpen"`
 	FlaskBackendDevHelperScript  			string                   `json:"flaskBackendDevHelperScript"`
 	FlaskBackendTestHelperScript 			string                   `json:"flaskBackendTestHelperScript"`
 	ProxyURLs                    			string                   `json:"proxyURLs"`
