@@ -128,7 +128,7 @@ stdout prints to terminal in addition to returning output from the inner running
 ## v4.2.1 [1/18/24]
 * [UPDATE] added PrintOutput to CommandOptions to optionally prevent output from getting to the command line
 
-## v4.2.2 [1/18/24]
+## v4.2.3 [1/18/24]
 * [UPDATE] added PrintOutputOnly to CommandOptions by default stdOut. returns the final value of the program to the outer command running it
 and prints output to the command line, because of edge case this was added to only print output to the command line for convience sake
-
+* [UPDATE] added TasksToRunOnFolderOpen for the vscode extension
