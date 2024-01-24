@@ -174,6 +174,7 @@ func RunCommandInSpecifcDirectoryAndGetOutput(command string, args []string, tar
 }
 
 type CommandOptions struct {
+	CmdObj						 *exec.Cmd
 	Command            string
 	Args               []string
 	TargetDir          string
@@ -181,6 +182,10 @@ type CommandOptions struct {
 	PrintOutput        bool
 	PrintOutputOnly    bool
 	PanicOnError       bool
+}
+
+func (c CommandOptions) EndProcess() ( error) {
+	return c.CmdObj.Process.Kill()
 }
 
 type DualWriter struct {
@@ -227,6 +232,7 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 		cmd.Stdout = os.Stdout
 	}
 	cmd.Stderr = stderrWriter
+	options.CmdObj = cmd
 
 	if err := cmd.Run(); err != nil {
 		// Construct error message
@@ -252,4 +258,5 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 
 	return "", nil
 }
+
 

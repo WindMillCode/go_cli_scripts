@@ -5,12 +5,16 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
+	"time"
+
+	"github.com/fsnotify/fsnotify"
 )
 
 
@@ -445,3 +449,57 @@ func FindExecutable(executablePrefix, searchDir string) string {
 
 	return executablePath
 }
+
+func WatchDirectory(directoryToWatch string, debounce int, predicate func(event fsnotify.Event)) {
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer watcher.Close()
+
+	if err := filepath.Walk(directoryToWatch,
+		func(path string, fi os.FileInfo, err error) error {
+			if fi.Mode().IsDir() {
+				return watcher.Add(path)
+			}
+			return nil
+		},
+	); err != nil {
+		fmt.Println("ERROR", err)
+	}
+
+	fmt.Printf("Watching directory %s\n", directoryToWatch)
+
+	done := make(chan bool)
+
+	go func() {
+		var lastEventTime time.Time
+
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return
+				}
+
+				// Calculate the time elapsed since the last event
+				elapsedTime := time.Since(lastEventTime)
+				if int(elapsedTime.Seconds()) >= debounce {
+					predicate(event)
+				}
+
+				// Update the last event time
+				lastEventTime = time.Now()
+
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return
+				}
+				fmt.Println("ERROR", err)
+			}
+		}
+	}()
+
+	<-done
+}
+
