@@ -484,7 +484,7 @@ func WatchDirectory(directoryToWatch string, debounce int, predicate func(event 
 
 				// Calculate the time elapsed since the last event
 				elapsedTime := time.Since(lastEventTime)
-				if int(elapsedTime.Seconds()) >= debounce {
+				if int(elapsedTime.Milliseconds()) >= debounce {
 					predicate(event)
 				}
 
