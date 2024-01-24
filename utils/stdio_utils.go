@@ -182,6 +182,7 @@ type CommandOptions struct {
 	PrintOutput        bool
 	PrintOutputOnly    bool
 	PanicOnError       bool
+	NonBlocking        bool
 }
 
 func (c CommandOptions) EndProcess() ( error) {
@@ -234,7 +235,14 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	cmd.Stderr = stderrWriter
 	options.CmdObj = cmd
 
-	if err := cmd.Run(); err != nil {
+	var err error
+	if options.NonBlocking {
+		err = cmd.Start() // Non-blocking execution if NonBlocking is true
+	} else {
+		err = cmd.Run() // Default to blocking execution
+	}
+
+	if err != nil {
 		// Construct error message
 		msg := fmt.Sprintf(
 			"Could not run command %s %s\n\nThis was the err: %s \n %s\n\n",
