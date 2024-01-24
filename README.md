@@ -133,9 +133,9 @@ stdout prints to terminal in addition to returning output from the inner running
 and prints output to the command line, because of edge case this was added to only print output to the command line for convience sake
 * [UPDATE] added TasksToRunOnFolderOpen for the vscode extension
 
-## v4.2.7 [1/24/24]
+## v4.2.8 [1/24/24]
 * [UPDATE] added command obj as CommandOptions.CmdObj along with kill method to kill command if needed
-addned  CommandOptions.NonBlocking so the command can run in async mode
+addned  CommandOptions.NonBlocking so the target command can run in async mode
 
 * [UPDATE]
 The `WatchDirectory` function monitors changes in a specified directory and invokes a callback function when events occur. It utilizes the `fsnotify` package for file system notifications.
