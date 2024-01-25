@@ -281,6 +281,33 @@ func AddContentToEachLineInFile(filePath string, predicate func(string) string) 
 	return nil
 }
 
+func RemoveContentFromFile(filePath string, contentToRemove []string) error {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+LineLoop:
+	for scanner.Scan() {
+		line := scanner.Text()
+		for _, remove := range contentToRemove {
+			if strings.TrimSpace(line) == remove {
+				continue LineLoop // Skip this line as it matches one of the removal strings
+			}
+		}
+		lines = append(lines, line) // Keep the line if no matches were found
+	}
+
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
+	return os.WriteFile(filePath, []byte(strings.Join(lines, "\n")), 0644)
+}
+
 func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
 	return filepath.Walk(sourceDir, func(srcPath string, info os.FileInfo, err error) error {
 		if err != nil {

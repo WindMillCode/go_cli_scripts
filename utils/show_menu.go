@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -166,7 +165,7 @@ type ShowMenuMultipleModel struct {
 	SelectedDelimiter   string            // Delimiter for selected items in the returned string
 }
 
-func ShowMenuMultipleOptions(cliInfo ShowMenuMultipleModel, enableOtherOption interface{}) string {
+func ShowMenuMultipleOptions(cliInfo ShowMenuMultipleModel, enableOtherOption interface{}) []string {
 	cliInfo.Selected = make(map[int]string)
 	cliInfo.textInput = textinput.New()
 
@@ -198,7 +197,7 @@ func ShowMenuMultipleOptions(cliInfo ShowMenuMultipleModel, enableOtherOption in
 		selectedItems = append(selectedItems, item)
 	}
 
-	return strings.Join(selectedItems, cliInfo.SelectedDelimiter)
+	return selectedItems
 }
 
 func (m ShowMenuMultipleModel) Init() tea.Cmd {
