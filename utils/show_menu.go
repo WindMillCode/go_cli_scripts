@@ -232,27 +232,30 @@ func (m ShowMenuMultipleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.cursor < len(m.Choices)-1 {
 				m.cursor++
 			}
-		case "enter", " ":
-			// Check if selection limit is reached
-			if m.SelectionLimit > 0 && len(m.Selected) >= m.SelectionLimit {
-				break
-			}
-
+		case "enter":
+			// Toggle selection
 			choice := m.Choices[m.cursor]
 			if _, ok := m.Selected[m.cursor]; ok {
 				delete(m.Selected, m.cursor)
 			} else {
-				m.Selected[m.cursor] = choice
+				if m.SelectionLimit == 0 || len(m.Selected) < m.SelectionLimit {
+					m.Selected[m.cursor] = choice
+				}
 			}
 			if choice == m.OtherString && m.Other {
 				m.typing = true
 				m.textInput.Focus()
 				return m, nil
 			}
+			return m, nil
+		case " ":
+			// Return the selected items when spacebar is pressed
+			return m, tea.Quit
 		}
 	}
 	return m, cmd
 }
+
 
 func (m ShowMenuMultipleModel) View() string {
 	s := m.Prompt + "\n"
@@ -270,5 +273,6 @@ func (m ShowMenuMultipleModel) View() string {
 		}
 		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice)
 	}
+	s += fmt.Sprintf("\n Hit SPACE or SPACEBAR when done")
 	return s
 }
