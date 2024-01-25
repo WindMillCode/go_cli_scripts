@@ -133,7 +133,7 @@ stdout prints to terminal in addition to returning output from the inner running
 and prints output to the command line, because of edge case this was added to only print output to the command line for convience sake
 * [UPDATE] added TasksToRunOnFolderOpen for the vscode extension
 
-## v4.3.3 [1/24/24]
+## v4.3.4 [1/24/24]
 
 * [NEW FEATURE] Enhanced `WatchDirectory` function for dynamic directory monitoring with advanced filtering options.
 

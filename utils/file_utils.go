@@ -485,13 +485,11 @@ func WatchDirectory(options WatchDirectoryParams) {
 
 	// Call the Predicate immediately for each file if StartOnWatch is true
 	if options.StartOnWatch {
-		filepath.Walk(options.DirectoryToWatch, func(path string, fi os.FileInfo, err error) error {
-			if !fi.IsDir() && shouldIncludePath(path) {
-				options.Predicate(fsnotify.Event{Name: path, Op: fsnotify.Create})
-			}
-			return nil
-		})
+		// Manually creating a test event
+		testEvent := fsnotify.Event{Name: options.DirectoryToWatch, Op: fsnotify.Write}
+		options.Predicate(testEvent)
 	}
+
 
 	// Setup the watcher
 	if err := filepath.Walk(options.DirectoryToWatch,
