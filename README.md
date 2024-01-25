@@ -168,3 +168,11 @@ and prints output to the command line, because of edge case this was added to on
 
     - Enhanced `CommandOptions` to include `CmdObj` for direct process handling and `NonBlocking` boolean for asynchronous command execution.
     - Added `EndProcess` method to facilitate immediate termination of the process associated with `CmdObj`.
+
+
+## v4.3.5 [1/24/24]
+* [UPDATE] - updated show menu to support multi-option choices with
+	SelectionLimit        int
+	SelectedValues        []string
+	SelectedDelimiter     string
+properties
