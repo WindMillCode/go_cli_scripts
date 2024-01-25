@@ -170,8 +170,8 @@ and prints output to the command line, because of edge case this was added to on
     - Added `EndProcess` method to facilitate immediate termination of the process associated with `CmdObj`.
 
 
-## v4.3.5 [1/24/24]
-* [UPDATE] - updated show menu to support multi-option choices with
+## v4.3.6 [1/24/24]
+* [UPDATE] - added ShowMenuMultiple to allow the user to select multiple options along with
 	SelectionLimit        int
 	SelectedValues        []string
 	SelectedDelimiter     string
