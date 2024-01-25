@@ -555,7 +555,7 @@ func CompileGlobs(patterns []string) []glob.Glob {
 // MatchAnyGlob checks if a path matches any of the provided glob patterns.
 func MatchAnyGlob(globs []glob.Glob, path string) bool {
 	for _, g := range globs {
-		if g.Match(path) {
+		if g.Match(ConvertPathToOSFormat(path)) {
 			return true
 		}
 	}
