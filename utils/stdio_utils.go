@@ -186,7 +186,10 @@ type CommandOptions struct {
 }
 
 func (c CommandOptions) EndProcess() ( error) {
-	return c.CmdObj.Process.Kill()
+	if c.CmdObj != nil{
+		return c.CmdObj.Process.Kill()
+	}
+	return nil
 }
 
 type DualWriter struct {
@@ -214,6 +217,7 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	fmt.Println(fullCommand)
 
 	cmd := exec.Command(options.Command, options.Args...)
+	options.CmdObj = cmd
 	if options.TargetDir != "" {
 		cmd.Dir = options.TargetDir
 	}
@@ -233,7 +237,7 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 		cmd.Stdout = os.Stdout
 	}
 	cmd.Stderr = stderrWriter
-	options.CmdObj = cmd
+
 
 	var err error
 	if options.NonBlocking {
