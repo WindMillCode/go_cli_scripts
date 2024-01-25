@@ -133,15 +133,38 @@ stdout prints to terminal in addition to returning output from the inner running
 and prints output to the command line, because of edge case this was added to only print output to the command line for convience sake
 * [UPDATE] added TasksToRunOnFolderOpen for the vscode extension
 
-## v4.2.8 [1/24/24]
-* [UPDATE] added command obj as CommandOptions.CmdObj along with kill method to kill command if needed
-addned  CommandOptions.NonBlocking so the target command can run in async mode
+## v4.2.9 [1/24/24]
 
-* [UPDATE]
-The `WatchDirectory` function monitors changes in a specified directory and invokes a callback function when events occur. It utilizes the `fsnotify` package for file system notifications.
+* [NEW FEATURE] Enhanced `WatchDirectory` function for dynamic directory monitoring with advanced filtering options.
 
-## Signature
+    ```go
+    type WatchDirectoryParams struct {
+        DirectoryToWatch string
+        DebounceInMs     int
+        Predicate        func(event fsnotify.Event)
+        StartOnWatch     bool
+        IncludePatterns  []string
+        ExcludePatterns  []string
+    }
+    ```
 
-```go
-func WatchDirectory(directoryToWatch string, debounce int, predicate func(event fsnotify.Event))
-``
+    - The `WatchDirectory` function now includes parameters for include and exclude patterns using glob strings, allowing for more precise monitoring of directory changes.
+    - Added `StartOnWatch` boolean parameter to immediately invoke the predicate function on the existing files in the directory at the start.
+    - The include and exclude patterns are compiled using `CompileGlobs` and checked against each file event using `MatchAnyGlob`.
+
+* [UPDATE] `CommandOptions` struct enhancements for process control.
+
+    ```go
+    type CommandOptions struct {
+        // ... existing fields ...
+        CmdObj      *exec.Cmd
+        NonBlocking bool
+    }
+
+    func (c CommandOptions) EndProcess() error {
+        return c.CmdObj.Process.Kill()
+    }
+    ```
+
+    - Enhanced `CommandOptions` to include `CmdObj` for direct process handling and `NonBlocking` boolean for asynchronous command execution.
+    - Added `EndProcess` method to facilitate immediate termination of the process associated with `CmdObj`.

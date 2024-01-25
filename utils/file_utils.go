@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/gobwas/glob"
 )
 
 
@@ -450,14 +451,50 @@ func FindExecutable(executablePrefix, searchDir string) string {
 	return executablePath
 }
 
-func WatchDirectory(directoryToWatch string, debounce int, predicate func(event fsnotify.Event)) {
+
+type WatchDirectoryParams struct {
+	DirectoryToWatch string
+	DebounceInMs     int
+	Predicate        func(event fsnotify.Event)
+	StartOnWatch     bool
+	IncludePatterns  []string
+	ExcludePatterns  []string
+}
+
+func WatchDirectory(options WatchDirectoryParams) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer watcher.Close()
 
-	if err := filepath.Walk(directoryToWatch,
+	// Compile glob patterns
+	includeGlobs := CompileGlobs(options.IncludePatterns)
+	excludeGlobs := CompileGlobs(options.ExcludePatterns)
+
+	// Function to check if a path should be included or excluded
+	shouldIncludePath := func(path string) bool {
+		if len(excludeGlobs) > 0 && MatchAnyGlob(excludeGlobs, path) {
+			return false
+		}
+		if len(includeGlobs) == 0 || MatchAnyGlob(includeGlobs, path) {
+			return true
+		}
+		return false
+	}
+
+	// Call the Predicate immediately for each file if StartOnWatch is true
+	if options.StartOnWatch {
+		filepath.Walk(options.DirectoryToWatch, func(path string, fi os.FileInfo, err error) error {
+			if !fi.IsDir() && shouldIncludePath(path) {
+				options.Predicate(fsnotify.Event{Name: path, Op: fsnotify.Create})
+			}
+			return nil
+		})
+	}
+
+	// Setup the watcher
+	if err := filepath.Walk(options.DirectoryToWatch,
 		func(path string, fi os.FileInfo, err error) error {
 			if fi.Mode().IsDir() {
 				return watcher.Add(path)
@@ -468,7 +505,7 @@ func WatchDirectory(directoryToWatch string, debounce int, predicate func(event 
 		fmt.Println("ERROR", err)
 	}
 
-	fmt.Printf("Watching directory %s\n", directoryToWatch)
+	fmt.Printf("Watching directory %s\n", options.DirectoryToWatch)
 
 	done := make(chan bool)
 
@@ -484,8 +521,8 @@ func WatchDirectory(directoryToWatch string, debounce int, predicate func(event 
 
 				// Calculate the time elapsed since the last event
 				elapsedTime := time.Since(lastEventTime)
-				if int(elapsedTime.Milliseconds()) >= debounce {
-					predicate(event)
+				if int(elapsedTime.Milliseconds()) >= options.DebounceInMs && shouldIncludePath(event.Name) {
+					options.Predicate(event)
 				}
 
 				// Update the last event time
@@ -503,3 +540,24 @@ func WatchDirectory(directoryToWatch string, debounce int, predicate func(event 
 	<-done
 }
 
+// CompileGlobs compiles the string patterns into glob.Glob objects.
+func CompileGlobs(patterns []string) []glob.Glob {
+	var globs []glob.Glob
+	for _, pattern := range patterns {
+		g, err := glob.Compile(pattern)
+		if err == nil {
+			globs = append(globs, g)
+		}
+	}
+	return globs
+}
+
+// MatchAnyGlob checks if a path matches any of the provided glob patterns.
+func MatchAnyGlob(globs []glob.Glob, path string) bool {
+	for _, g := range globs {
+		if g.Match(path) {
+			return true
+		}
+	}
+	return false
+}
