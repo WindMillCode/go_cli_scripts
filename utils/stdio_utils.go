@@ -194,7 +194,10 @@ func (c CommandOptions) EndProcess() ( error) {
 			cmd = c.CmdObj
 	}
 	if cmd != nil{
-		return cmd.Process.Kill()
+		cmd.Process.Kill()
+		state,err :=cmd.Process.Wait()
+		fmt.Println(state)
+		return err
 	}
 	return nil
 }
