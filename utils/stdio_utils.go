@@ -175,6 +175,7 @@ func RunCommandInSpecifcDirectoryAndGetOutput(command string, args []string, tar
 
 type CommandOptions struct {
 	CmdObj						 *exec.Cmd
+	Self               *CommandOptions
 	Command            string
 	Args               []string
 	TargetDir          string
@@ -186,8 +187,14 @@ type CommandOptions struct {
 }
 
 func (c CommandOptions) EndProcess() ( error) {
-	if c.CmdObj != nil{
-		return c.CmdObj.Process.Kill()
+	var cmd *exec.Cmd
+	if c.Self != nil && c.Self.CmdObj != nil {
+			cmd = c.Self.CmdObj
+	} else {
+			cmd = c.CmdObj
+	}
+	if cmd != nil{
+		return cmd.Process.Kill()
 	}
 	return nil
 }
@@ -217,7 +224,9 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	fmt.Println(fullCommand)
 
 	cmd := exec.Command(options.Command, options.Args...)
-	options.CmdObj = cmd
+	if options.Self != nil {
+		options.Self.CmdObj = cmd
+	}
 	if options.TargetDir != "" {
 		cmd.Dir = options.TargetDir
 	}

@@ -170,10 +170,12 @@ and prints output to the command line, because of edge case this was added to on
     - Added `EndProcess` method to facilitate immediate termination of the process associated with `CmdObj`.
 
 
-## v4.3.7 [1/24/24]
+## v4.3.8 [1/24/24]
 * [UPDATE] - added ShowMenuMultiple to allow the user to select multiple options along with
 	SelectionLimit        int
 	SelectedValues        []string
 	SelectedDelimiter     string
 properties
 * [UPDATE] - added RemoveContentFromFile function
+* [FIX] - fixed EndProcess command to leverage the pointer to Self on the options.CommandOptions struct via the Self property
+* you the developer have to provide the self property in order for EndProcess to find the command and  kill it effectively
