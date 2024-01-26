@@ -521,9 +521,12 @@ func WatchDirectory(options WatchDirectoryParams) {
 	// Setup the watcher
 	if err := filepath.Walk(options.DirectoryToWatch,
 		func(path string, fi os.FileInfo, err error) error {
-			if fi.Mode().IsDir() {
-				return watcher.Add(path)
+			if shouldIncludePath(path) {
+				if fi.Mode().IsDir() {
+					return watcher.Add(path)
+				}
 			}
+
 			return nil
 		},
 	); err != nil {
@@ -546,7 +549,7 @@ func WatchDirectory(options WatchDirectoryParams) {
 
 				// Calculate the time elapsed since the last event
 				elapsedTime := time.Since(lastEventTime)
-				if int(elapsedTime.Milliseconds()) >= options.DebounceInMs && shouldIncludePath(event.Name) {
+				if int(elapsedTime.Milliseconds()) >= options.DebounceInMs {
 					options.Predicate(event)
 				}
 

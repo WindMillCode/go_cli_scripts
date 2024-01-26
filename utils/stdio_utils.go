@@ -174,16 +174,17 @@ func RunCommandInSpecifcDirectoryAndGetOutput(command string, args []string, tar
 }
 
 type CommandOptions struct {
-	CmdObj						 *exec.Cmd
-	Self               *CommandOptions
-	Command            string
-	Args               []string
-	TargetDir          string
-	GetOutput          bool
-	PrintOutput        bool
-	PrintOutputOnly    bool
-	PanicOnError       bool
-	NonBlocking        bool
+	CmdObj						   *exec.Cmd
+	Self                 *CommandOptions
+	Command              string
+	Args                 []string
+	TargetDir            string
+	GetOutput            bool
+	PrintOutput          bool
+	PrintOutputOnly      bool
+	PanicOnError         bool
+	NonBlocking          bool
+	IsInputFromProgram   bool
 }
 
 func (c CommandOptions) EndProcess() ( error) {
@@ -234,7 +235,10 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 		cmd.Dir = options.TargetDir
 	}
 
-	cmd.Stdin = os.Stdin
+
+	if options.IsInputFromProgram != true{
+		cmd.Stdin = os.Stdin
+	}
 
 	// Creating buffers and DualWriters for stdout and stderr
 	var stdoutBuffer, stderrBuffer bytes.Buffer
