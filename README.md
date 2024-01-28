@@ -179,3 +179,6 @@ properties
 * [UPDATE] - added RemoveContentFromFile function
 * [FIX] - fixed EndProcess command to leverage the pointer to Self on the options.CommandOptions struct via the Self property
 * you the developer have to provide the self property in order for EndProcess to find the command and  kill it effectively
+
+## v4.4.2 [1/24/24]
+[PATCH] - fixed issue with EndProcess where it would kill the process but hang in the function it was called
