@@ -183,3 +183,7 @@ properties
 ## v4.4.2 [1/28/24]
 [PATCH] - fixed issue with EndProcess where it would kill the process but hang in the function it was called
 * a glitch allows this fix to be found in 4.4.1
+
+
+## v4.4.3 [1/30/24]
+* [UPDATE] - added RemoveElementsNotInSource ArrayContainsAny array fns

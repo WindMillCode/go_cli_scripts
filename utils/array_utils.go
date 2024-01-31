@@ -1,6 +1,35 @@
 // 19 types
 package utils
 
+
+func RemoveElementsNotInSource[T comparable](source, toRemove []T) []T {
+	sourceSet := make(map[T]bool)
+	for _, value := range source {
+			sourceSet[value] = true
+	}
+
+	var result []T
+	for _, value := range toRemove {
+			if !sourceSet[value] {
+					result = append(result, value)
+			}
+	}
+
+	return result
+}
+
+
+func ArrayContainsAny(contentSlice, targetSlice []string) bool {
+	for _, content := range contentSlice {
+		for _, target := range targetSlice {
+			if content == target {
+				return true // Return true immediately if a match is found
+			}
+		}
+	}
+	return false // Return false if no matches are found
+}
+
 func FilterArray[T any](arr []T, condition func(interface{},int) bool) []interface{} {
 	var filtered []interface{}
 	for index, element := range arr {
