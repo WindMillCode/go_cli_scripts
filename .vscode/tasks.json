@@ -3,6 +3,13 @@
 {
 	"version": "2.0.0",
 	"tasks": [
+    {
+      "label":"major update project",
+      "type":"shell",
+      "windows":{
+        "command": "C:\\Users\\Restop-1294\\go\\bin\\mod upgrade"
+      }
+    },
 		{
       "label":"misc: package project",
       "type":"shell",

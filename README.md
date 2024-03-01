@@ -189,4 +189,7 @@ properties
 * [UPDATE] - added RemoveElementsNotInSource ArrayContainsAny array fns
 
 ## v4.4.4 [2/29/24]
-* [UPDATE] - updated CDToLocation to accept a createIfNotExist parameter (2 argument) 
+* [UPDATE] - updated CDToLocation to accept a createIfNotExist parameter (2 argument)
+
+## v5.0.0 [3/1/24]
+* [BREAKING CHANGE] - removed vscode-setting utils and made docker-utils instead only IsRunningInDocker fn is available
