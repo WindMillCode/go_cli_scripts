@@ -187,3 +187,6 @@ properties
 
 ## v4.4.3 [1/30/24]
 * [UPDATE] - added RemoveElementsNotInSource ArrayContainsAny array fns
+
+## v4.4.4 [2/29/24]
+* [UPDATE] - updated CDToLocation to accept a createIfNotExist parameter (2 argument) 
