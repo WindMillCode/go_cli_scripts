@@ -191,8 +191,8 @@ properties
 ## v4.4.4 [2/29/24]
 * [UPDATE] - updated CDToLocation to accept a createIfNotExist parameter (2 argument)
 
-## v4.4.5 [3/9/24]
-* [UPDATE] - Updated the module path in go.mod and scratchpad.go from v5 to v4.
-* [UPDATE] - Updated CDToLocation to accept a createIfNotExist parameter in README.md.
-* [PATCH] - Added github.com/ghodss/yaml v1.0.0 and gopkg.in/yaml.v2 v2.4.0 to go.mod and go.sum.
-* [FIX] - Removed the version v5.0.0 entry from README.md and replaced it with v4.4.5.
+## v4.5.0 [3/9/24]
+* [UPDATE] - Added a new task "major update project" in .vscode/tasks.json.
+* [FEATURE] - Introduced a new utility file docker-utils.go with a function to check if running inside Docker.
+* [PATCH] - Updated vscode_settings_utils.go to use yaml.Unmarshal instead of json.Unmarshal.
+* [REMOVE] - Removed redundant IsRunningInDocker function from vscode_settings_utils.go.
