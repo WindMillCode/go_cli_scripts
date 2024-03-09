@@ -1,4 +1,4 @@
-module github.com/windmillcode/go_cli_scripts/v5
+module github.com/windmillcode/go_cli_scripts/v4
 
 go 1.21
 
@@ -9,6 +9,7 @@ require (
 	github.com/charmbracelet/bubbletea v0.24.2
 	github.com/chzyer/readline v1.5.1
 	github.com/fsnotify/fsnotify v1.7.0
+	github.com/ghodss/yaml v1.0.0
 	github.com/gobwas/glob v0.2.3
 	github.com/iancoleman/strcase v0.3.0
 )
@@ -31,4 +32,5 @@ require (
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

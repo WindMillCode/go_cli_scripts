@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/windmillcode/go_cli_scripts/v5/utils"
+	"github.com/windmillcode/go_cli_scripts/v4/utils"
 )
 
 func main() {

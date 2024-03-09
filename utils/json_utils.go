@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+
+
 func FilterJSONByPredicate(inputJSON []byte, predicate func(key string, value interface{}) bool) ([]byte, error) {
 	var jsonData map[string]interface{}
 
