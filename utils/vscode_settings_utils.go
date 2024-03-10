@@ -54,7 +54,7 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 		fmt.Println("Error reading file:", err.Error())
 		return settings, err
 	}
-	standardJSON, err := RemoveComments(string(content))
+	standardJSON, err := RemoveComments(content)
 	err = json.Unmarshal([]byte(standardJSON), &settings)
 	if err != nil {
 		fmt.Println("Error unmarshalling JSON:", err.Error())
