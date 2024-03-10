@@ -9,7 +9,6 @@ require (
 	github.com/charmbracelet/bubbletea v0.24.2
 	github.com/chzyer/readline v1.5.1
 	github.com/fsnotify/fsnotify v1.7.0
-	github.com/ghodss/yaml v1.0.0
 	github.com/gobwas/glob v0.2.3
 	github.com/iancoleman/strcase v0.3.0
 )
@@ -28,9 +27,9 @@ require (
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
+	github.com/tailscale/hujson v0.0.0-20221223112325-20486734a56a
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

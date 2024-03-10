@@ -196,3 +196,8 @@ properties
 * [FEATURE] - Introduced a new utility file docker-utils.go with a function to check if running inside Docker.
 * [PATCH] - Updated vscode_settings_utils.go to use yaml.Unmarshal instead of json.Unmarshal.
 * [REMOVE] - Removed redundant IsRunningInDocker function from vscode_settings_utils.go.
+
+## v4.5.1 [3/9/24]
+* [UPDATE] - Added a new dependency github.com/tailscale/hujson in go.mod and updated go.sum accordingly.
+* [FEATURE] - Introduced a new function StandardizeJSON in utils/json_utils.go using hujson to standardize JSON input.
+* [UPDATE] - Modified GetSettingsJSON in utils/vscode_settings_utils.go to use StandardizeJSON for processing input before unmarshalling.

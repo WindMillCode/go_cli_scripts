@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"os"
+
+	"github.com/tailscale/hujson"
 )
 
 
@@ -67,3 +69,12 @@ func WriteFormattoJSONFile(data interface{}, filename string){
 }
 
 
+
+func StandardizeJSON(b []byte) ([]byte, error) {
+	ast, err := hujson.Parse(b)
+	if err != nil {
+		return b, err
+	}
+	ast.Standardize()
+	return ast.Pack(), nil
+}

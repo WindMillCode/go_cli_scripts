@@ -1,9 +1,9 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
-	"github.com/ghodss/yaml"
 )
 
 
@@ -54,7 +54,8 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 		fmt.Println("Error reading file:", err.Error())
 		return settings, err
 	}
-	err = yaml.Unmarshal(content, &settings)
+	standardJSON, err := StandardizeJSON(content)
+	err = json.Unmarshal(standardJSON, &settings)
 	if err != nil {
 		fmt.Println("Error unmarshalling JSON:", err.Error())
 		return settings, err
