@@ -3,9 +3,10 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
+	"regexp"
 
-	"github.com/tailscale/hujson"
 )
 
 
@@ -70,11 +71,19 @@ func WriteFormattoJSONFile(data interface{}, filename string){
 
 
 
-func StandardizeJSON(b []byte) ([]byte, error) {
-	ast, err := hujson.Parse(b)
-	if err != nil {
-		return b, err
+func RemoveComments(jsonStr string) (string, error) {
+	// Remove line comments
+	lineCommentsRegex := regexp.MustCompile(`(?m)//.*$`)
+	jsonStr = lineCommentsRegex.ReplaceAllString(jsonStr, "")
+
+	// Remove block comments
+	blockCommentsRegex := regexp.MustCompile(`(?s)/\*.*?\*/`)
+	jsonStr = blockCommentsRegex.ReplaceAllString(jsonStr, "")
+
+	// Check for JSON validity
+	if !json.Valid([]byte(jsonStr)) {
+		return "", fmt.Errorf("invalid JSON after removing comments")
 	}
-	ast.Standardize()
-	return ast.Pack(), nil
+
+	return jsonStr, nil
 }

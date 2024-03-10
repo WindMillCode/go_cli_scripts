@@ -201,3 +201,10 @@ properties
 * [UPDATE] - Added a new dependency github.com/tailscale/hujson in go.mod and updated go.sum accordingly.
 * [FEATURE] - Introduced a new function StandardizeJSON in utils/json_utils.go using hujson to standardize JSON input.
 * [FIX] - Modified GetSettingsJSON in utils/vscode_settings_utils.go to use StandardizeJSON for processing input before unmarshalling.
+
+## v4.5.2 [3/10/24]
+* [REMOVE] - Removed the dependency github.com/tailscale/hujson from go.mod.
+* [UPDATE] - Updated go.sum to reflect changes in dependencies.
+* [UPDATE] - Modified the StandardizeJSON function in utils/json_utils.go to RemoveComments, which now removes line and block comments from JSON strings.
+* [UPDATE] - Updated GetSettingsJSON in utils/vscode_settings_utils.go to use RemoveComments instead of StandardizeJSON for processing input before unmarshalling.
+* [FIX] - Added error handling in RemoveComments to check for JSON validity after removing comments.
