@@ -71,19 +71,60 @@ func WriteFormattoJSONFile(data interface{}, filename string){
 
 
 
-func RemoveComments(jsonStr string) (string, error) {
-	// Remove line comments
-	lineCommentsRegex := regexp.MustCompile(`(?m)//.*$`)
-	jsonStr = lineCommentsRegex.ReplaceAllString(jsonStr, "")
+func RemoveComments(data []byte) ([]byte, error) {
+	inString := false
+	inSingleLineComment := false
+	inMultiLineComment := false
+	var result []byte
 
-	// Remove block comments
-	blockCommentsRegex := regexp.MustCompile(`(?s)/\*.*?\*/`)
-	jsonStr = blockCommentsRegex.ReplaceAllString(jsonStr, "")
+	for i := 0; i < len(data); i++ {
+		if inSingleLineComment {
+			if data[i] == '\n' {
+				inSingleLineComment = false
+			}
+			continue
+		}
 
-	// Check for JSON validity
-	if !json.Valid([]byte(jsonStr)) {
-		return "", fmt.Errorf("invalid JSON after removing comments")
+		if inMultiLineComment {
+			if data[i] == '*' && i+1 < len(data) && data[i+1] == '/' {
+				inMultiLineComment = false
+				i++ // Skip the '/'
+			}
+			continue
+		}
+
+		if inString {
+			if data[i] == '"' && data[i-1] != '\\' {
+				inString = false
+			}
+			result = append(result, data[i])
+			continue
+		}
+
+		if data[i] == '"' {
+			inString = true
+			result = append(result, data[i])
+			continue
+		}
+
+		if data[i] == '/' && i+1 < len(data) {
+			if data[i+1] == '/' {
+				inSingleLineComment = true
+				i++ // Skip the next '/'
+				continue
+			} else if data[i+1] == '*' {
+				inMultiLineComment = true
+				i++ // Skip the next '*'
+				continue
+			}
+		}
+
+		result = append(result, data[i])
 	}
 
-	return jsonStr, nil
+	if !json.Valid(result) {
+		return nil, fmt.Errorf("invalid JSON after removing comments")
+	}
+
+	return result, nil
 }
