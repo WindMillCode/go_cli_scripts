@@ -8,7 +8,6 @@ import (
 )
 
 func CopyDir(src, dest string) error {
-	// Get the file information of the source directory
 	srcInfo, err := os.Stat(src)
 	if err != nil {
 		return err
@@ -19,23 +18,32 @@ func CopyDir(src, dest string) error {
 		return err
 	}
 
-	// Get a list of all entries (files and subdirectories) in the source directory
 	entries, err := os.ReadDir(src)
 	if err != nil {
 		return err
+	}
+
+	// If the directory is empty, we are done as MkdirAll has already created the destination directory
+	if len(entries) == 0 {
+		return nil
 	}
 
 	for _, entry := range entries {
 		srcPath := filepath.Join(src, entry.Name())
 		destPath := filepath.Join(dest, entry.Name())
 
-		if entry.IsDir() {
-			// If the entry is a subdirectory, recursively copy it
+		fileInfo, err := entry.Info()
+		if err != nil {
+			return err
+		}
+
+		if fileInfo.IsDir() {
+			// Recursively copy the subdirectory
 			if err := CopyDir(srcPath, destPath); err != nil {
 				return err
 			}
 		} else {
-			// If the entry is a file, copy it to the destination
+			// Copy the file
 			if err := CopyFile(srcPath, destPath); err != nil {
 				return err
 			}

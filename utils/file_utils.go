@@ -19,6 +19,28 @@ import (
 )
 
 
+func FilterFilesByExtension(files []string, extensions []string, include bool) []string {
+	var filteredFiles []string
+
+	// Create a map for faster extension checks
+	extensionMap := make(map[string]bool)
+	for _, ext := range extensions {
+			extensionMap[ext] = true
+	}
+
+	// Iterate over the files and filter based on the extension and include flag
+	for _, file := range files {
+			_, extPresent := extensionMap[strings.ToLower(strings.TrimPrefix(filepath.Ext(file), "."))]
+
+			// If include is true, keep the file if the extension is in the list
+			// If include is false, keep the file if the extension is not in the list
+			if (include && extPresent) || (!include && !extPresent) {
+					filteredFiles = append(filteredFiles, file)
+			}
+	}
+
+	return filteredFiles
+}
 
 func ReadFile(filePath string) (string, error) {
 	// Read the entire content of the file

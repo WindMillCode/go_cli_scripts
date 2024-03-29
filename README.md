@@ -208,3 +208,9 @@ properties
 * [UPDATE] - Modified the StandardizeJSON function in utils/json_utils.go to RemoveComments, which now removes line and block comments from JSON strings.
 * [UPDATE] - Updated GetSettingsJSON in utils/vscode_settings_utils.go to use RemoveComments instead of StandardizeJSON for processing input before unmarshalling.
 * [FIX] - Added error handling in RemoveComments to check for JSON validity after removing comments.
+
+## v4.5.5 [3/28/24]
+[REMOVE] `output.txt` and `scratchpad.go` files were deleted. The `output.txt` file contained various utility functions and `scratchpad.go` included main package content with file operations.
+
+[UPDATE] `copy_utils.go` and `file_utils.go` in the `utils` directory were updated. In `copy_utils.go`, comments were removed, and error handling was improved for directory copying logic. In `file_utils.go`, a new function `FilterFilesByExtension` was added to filter files based on their extensions.
+
