@@ -222,6 +222,5 @@ properties
 ## v5.0.0 [4-2-2024 9:22:00 AM EST]
 
 [UPDATE] Made a big change in the README file. It's now an overview of what the go_cli_scripts package does instead of a changelog.
-
 [BREAKING CHANGE] In cd_utils.go, tweaked the path in CDToWorkspaceRoot to go up three levels instead of four. Just a small path correction.
-[FIX] In file_utils.go, corrected a message that was supposed to say "Error writing to file" instead of "Error reading from file". Also added two new handy functions: RemovePathPrefix (gets rid of the 
+[FIX] In file_utils.go, corrected a message that was supposed to say "Error writing to file" instead of "Error reading from file". Also added two new handy functions: RemovePathPrefix (gets rid of the start of a path) and EnsureDirAndCreateFile (makes sure a folder exists before creating a file in it).
