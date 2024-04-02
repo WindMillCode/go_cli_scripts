@@ -32,7 +32,7 @@ func CDToLocation(location string, opts ...interface{}) {
 	}
 }
 func CDToWorkspaceRoot() {
-	CDToLocation(filepath.Join("..", "..", "..", ".."))
+	CDToLocation(filepath.Join("..", "..", ".."))
 }
 func CDToAngularApp() {
 	CDToLocation(filepath.Join("apps", "frontend", "AngularApp"))
@@ -52,7 +52,6 @@ func CDToTestNGApp() {
 
 func CDToFlutterApp() {
 	CDToLocation(filepath.Join("apps", "mobile", "FlutterApp"))
-	os.Getwd()
 }
 
 

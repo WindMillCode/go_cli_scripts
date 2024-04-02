@@ -57,7 +57,7 @@ func ReadFile(filePath string) (string, error) {
 func OverwriteFile(filePath string, content string) error {
 	err := os.WriteFile(filePath, []byte(content), 0644)
 	if err != nil {
-		fmt.Printf("Error reading from file", err)
+		fmt.Printf("Error writing to file", err)
 	}
 	return err
 }
@@ -611,4 +611,30 @@ func MatchAnyGlob(globs []glob.Glob, path string) bool {
 		}
 	}
 	return false
+}
+
+func RemovePathPrefix(path string, prefixArray []string) string {
+	for _, prefix := range prefixArray {
+			if strings.HasPrefix(path, prefix) {
+					return strings.TrimPrefix(path, prefix)
+			}
+	}
+	return path // Return the original path if no prefix matches
+}
+
+func EnsureDirAndCreateFile(filePath string) (*os.File, error) {
+	dir := filepath.Dir(filePath)
+
+	// Create all directories in the path if they don't exist
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return nil, fmt.Errorf("failed to create directory: %w", err)
+	}
+
+	// Create the file
+	file, err := os.Create(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create file: %w", err)
+	}
+
+	return file, nil
 }

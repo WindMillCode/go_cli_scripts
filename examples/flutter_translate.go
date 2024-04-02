@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/windmillcode/go_cli_scripts/v4/utils"
@@ -32,7 +31,8 @@ func main() {
 	// utils.ShowMenu(cliInfo, nil)
 	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\go-libs\\go_cli_scripts\\utils"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\lib"),
+
 	}
 
 	files := []string{}
@@ -45,7 +45,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".go") 
+				return strings.HasSuffix(path, ".dart") && !strings.HasSuffix(path, "_test.dart") && !strings.Contains(path, "g.dart")
 			},
 		}
 
@@ -67,8 +67,8 @@ func main() {
 				continue
 			}
 
-			fileName := filepath.Base(myFilePath)
-			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("# FileName: %s \n\n", fileName))...)
+			fileName := utils.RemovePathPrefix(myFilePath,folderPaths)
+			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("\n# FileName: %s \n\n", fileName))...)
 			concatenatedContent = append(concatenatedContent, content...)
 		}
 	}
