@@ -30,22 +30,40 @@ To integrate the `go_cli_scripts` package into your Go project, follow these ste
 
 3. Use the `go get` command to fetch the package from its repository. Since this is a local package, you would typically copy it into your project's directory or reference it locally. If it were hosted, you would use a command like:
 
-   ```sh
-   go get github.com/yourusername/go_cli_scripts
-   ```
+```sh
+go get github.com/windmillcode/go_cli_scripts/v5/utils
+```
 
-   Adjust the command based on the actual location of the `go_cli_scripts` package.
 
 4. Import the package in your Go files where you need to use its functionality:
 
    ```go
    import (
-       "path/to/go_cli_scripts/utils"
+       "github.com/windmillcode/go_cli_scripts/v5/utils"
    )
    ```
 
-   Replace `path/to/go_cli_scripts` with the actual path to the `go_cli_scripts` package in your project.
 
 5. Once the package is imported, you can use its functions by referencing them with the `utils` prefix, like `utils.ArrayContainsAny(...)`.
 
 By following these steps, you can leverage the various utility functions provided by the `go_cli_scripts` package in your Go projects to enhance your applications' capabilities and streamline your development process.
+
+# Docs
+
+
+[array_utils.go](./docs/array_utils.md)
+[async_utils.go](./docs/async_utils.md)
+[cd_utils.go](./docs/cd_utils.md)
+[common_utils.go](./docs/common_utils.md)
+[copy_utils.go](./docs/copy_utils.md)
+[docker-utils](./docs/docker.md)
+[file_utils.go](./docs/file_utils.md)
+[utils.go](./docs/utils.md)
+[github_utils.go](./docs/github_utils.md)
+[json_utils.go](./docs/json_utils.md)
+[map_utils.go](./docs/map_utils.md)
+[show_menu.go](./docs/show_menu.md)
+[stdio_utils.go](./docs/stdio_utils.md)
+[string_utils.go](./docs/string_utils.md)
+[testng_utils.go](./docs/testng_utils.md)
+[vscode_settings_utils.go](./docs/vscode_settings_utils.md)
