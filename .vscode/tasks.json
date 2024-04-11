@@ -14,7 +14,7 @@
       "label":"misc: package project ",
       "type":"shell",
       "windows":{
-        "command":"git add .;git commit -m'[UPDATE] addtl work';git tag ${input:misc_package_project_0};git push -u origin HEAD;git push --tags"
+        "command":"git add .;git commit -m'[UPDATE] addtl work';git checkout master;git merge dev; git tag ${input:misc_package_project_0};git push -u origin HEAD;git push --tags;git checkout dev"
       }
     },
 		{
