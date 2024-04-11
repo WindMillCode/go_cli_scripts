@@ -232,4 +232,3 @@ properties
 
 - [FIX] Squashed a tiny bug in `file_utils.go`! Now, when you're filtering files, it won't ignore the ones with `_test.dart` at the end. This means all your Dart files get the attention they deserve, even the test ones!
 
-- [UPDATE] In `vscode_settings_utils.go`, your VS Code settings just got a boost with an `environments` field in the `WindmillcodeExtensionPack`. It's a new spot to organize settings for different work environments.
