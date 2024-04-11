@@ -224,3 +224,12 @@ properties
 [UPDATE] Made a big change in the README file. It's now an overview of what the go_cli_scripts package does instead of a changelog.
 [BREAKING CHANGE] In cd_utils.go, tweaked the path in CDToWorkspaceRoot to go up three levels instead of four. Just a small path correction.
 [FIX] In file_utils.go, corrected a message that was supposed to say "Error writing to file" instead of "Error reading from file". Also added two new handy functions: RemovePathPrefix (gets rid of the start of a path) and EnsureDirAndCreateFile (makes sure a folder exists before creating a file in it).
+
+
+## v5.0.1  [4/11/2024 7:14:00 PM EST]
+
+- [UPDATE] We've added a new `environments` array in the `WindmillcodeExtensionPack` in your settings. This is in the `vscode_settings_utils.go` file. It's like a new list where you can keep track of different settings for various environments you work in.
+
+- [FIX] Squashed a tiny bug in `file_utils.go`! Now, when you're filtering files, it won't ignore the ones with `_test.dart` at the end. This means all your Dart files get the attention they deserve, even the test ones!
+
+- [UPDATE] In `vscode_settings_utils.go`, your VS Code settings just got a boost with an `environments` field in the `WindmillcodeExtensionPack`. It's a new spot to organize settings for different work environments.

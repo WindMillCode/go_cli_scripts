@@ -31,8 +31,7 @@ func main() {
 	// utils.ShowMenu(cliInfo, nil)
 	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\lib"),
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\test"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Eneobia\\apps\\mobile\\FlutterApp\\lib"),
 
 	}
 
@@ -62,15 +61,15 @@ func main() {
 		fileInfo, _ := os.Stat(myFilePath)
 		if !fileInfo.IsDir() {
 
-			content, err := os.ReadFile(myFilePath)
-			if err != nil {
-				fmt.Println("Error reading file:", err)
-				continue
-			}
+			// content, err := os.ReadFile(myFilePath)
+			// if err != nil {
+			// 	fmt.Println("Error reading file:", err)
+			// 	continue
+			// }
 
 			fileName := utils.RemovePathPrefix(myFilePath,folderPaths)
 			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("\n# FileName: %s \n\n", fileName))...)
-			concatenatedContent = append(concatenatedContent, content...)
+			// concatenatedContent = append(concatenatedContent, content...)
 		}
 	}
 

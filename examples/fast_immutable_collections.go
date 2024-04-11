@@ -31,8 +31,7 @@ func main() {
 	// utils.ShowMenu(cliInfo, nil)
 	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\lib"),
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\test"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\dart_libs\\fast_immutable_collections\\example"),
 
 	}
 

@@ -33,6 +33,7 @@ type WindmillcodeExtensionPack struct {
 	SQLDockerContainerName       			string                   `json:"sqlDockerContainerName"`
 	DatabaseName                 			string                   `json:"databaseName"`
 	DatabaseOptions              			[]string                 `json:"databaseOptions"`
+	Environments              		  	[]string                 `json:"environments"`
 	OpenAIAPIKey0                			string                   `json:"openAIAPIKey0"`
 	OpenAIAPIBase0               			string                   `json:"openAIAPIBase0"`
 	LangCodes0                   			string                   `json:"langCodes0"`
