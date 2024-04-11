@@ -226,7 +226,7 @@ properties
 [FIX] In file_utils.go, corrected a message that was supposed to say "Error writing to file" instead of "Error reading from file". Also added two new handy functions: RemovePathPrefix (gets rid of the start of a path) and EnsureDirAndCreateFile (makes sure a folder exists before creating a file in it).
 
 
-## v5.0.1  [4/11/2024 7:14:00 PM EST]
+## v5.0.2  [4/11/2024 7:14:00 PM EST]
 
 - [UPDATE] We've added a new `environments` array in the `WindmillcodeExtensionPack` in your settings. This is in the `vscode_settings_utils.go` file. It's like a new list where you can keep track of different settings for various environments you work in.
 
