@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/windmillcode/go_cli_scripts/v4/utils"
+	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
 
 func main() {

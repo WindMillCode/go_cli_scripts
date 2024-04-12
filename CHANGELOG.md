@@ -232,3 +232,6 @@ properties
 
 - [FIX] Squashed a tiny bug in `file_utils.go`! Now, when you're filtering files, it won't ignore the ones with `_test.dart` at the end. This means all your Dart files get the attention they deserve, even the test ones!
 
+## v5.0.4 [4/12/2024 3:14:00 PM EST]
+
+[UPDATE] We also added a `FlutterMobileBuild` struct to the `WindmillcodeExtensionPack` struct. Now your extension pack can handle specific settings for Flutter mobile builds directly. This makes setting up your development environment for Flutter a lot smoother.

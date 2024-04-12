@@ -25,6 +25,10 @@ type AngularFrontendStruct struct{
 	Configurations   []string `json:"configurations"`
 }
 
+type 	FlutterMobileBuild struct {
+	EnvVars []string `json:"envVars"`
+}
+
 type WindmillcodeExtensionPack struct {
 	TasksToRunOnFolderOpen            []string                 `json:"tasksToRunOnFolderOpen"`
 	FlaskBackendDevHelperScript  			string                   `json:"flaskBackendDevHelperScript"`
@@ -35,6 +39,7 @@ type WindmillcodeExtensionPack struct {
 	DatabaseOptions              			[]string                 `json:"databaseOptions"`
 	Environments              		  	[]string                 `json:"environments"`
 	SentryDSN                         string                   `json:"sentryDSN"`
+	FlutterMobileBuild                FlutterMobileBuild       `json:"flutterMobileBuild"`
 	OpenAIAPIKey0                			string                   `json:"openAIAPIKey0"`
 	OpenAIAPIBase0               			string                   `json:"openAIAPIBase0"`
 	LangCodes0                   			string                   `json:"langCodes0"`
