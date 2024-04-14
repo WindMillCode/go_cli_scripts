@@ -240,7 +240,7 @@ properties
 
 [UPDATE] Yo! We just added a sweet new function FindRelativeToTarget in array_utils.go. It helps you find a string in an array that's right before or after the one you're looking for. Pretty handy, huh?
 
-[DEPRECATED] Heads up! The RunCommand function in stdio_utils.go is no longer deprecated. Use it if you need a shorter version of run command wit hoptions
+[UPDATE] Heads up! The RunCommand function in stdio_utils.go is no longer deprecated. Use it if you need a shorter version of run command wit hoptions
 
 [UPDATE] Check this out! We’ve beefed up our string tools in string_utils.go. Now you can turn your strings into kebab-case with the new KebabCase method in CreateStringObjectType. Keep your strings looking sharp!
 
