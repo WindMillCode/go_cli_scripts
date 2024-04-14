@@ -235,3 +235,16 @@ properties
 ## v5.1.0 [4/14/2024 8:47:00 AM EST]
 
 [UPDATE] Added FlutterMobileBuild struct with new settings to WindmillcodeExtensionPack. Now it includes args, toolArgs, and vmAdditionalArgs for configuring Flutter mobile builds. Check out vscode_settings_utils.go to see the changes.
+
+## v5.1.1 4/14/2024 5:47:00 PM EST
+
+[UPDATE] Yo! We just added a sweet new function FindRelativeToTarget in array_utils.go. It helps you find a string in an array that's right before or after the one you're looking for. Pretty handy, huh?
+
+[DEPRECATED] Heads up! The RunCommand function in stdio_utils.go is old news. We're gonna ditch it soon. Start using RunCommandWithOptions instead. No more updates for the old one!
+
+[UPDATE] Check this out! We’ve beefed up our string tools in string_utils.go. Now you can turn your strings into kebab-case with the new KebabCase method in CreateStringObjectType. Keep your strings looking sharp!
+
+
+
+
+

@@ -104,7 +104,6 @@ func (c ShellCommandOutput) Write(p []byte) (int, error) {
 	return len(p), nil
 }
 
-// Deprecated: This function will be removed in the next major release. Use RunCommandWithOptions instead.
 func RunCommand(command string, args []string) {
 
 	fullCommand := fmt.Sprintf("Running command: %s %s", command, strings.Join(args, " "))

@@ -227,3 +227,17 @@ func ConvertToRuneArray(input []interface{}) []rune {
 	}
 	return result
 }
+
+
+func FindRelativeToTarget(args []string, target string, offset int) (string, bool) {
+	for i, arg := range args {
+		if arg == target {
+			newIndex := i + offset
+			if newIndex >= 0 && newIndex < len(args) {
+				return args[newIndex], true
+			}
+			return "", false // Out of bounds
+		}
+	}
+	return "", false // Target not found
+}

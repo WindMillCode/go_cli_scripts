@@ -105,6 +105,10 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 		return strcase.ToSnake(grabString(stripSuffix, result))+suffix
 	}
 
+	result.KebabCase = func(stripSuffix bool, suffix string) string {
+		return strcase.ToKebab(grabString(stripSuffix, result)) + suffix
+	}
+
 
 
 	return result, nil
@@ -129,6 +133,7 @@ type CreateStringObjectType struct {
 	Lowercase  func(stripSuffix bool, suffix string) string
 	Uppercase  func(stripSuffix bool, suffix string) string
 	Snakecase  func(stripSuffix bool, suffix string) string
+	KebabCase  func(stripSuffix bool, suffix string) string
 }
 
 func ContainsAny(s string, substrs []string) bool {
