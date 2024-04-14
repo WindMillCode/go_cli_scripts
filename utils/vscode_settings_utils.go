@@ -26,7 +26,9 @@ type AngularFrontendStruct struct{
 }
 
 type 	FlutterMobileBuild struct {
-	EnvVars []string `json:"envVars"`
+	ToolArgs           []string `json:"toolArgs"`
+  Args               []string `json:"args"`
+	VmAdditionalArgs  []string `json:"vmAdditionalArgs"`
 }
 
 type WindmillcodeExtensionPack struct {

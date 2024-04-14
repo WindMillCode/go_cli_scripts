@@ -30,6 +30,18 @@ Holds configuration settings for an Angular frontend project in the VS Code envi
 |------------------|----------|---------------------------------------------|
 | Configurations   | []string | Angular build configurations.               |
 
+## [FlutterMobileBuild]
+### Usage
+Configures settings for Flutter mobile build processes in the VS Code environment.
+
+### Reference
+| Field              | Type       | Description                                                  |
+|--------------------|------------|--------------------------------------------------------------|
+| ToolArgs           | []string   | Additional tool arguments used during the build process.     |
+| Args               | []string   | Arguments to pass through to the build process.              |
+| VmAdditionalArgs   | []string   | Additional VM arguments for the Flutter engine.              |
+
+
 ## [WindmillcodeExtensionPack]
 ### Usage
 Encapsulates a set of configurations for a specific VS Code extension pack.
@@ -51,6 +63,7 @@ Encapsulates a set of configurations for a specific VS Code extension pack.
 | GitCloneSubdirs                  | GitCloneSubdirsStruct       | Settings for cloning Git subdirectories.                       |
 | MiscOptimizeImages               | MiscOptimizeImagesStruct    | Settings for optimizing images.                                |
 | AngularFrontend                  | AngularFrontendStruct       | Angular frontend configurations.                               |
+| FlutterMobileBuild               | FlutterMobileBuild          | Configurations specific to Flutter mobile builds.              |
 
 ## [VSCodeSettings]
 ### Usage
