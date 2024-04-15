@@ -25,11 +25,16 @@ type AngularFrontendStruct struct{
 	Configurations   []string `json:"configurations"`
 }
 
-type 	FlutterMobileBuild struct {
-	ToolArgs           []string `json:"toolArgs"`
-  Args               []string `json:"args"`
-	VmAdditionalArgs  []string `json:"vmAdditionalArgs"`
+type FlutterMobileBuild struct {
+	ToolArgs                     []string `json:"toolArgs"`
+	Args                         []string `json:"args"`
+	VmAdditionalArgs             []string `json:"vmAdditionalArgs"`
+	PlayStoreServiceAccountKey   string   `json:"playStoreServiceAccountKey"`
+	PackageName                  string   `json:"packageName"`
+	PublishTarget                string   `json:"publishTarget"`
+	TrackName                    string   `json:"trackName"`
 }
+
 
 type WindmillcodeExtensionPack struct {
 	TasksToRunOnFolderOpen            []string                 `json:"tasksToRunOnFolderOpen"`
