@@ -244,7 +244,7 @@ properties
 
 [UPDATE] Check this out! We’ve beefed up our string tools in string_utils.go. Now you can turn your strings into kebab-case with the new KebabCase method in CreateStringObjectType. Keep your strings looking sharp!
 
-## v5.1.2 4/15/2024 10:34:23 AM EST
+## v5.1.2 4/15/2024 10:00:23 AM EST
 
 [UPDATE] Yo! We just beefed up our FlutterMobileBuild struct in the vscode_settings_utils.go file. Now it includes fields for PlayStoreServiceAccountKey, PackageName, PublishTarget, and TrackName. If you're working on publishing to the Play Store, these new fields will help configure things right from your code!
 
