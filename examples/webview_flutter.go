@@ -31,8 +31,9 @@ func main() {
 	// utils.ShowMenu(cliInfo, nil)
 	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\lib"),
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_flutter_translate\\flutter_translate\\test"),
+		utils.ConvertPathToOSFormat("c:\\Users\\Restop-1294\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter-4.7.0"),
+		utils.ConvertPathToOSFormat("c:\\Users\\Restop-1294\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter_platform_interface-2.10.0"),
+
 	}
 
 	files := []string{}
@@ -45,7 +46,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".dart") && !strings.Contains(path, "g.dart")
+				return strings.HasSuffix(path, ".dart") && !strings.Contains(path, "g.dart") && !strings.Contains(path, "legacy")  && !strings.Contains(path, "\\test\\") && !strings.Contains(path, "integration_test")
 			},
 		}
 

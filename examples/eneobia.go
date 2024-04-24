@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/windmillcode/go_cli_scripts/v4/utils"
+	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
 
 func main() {
@@ -32,7 +32,6 @@ func main() {
 	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
 		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Eneobia\\apps\\mobile\\FlutterApp\\lib"),
-
 	}
 
 	files := []string{}
@@ -45,7 +44,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".dart")  && !strings.Contains(path, "g.dart")
+				return strings.HasSuffix(path, ".dart") && !strings.Contains(path, "g.dart")
 			},
 		}
 
@@ -67,7 +66,7 @@ func main() {
 			// 	continue
 			// }
 
-			fileName := utils.RemovePathPrefix(myFilePath,folderPaths)
+			fileName := utils.RemovePathPrefix(myFilePath, folderPaths)
 			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("\n# FileName: %s \n\n", fileName))...)
 			// concatenatedContent = append(concatenatedContent, content...)
 		}

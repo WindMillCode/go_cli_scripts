@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/windmillcode/go_cli_scripts/v4/utils"
+	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
 
 func main() {
@@ -33,7 +33,6 @@ func main() {
 	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
 		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_json_serializable\\json_serializable.dart\\json_serializable\\lib"),
-		
 	}
 
 	files := []string{}

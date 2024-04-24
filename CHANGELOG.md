@@ -249,4 +249,7 @@ properties
 [UPDATE] Yo! We just beefed up our FlutterMobileBuild struct in the vscode_settings_utils.go file. Now it includes fields for PlayStoreServiceAccountKey, PackageName, PublishTarget, and TrackName. If you're working on publishing to the Play Store, these new fields will help configure things right from your code!
 
 
+## v5.1.3 4/24/2024 12:45:23 AM EST
+
+[UPDATE] Extended programming language support in WindmillcodeExtensionPack within utils/vscode_settings_utils.go. Added new fields for NodeJS, Java, Go, Ruby, Dart, CSharp, Swift, PHP, Rust, Kotlin, Scala, Perl, Lua, Haskell, Clojure, Erlang, Julia, ObjectiveC, FSharp, VisualBasic versions. This update will require developers to adjust any related configurations that depend on these language version settings.
 
