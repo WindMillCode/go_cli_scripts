@@ -268,3 +268,7 @@ properties
 [UPDATE] Added `log` and `runtime/debug` imports in `utils/common_utils.go` for enhanced error logging.
 
 [BUG] Fixed the file reading and JSON unmarshalling errors in `GetSettingsJSON` by adding detailed logging in `utils/vscode_settings_utils.go`. Now it logs errors with traceback for easier debugging.
+
+## v5.2.2 [5/29/2024 11:42:00 AM EST]
+
+[PATCH] utils/file_utils.go: Added ReadLines function to read lines from a file into a map.

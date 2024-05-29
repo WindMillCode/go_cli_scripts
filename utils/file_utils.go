@@ -363,6 +363,23 @@ func MergeDirectories(sourceDir, targetDir string, overwrite bool) error {
 	})
 }
 
+func ReadLines(filePath string) (map[string]bool, error) {
+	lines := make(map[string]bool)
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		return lines, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines[scanner.Text()] = true
+	}
+
+	return lines, scanner.Err()
+}
+
 type TraverseDirectoryParams struct {
 	RootDir   string
 	Predicate func(string, os.FileInfo)
