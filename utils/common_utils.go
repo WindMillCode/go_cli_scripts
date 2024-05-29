@@ -2,14 +2,14 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime/debug"
 	"strings"
 )
-
-
 
 // getType returns the type of a given value as a string
 func GetType(value interface{}) string {
@@ -52,4 +52,10 @@ func GetCurrentBranch() (string, error) {
 // Function to clear the console screen
 func ClearScreen() {
 	fmt.Print("\033[H\033[2J")
+}
+
+func LogErrorWithTraceBack(message string, err error) {
+  if err != nil {
+    log.Printf("%s: %v\n%s", message, err, debug.Stack())
+  }
 }

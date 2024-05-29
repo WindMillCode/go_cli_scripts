@@ -5,13 +5,15 @@ import (
 	"os"
 	"strings"
 
+	// "strings"
+
 	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
 
 func main() {
 
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\go-libs\\go_cli_scripts\\utils"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\chrome-extensions\\convert_from_blue"),
 	}
 
 	files := []string{}
@@ -20,11 +22,11 @@ func main() {
 			RootDir: folderPath, // Specify your directory here
 			Predicate: func(path string, info os.FileInfo) {
 				// Action to perform on each .dart file that is not a _test.dart or g.dart file
-				fmt.Println("Found dart file:", path)
+				fmt.Println("Found  file:", path)
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".go")
+				return !strings.HasSuffix(path, "snippets.js")   && !strings.HasSuffix(path, ".png") && !strings.Contains(path,".git") && !strings.Contains(path,".md");
 			},
 		}
 
@@ -47,7 +49,7 @@ func main() {
 			}
 
 			fileName := utils.RemovePathPrefix(myFilePath, folderPaths)
-			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("# FileName: %s \n\n", fileName))...)
+			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("\n# FileName: %s \n\n", fileName))...)
 			concatenatedContent = append(concatenatedContent, content...)
 		}
 	}

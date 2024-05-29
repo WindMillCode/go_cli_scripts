@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
+
+	// "strings"
 
 	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
@@ -11,7 +12,7 @@ import (
 func main() {
 
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\go-libs\\go_cli_scripts\\utils"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\working_with_peerjs_for_flutter\\peerdart\\lib"),
 	}
 
 	files := []string{}
@@ -24,7 +25,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".go")
+				return true
 			},
 		}
 
@@ -47,7 +48,7 @@ func main() {
 			}
 
 			fileName := utils.RemovePathPrefix(myFilePath, folderPaths)
-			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("# FileName: %s \n\n", fileName))...)
+			concatenatedContent = append(concatenatedContent, []byte(fmt.Sprintf("\n# FileName: %s \n\n", fileName))...)
 			concatenatedContent = append(concatenatedContent, content...)
 		}
 	}

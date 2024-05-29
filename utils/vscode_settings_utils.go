@@ -86,13 +86,13 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 	var settings VSCodeSettings
 	content, err := os.ReadFile(settingsJSONFilePath)
 	if err != nil {
-		fmt.Println("Error reading file:", err.Error())
+		LogErrorWithTraceBack("Error reading file:", err)
 		return settings, err
 	}
 	standardJSON, err := RemoveComments(content)
 	err = json.Unmarshal([]byte(standardJSON), &settings)
 	if err != nil {
-		fmt.Println("Error unmarshalling JSON:", err.Error())
+		LogErrorWithTraceBack("Error unmarshalling JSON:", err)
 		return settings, err
 	}
 	return settings, nil

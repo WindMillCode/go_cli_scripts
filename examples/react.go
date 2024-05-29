@@ -3,15 +3,16 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
+	// "strings"
 
 	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
 
 func main() {
 
+
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\go-libs\\go_cli_scripts\\utils"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Eneobia\\docs\\tasks_docs\\file_transfer\\p2p-file-transfer\\src"),
 	}
 
 	files := []string{}
@@ -24,7 +25,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".go")
+				return true
 			},
 		}
 

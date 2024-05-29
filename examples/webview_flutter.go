@@ -10,30 +10,9 @@ import (
 
 func main() {
 
-	// utils.GetInputFromStdin(
-	// 	utils.GetInputFromStdinStruct{
-	// 		Prompt:  []string{"Cancel porgram on ctrl+c"},
-	// 		Default: "",
-	// 	},
-	// )
-	// // fmt.Println(myVal)
-
-	// cliInfo := utils.ShowMenuModel{
-	// 	Prompt:  "Cancel on ctrl +C on choose option ",
-	// 	Choices: []string{"A", "B", "C"},
-	// }
-	// utils.ShowMenu(cliInfo, nil)
-
-	// cliInfo = utils.ShowMenuModel{
-	// 	Prompt:  "Progra, is continuing ",
-	// 	Choices: []string{"A", "B", "C"},
-	// }
-	// utils.ShowMenu(cliInfo, nil)
-	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
 		utils.ConvertPathToOSFormat("c:\\Users\\Restop-1294\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter-4.7.0"),
 		utils.ConvertPathToOSFormat("c:\\Users\\Restop-1294\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\webview_flutter_platform_interface-2.10.0"),
-
 	}
 
 	files := []string{}
@@ -46,7 +25,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return strings.HasSuffix(path, ".dart") && !strings.Contains(path, "g.dart") && !strings.Contains(path, "legacy")  && !strings.Contains(path, "\\test\\") && !strings.Contains(path, "integration_test")
+				return strings.HasSuffix(path, ".dart") && !strings.Contains(path, "g.dart") && !strings.Contains(path, "legacy") && !strings.Contains(path, "\\test\\") && !strings.Contains(path, "integration_test")
 			},
 		}
 

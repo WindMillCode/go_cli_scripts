@@ -11,26 +11,6 @@ import (
 
 func main() {
 
-	// utils.GetInputFromStdin(
-	// 	utils.GetInputFromStdinStruct{
-	// 		Prompt:  []string{"Cancel porgram on ctrl+c"},
-	// 		Default: "",
-	// 	},
-	// )
-	// // fmt.Println(myVal)
-
-	// cliInfo := utils.ShowMenuModel{
-	// 	Prompt:  "Cancel on ctrl +C on choose option ",
-	// 	Choices: []string{"A", "B", "C"},
-	// }
-	// utils.ShowMenu(cliInfo, nil)
-
-	// cliInfo = utils.ShowMenuModel{
-	// 	Prompt:  "Progra, is continuing ",
-	// 	Choices: []string{"A", "B", "C"},
-	// }
-	// utils.ShowMenu(cliInfo, nil)
-	// currentDir, _ := os.Getwd()
 	folderPaths := []string{
 		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\Windmillcode_app_tutorials\\tutorials\\refactor_json_serializable\\json_serializable.dart\\json_serializable\\lib"),
 	}
