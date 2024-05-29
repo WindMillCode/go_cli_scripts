@@ -253,7 +253,7 @@ properties
 
 [UPDATE] Extended programming language support in WindmillcodeExtensionPack within utils/vscode_settings_utils.go. Added new fields for NodeJS, Java, Go, Ruby, Dart, CSharp, Swift, PHP, Rust, Kotlin, Scala, Perl, Lua, Haskell, Clojure, Erlang, Julia, ObjectiveC, FSharp, VisualBasic versions. This update will require developers to adjust any related configurations that depend on these language version settings.
 
-## v5.2.0 [5/29/2024 10:17:45 AM EST]
+## v5.2.1 [5/29/2024 10:17:45 AM EST]
 
 [UPDATE] Removed commented-out code from `examples/fast_immutable_collections.go`, `examples/flutter_translate.go`, `examples/go_cli_scripts_create_output.go`, `examples/json_serilizable_create_output.go`, and `examples/webview_flutter.go`. The unnecessary comments are gone, making the files cleaner and easier to read.
 
