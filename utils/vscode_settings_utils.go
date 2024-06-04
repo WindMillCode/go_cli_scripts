@@ -14,6 +14,11 @@ type GitCloneSubdirsStruct struct {
 	DestDir    string `json:"destDir"`
 }
 
+type GitPushingWorkToGitRemoteStruct struct {
+	RelativePaths []string `json:"relativePaths"`
+	AbsolutePaths []string `json:"absolutePaths"`
+}
+
 type MiscOptimizeImagesStruct struct {
 	Location        string `json:"location"`
 	BackupLocation  string `json:"backupLocation"`
@@ -71,6 +76,7 @@ type WindmillcodeExtensionPack struct {
 	VisualBasicVersion0          string   `json:"visualBasicVersion0"`
 	FlutterMobileBuild           FlutterMobileBuild `json:"flutterMobileBuild"`
 	GitCloneSubdirs              GitCloneSubdirsStruct    `json:"gitCloneSubdirs"`
+	GitPushingWorkToGitRemote    GitPushingWorkToGitRemoteStruct `json:"gitPushingWorkingToGitRemote"`
 	MiscOptimizeImages           MiscOptimizeImagesStruct `json:"miscOptimizeImages"`
 	AngularFrontend              AngularFrontendStruct    `json:"angularFrontend"`
 }

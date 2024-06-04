@@ -272,3 +272,12 @@ properties
 ## v5.2.2 [5/29/2024 11:42:00 AM EST]
 
 [PATCH] utils/file_utils.go: Added ReadLines function to read lines from a file into a map.
+
+## v5.2.3
+[UPDATE] -added so users can  specifiy their own paths
+```go
+type GitPushingWorkToGitRemoteStruct struct {
+	RelativePaths []string `json:"relativePaths"`
+	AbsolutePaths []string `json:"absolutePaths"`
+}
+```

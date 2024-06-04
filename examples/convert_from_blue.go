@@ -13,7 +13,7 @@ import (
 func main() {
 
 	folderPaths := []string{
-		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\chrome-extensions\\convert_from_blue"),
+		utils.ConvertPathToOSFormat("C:\\Users\\Restop-1294\\My_Apps\\chrome-extensions\\convert_from_blue\\extension"),
 	}
 
 	files := []string{}
@@ -26,7 +26,7 @@ func main() {
 				files = append(files, path)
 			},
 			Filter: func(path string, info os.FileInfo) bool {
-				return !strings.HasSuffix(path, "snippets.js")   && !strings.HasSuffix(path, ".png") && !strings.Contains(path,".git") && !strings.Contains(path,".md");
+				return !strings.HasSuffix(path, "snippets.js") && !strings.HasSuffix(path, "utils.js")   && !strings.HasSuffix(path, ".png") && !strings.Contains(path,".git") && !strings.Contains(path,".md");
 			},
 		}
 
