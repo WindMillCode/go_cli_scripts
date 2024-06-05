@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 )
 
@@ -282,6 +283,34 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	}
 
 	return "", nil
+}
+
+func RunElevatedCommand(command string, args []string) error {
+	var elevatedCommand string
+	var elevatedArgs []string
+
+	switch runtime.GOOS {
+
+	case "windows":
+		elevatedCommand = "powershell"
+		elevatedArgs = []string{"-Command", fmt.Sprintf(`Start-Process cmd -ArgumentList '/c %s %s' -Verb RunAs -Wait`, command, JoinArgs(args))}
+	case "darwin", "linux":
+		elevatedCommand = "sudo"
+		elevatedArgs = append([]string{command}, args...)
+	default:
+		return fmt.Errorf("unsupported platform")
+	}
+
+	options := CommandOptions{
+		Command:     elevatedCommand,
+		Args:        elevatedArgs,
+		GetOutput:   true,
+		PrintOutput: true,
+		NonBlocking: false,
+	}
+
+	_, err := RunCommandWithOptions(options)
+	return err
 }
 
 

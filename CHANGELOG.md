@@ -281,3 +281,36 @@ type GitPushingWorkToGitRemoteStruct struct {
 	AbsolutePaths []string `json:"absolutePaths"`
 }
 ```
+
+## v5.3.0
+[6/5/2024 10:34:22 AM EST]
+
+[UPDATE] Added utility functions in `stdio_utils.go` and `string_utils.go` to enhance command execution and argument handling.
+
+**File:** `utils/stdio_utils.go`
+- **Function Added:** `RunElevatedCommand`
+  - Description: Run commands with elevated privileges (admin/sudo) based on the OS.
+  - Developer Impact: Now you can easily execute commands that need admin privileges without writing additional code.
+
+**File:** `utils/string_utils.go`
+- **Function Added:** `JoinArgs`
+  - Description: Joins command arguments into a single string suitable for command-line execution.
+  - Developer Impact: Simplifies the process of formatting arguments for command-line execution, particularly useful for the new `RunElevatedCommand` function.
+
+
+[UPDATE] Adjusted error handling in `RunCommandWithOptions` to include detailed stderr output in case of failure.
+
+**File:** `utils/stdio_utils.go`
+- **Function Modified:** `RunCommandWithOptions`
+  - Description: Now includes detailed standard error output in error messages.
+  - Developer Impact: Easier debugging and error tracing when commands fail.
+
+
+[FIX] Refined JSON handling functions to remove comments and filter based on predicates.
+
+**File:** `utils/json_utils.go`
+- **Functions Modified:**
+  - `RemoveComments`
+  - `FilterJSONByPredicate`
+  - Developer Impact: Improved JSON processing capabilities, ensuring cleaner data and more flexible filtering options.
+

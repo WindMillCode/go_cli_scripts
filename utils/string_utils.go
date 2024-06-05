@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -143,5 +144,13 @@ func ContainsAny(s string, substrs []string) bool {
 			}
 	}
 	return false
+}
+
+func JoinArgs(args []string) string {
+	var result string
+	for _, arg := range args {
+		result += fmt.Sprintf(`"%s" `, arg)
+	}
+	return result
 }
 
