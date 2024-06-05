@@ -282,7 +282,7 @@ type GitPushingWorkToGitRemoteStruct struct {
 }
 ```
 
-## v5.3.0
+## v5.3.1
 [6/5/2024 10:34:22 AM EST]
 
 [UPDATE] Added utility functions in `stdio_utils.go` and `string_utils.go` to enhance command execution and argument handling.
