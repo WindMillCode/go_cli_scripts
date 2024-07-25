@@ -1,6 +1,17 @@
 // 19 types
 package utils
 
+import "errors"
+
+func FindElement[T any](arr []T, predicate func(T) bool) (int, T, error) {
+	for index, element := range arr {
+		if predicate(element) {
+			return index, element, nil
+		}
+	}
+	var zero T
+	return -1, zero, errors.New("element not found")
+}
 
 func RemoveElementsNotInSource[T comparable](source, toRemove []T) []T {
 	sourceSet := make(map[T]bool)

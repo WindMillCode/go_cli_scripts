@@ -319,10 +319,15 @@ type GitPushingWorkToGitRemoteStruct struct {
 
 * Updated dependencies
 
-## v5.4.1
+## v5.4.2
 7/25/2024 04:15:30 PM EST
 
 [UPDATE] Added CDToShopifyApp function
 - **File**: utils/cd_utils.go
 - **Function**: CDToShopifyApp
 - **Details**: Added a new function to change directory to the ShopifyApp location. Developers working with ShopifyApp can now easily navigate using this function.
+
+[UPDATE]
+Added `FindElement` function to `utils/array_utils.go`
+  - This function helps find an element in an array based on a predicate
+  - Returns index, element, and an error if the element is not found
