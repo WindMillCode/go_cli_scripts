@@ -25,3 +25,4 @@ custom_scripts
 .windmillcode/go_scripts/*/main.exe*
 .windmillcode/go_scripts/*/main*
 !.windmillcode/go_scripts/*/main.go
+examples/output*.md

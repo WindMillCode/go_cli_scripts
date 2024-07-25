@@ -318,3 +318,11 @@ type GitPushingWorkToGitRemoteStruct struct {
 [7/9/2024 3:15:00 PM EST]
 
 * Updated dependencies
+
+## v5.4.1
+7/25/2024 04:15:30 PM EST
+
+[UPDATE] Added CDToShopifyApp function
+- **File**: utils/cd_utils.go
+- **Function**: CDToShopifyApp
+- **Details**: Added a new function to change directory to the ShopifyApp location. Developers working with ShopifyApp can now easily navigate using this function.

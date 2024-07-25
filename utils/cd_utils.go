@@ -42,6 +42,10 @@ func CDToFirebaseApp() {
 	CDToLocation(filepath.Join("apps", "cloud", "FirebaseApp"))
 }
 
+func CDToShopifyApp() {
+	CDToLocation(filepath.Join("apps", "cloud", "ShopifyApp"))
+}
+
 func CDToFlaskApp() {
 	CDToLocation(filepath.Join("apps", "backend", "FlaskApp"))
 }
@@ -53,6 +57,8 @@ func CDToTestNGApp() {
 func CDToFlutterApp() {
 	CDToLocation(filepath.Join("apps", "mobile", "FlutterApp"))
 }
+
+
 
 
 
