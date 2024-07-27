@@ -12,6 +12,10 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
+func IntToStr(val int) string {
+  return strconv.Itoa(val)
+}
+
 func Reverse(targetArray []string) []string {
 	newArray := make([]string, 0, len(targetArray))
 	for i := len(targetArray) - 1; i >= 0; i-- {

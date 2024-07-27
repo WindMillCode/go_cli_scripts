@@ -40,14 +40,17 @@ type FlutterMobileBuildStruct struct {
 }
 
 type FirebaseCloudRunEmulatorsStruct struct {
-	GlobalDomain    string `json:"globalDomain"`
-  AuthDomain0      string `json:"AuthDomain0"`
-  StorageDomain0   string `json:"StorageDomain0"`
-  DatabaseDomain0  string `json:"DatabaseDomain0"`
-  HostingDomain0   string `json:"HostingDomain0"`
-  FunctionsDomain0 string `json:"FunctionsDomain0"`
-  PubSubDomain0    string `json:"PubSubDomain0"`
-  FirestoreDomain0 string `json:"FirestoreDomain0"`
+	GlobalDomain          string `json:"globalDomain"`
+	UIDomain0             string `json:"UIDomain0"`
+  AuthDomain0           string `json:"AuthDomain0"`
+  StorageDomain0        string `json:"StorageDomain0"`
+  DatabaseDomain0       string `json:"DatabaseDomain0"`
+  HostingDomain0        string `json:"HostingDomain0"`
+  FunctionsDomain0      string `json:"FunctionsDomain0"`
+  PubSubDomain0         string `json:"PubSubDomain0"`
+  FirestoreDomain0      string `json:"FirestoreDomain0"`
+	KillPortOutputFile    string `json:"killPortOutputFile"`
+	AdditonalPortsToKill  []int  `json:"additonalPortsToKill"`
 }
 
 type ProcessIfDefaultIsPresentStruct struct{
@@ -65,6 +68,7 @@ type WMLPorts struct {
   FlaskRun0                  int `json:"Flask_Run_0"`
   FlaskTest0                 int `json:"Flask_Test_0"`
   Postgres0                  int `json:"Postgres_0"`
+	FirebaseEmulatorUI0        int `json:"Firebase_Emulator_UI_0"`
   FirebaseEmulatorAuth0      int `json:"Firebase_Emulator_Auth_0"`
   FirebaseEmulatorStorage0   int `json:"Firebase_Emulator_Storage_0"`
   FirebaseEmulatorDatabase0  int `json:"Firebase_Emulator_Database_0"`
@@ -84,6 +88,7 @@ func (w *WMLPorts) GetFirebasePorts() []int {
     w.FirebaseEmulatorFunctions0,
     w.FirebaseEmulatorPubSub0,
     w.FirebaseEmulatorFirestore0,
+		w.FirebaseEmulatorUI0,
   }
 }
 

@@ -1,4 +1,0 @@
-openai
-tenacity
-tqdm
-g4f[all]
