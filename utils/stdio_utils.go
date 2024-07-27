@@ -5,11 +5,109 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+
+
 )
+
+func KillPorts(ports []string) {
+	var findCmdOptions, killCmdOptions CommandOptions
+
+	switch runtime.GOOS {
+	case "windows":
+		findCmdOptions = CommandOptions{
+			Command:  "netstat",
+			Args:     []string{"-ano"},
+			GetOutput: true,
+		}
+	case "darwin", "linux", "freebsd", "openbsd", "netbsd", "dragonfly":
+		findCmdOptions = CommandOptions{
+			Command:  "lsof",
+			Args:     []string{"-i"},
+			GetOutput: true,
+		}
+	case "aix", "solaris", "illumos":
+		findCmdOptions = CommandOptions{
+			Command:  "netstat",
+			Args:     []string{"-an"},
+			GetOutput: true,
+		}
+	default:
+		log.Printf("Unsupported OS: %s", runtime.GOOS)
+		return
+	}
+
+	output, err := RunCommandWithOptions(findCmdOptions)
+	findCmdOptions.IsElevated = true
+	outputEleveated, err := RunCommandWithOptions(findCmdOptions)
+
+	if err != nil {
+		log.Printf("Error finding processes: %v\n", err)
+		return
+	}
+
+	pids := make(map[string]bool)
+
+	lines := strings.Split(output, "\n")
+	linesElevated := strings.Split(outputEleveated, "\n")
+	lines = append(lines, linesElevated...)
+	for _, line := range lines {
+		for _, port := range ports {
+			if runtime.GOOS == "windows" {
+				if strings.Contains(line, fmt.Sprintf(":%s", port)) {
+					fields := strings.Fields(line)
+					pid := fields[len(fields)-1] // PID is the last field in Windows netstat output
+					pids[pid] = true
+				}
+			} else if strings.Contains(line, fmt.Sprintf(":%s", port)) {
+				fields := strings.Fields(line)
+				if len(fields) > 1 {
+					pid := fields[1]
+					pids[pid] = true
+				}
+			}
+		}
+	}
+
+	if len(pids) == 0 {
+		log.Println("No processes found on the specified ports")
+		return
+	}
+
+	var killArgs []string
+	if runtime.GOOS == "windows" {
+		killArgs = append(killArgs, "/F")
+		for pid := range pids {
+			killArgs = append(killArgs, "/PID", pid)
+		}
+		killCmdOptions = CommandOptions{
+			Command: "taskkill",
+			Args:    killArgs,
+		}
+	} else {
+		killArgs = append(killArgs, "-9")
+		for pid := range pids {
+			killArgs = append(killArgs, pid)
+		}
+		killCmdOptions = CommandOptions{
+			Command: "kill",
+			Args:    killArgs,
+		}
+	}
+
+	_, err = RunCommandWithOptions(killCmdOptions)
+	if err != nil {
+		log.Printf("Failed to kill processes: %v\n", err)
+	} else {
+		log.Println("Killed processes on the specified ports")
+	}
+}
+
+
 
 type TakeVariableArgsStruct struct {
 	Prompt    string
@@ -185,6 +283,7 @@ type CommandOptions struct {
 	PanicOnError         bool
 	NonBlocking          bool
 	IsInputFromProgram   bool
+	IsElevated           bool
 }
 
 func (c CommandOptions) EndProcess() ( error) {
@@ -222,6 +321,10 @@ func (w DualWriter) Write(p []byte) (n int, err error) {
 }
 
 func RunCommandWithOptions(options CommandOptions) (string, error) {
+
+  if options.IsElevated {
+    return "", RunElevatedCommand(options.Command, options.Args)
+  }
 	fullCommand := fmt.Sprintf("Running command: %s %s\n", options.Command, strings.Join(options.Args, " "))
 	fmt.Println(fullCommand)
 

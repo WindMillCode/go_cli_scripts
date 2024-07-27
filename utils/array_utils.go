@@ -1,7 +1,10 @@
 // 19 types
 package utils
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 func FindElement[T any](arr []T, predicate func(T) bool) (int, T, error) {
 	for index, element := range arr {
@@ -212,12 +215,22 @@ func ConvertToBoolArray(input []interface{}) []bool {
 func ConvertToStringArray(input []interface{}) []string {
 	var result []string
 	for _, v := range input {
-			if str, ok := v.(string); ok {
-					result = append(result, str)
-			}
+		switch v := v.(type) {
+		case string:
+			result = append(result, v)
+		case int:
+			result = append(result, fmt.Sprintf("%d", v))
+		case int32:
+			result = append(result, fmt.Sprintf("%d", v))
+		case int64:
+			result = append(result, fmt.Sprintf("%d", v))
+		default:
+			// Handle other types if necessary
+		}
 	}
 	return result
 }
+
 
 func ConvertToByteArray(input []interface{}) []byte {
 	var result []byte
