@@ -13,8 +13,8 @@ import (
 	"runtime"
 	"strings"
 	"syscall"
-
 )
+
 type KillPortsOptions struct {
 	Ports          []string
 	ProgramNames   []string
@@ -23,7 +23,7 @@ type KillPortsOptions struct {
 	DryRun         bool
 }
 
-type KillPortsProcessInfo struct{
+type KillPortsProcessInfo struct {
 	ColumnNameIndex int
 	PIDIndex        int
 	Output          string
@@ -33,34 +33,33 @@ type KillPortsProcessInfo struct{
 	Regex           *regexp.Regexp
 }
 
-
 func getColumnIndex(headers []string, columnName string) int {
-  for i, header := range headers {
-    if strings.Contains(strings.ToLower(header), strings.ToLower(columnName)) {
-      return i
-    }
-  }
-  return -1
+	for i, header := range headers {
+		if strings.Contains(strings.ToLower(header), strings.ToLower(columnName)) {
+			return i
+		}
+	}
+	return -1
 }
 
 func findPIDIndex(info *KillPortsProcessInfo) {
-  for i, line := range info.Lines {
-    if strings.Contains(line, "PID") {
-      fields := info.Regex.Split(line, -1)
+	for i, line := range info.Lines {
+		if strings.Contains(line, "PID") {
+			fields := info.Regex.Split(line, -1)
 			info.ColumnNameIndex = i
-      for j, field := range fields {
-        if strings.Contains(field, "PID") {
-          info.PIDIndex = j
-          return
-        }
-      }
-    }
-  }
-  info.PIDIndex = -1 // set to -1 if "PID" not found
+			for j, field := range fields {
+				if strings.Contains(field, "PID") {
+					info.PIDIndex = j
+					return
+				}
+			}
+		}
+	}
+	info.PIDIndex = -1 // set to -1 if "PID" not found
 }
 
 func initProcessInfo(processInfo *KillPortsProcessInfo) {
-	processInfo.Columns = processInfo.Regex.Split(strings.TrimSpace(processInfo.Lines[processInfo.ColumnNameIndex]),-1)
+	processInfo.Columns = processInfo.Regex.Split(strings.TrimSpace(processInfo.Lines[processInfo.ColumnNameIndex]), -1)
 	for i, line := range processInfo.Lines {
 
 		if i <= processInfo.ColumnNameIndex {
@@ -73,109 +72,102 @@ func initProcessInfo(processInfo *KillPortsProcessInfo) {
 		for i, column := range columns {
 			if i < len(fields) {
 				// TODO instead of the key use an additional number map?
-				column = strings.ReplaceAll(column, "\"", " ")
-				column = strings.TrimSpace(column)
-				processMap[column] = strings.TrimSpace(
-					strings.ReplaceAll(fields[i], "\"", " "),
-				)
+				processMap[column] = fields[i]
 			} else {
 				processMap[column] = ""
 			}
 		}
 
-		processInfo.Rows = append(processInfo.Rows,processMap)
+		processInfo.Rows = append(processInfo.Rows, processMap)
 
 	}
 }
 
 func KillPorts(options KillPortsOptions) {
-  var findProcessOptions,findNameOptions, killCmdOptions CommandOptions
+	var findProcessOptions, findNameOptions, killCmdOptions CommandOptions
 
-  switch runtime.GOOS {
-  case "windows":
-    findProcessOptions = CommandOptions{
-      Command:   "netstat",
-      Args:      []string{"-nao"},
-      GetOutput: true,
-    }
-		findNameOptions = CommandOptions{
-			Command:   "tasklist",
-			Args:      []string{"/FO","CSV"},
-      GetOutput: true,
+	switch runtime.GOOS {
+	case "windows":
+		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat.ps1"))
+		if err != nil {
+			log.Fatalf("Failed to extract netstat.ps1: %v", err)
 		}
-  case "darwin", "linux", "freebsd", "openbsd", "netbsd", "dragonfly":
-    findProcessOptions = CommandOptions{
-      Command:   "lsof",
-      Args:      []string{"-i", "-P"},
-      GetOutput: true,
-    }
-  case "aix", "solaris", "illumos":
-    findProcessOptions = CommandOptions{
-      Command:   "netstat",
-      Args:      []string{"-an"},
-      GetOutput: true,
-    }
-  default:
-    log.Printf("Unsupported OS: %s", runtime.GOOS)
-    return
-  }
-
-
-	findProccessEnvVars := map[string]string{
-		"LANG":"C",
+		tasklistPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "tasklist.ps1"))
+		if err != nil {
+			log.Fatalf("Failed to extract tasklist.ps1: %v", err)
+		}
+		findProcessOptions = CommandOptions{
+			Command:   "powershell",
+			Args:      []string{"-c", netstatPath},
+			GetOutput: true,
+		}
+		findNameOptions = CommandOptions{
+			Command:   "powershell",
+			Args:      []string{"-c", tasklistPath},
+			GetOutput: true,
+		}
+	case "darwin", "linux", "freebsd", "openbsd", "netbsd", "dragonfly":
+		findProcessOptions = CommandOptions{
+			Command:   "lsof",
+			Args:      []string{"-i", "-P"},
+			GetOutput: true,
+		}
+	case "aix", "solaris", "illumos":
+		findProcessOptions = CommandOptions{
+			Command:   "netstat",
+			Args:      []string{"-an"},
+			GetOutput: true,
+		}
+	default:
+		log.Printf("Unsupported OS: %s", runtime.GOOS)
+		return
 	}
-	findProcessOptions.EnvVars = findProccessEnvVars
-  findProcessOutput, err := RunCommandWithOptions(findProcessOptions)
-  if err != nil {
-    log.Printf("Error finding processes: %v\n", err)
-    return
-  }
 
-	findNameOptions.EnvVars = findProccessEnvVars
-  findNameOutput, err := RunCommandWithOptions(findNameOptions)
-  if err != nil {
-    log.Printf("Error finding processes: %v\n", err)
-    return
-  }
+	findProcessOutput, err := RunCommandWithOptions(findProcessOptions)
+	if err != nil {
+		log.Printf("Error finding processes: %v\n", err)
+		return
+	}
+
+	findNameOutput, err := RunCommandWithOptions(findNameOptions)
+	if err != nil {
+		log.Printf("Error finding processes: %v\n", err)
+		return
+	}
 
 	infoFindProcess := KillPortsProcessInfo{
 		PIDIndex: -1,
-		Output:findProcessOutput,
-		Lines:strings.Split(findProcessOutput, "\n"),
-		Regex: regexp.MustCompile(`\s{2,}`),
+		Output:   findProcessOutput,
+		Lines:    strings.Split(findProcessOutput, "\n"),
+		Regex:    regexp.MustCompile(`\s{2,}`),
 	}
 
 	infoFindName := KillPortsProcessInfo{
 		PIDIndex: -1,
-		Output:findNameOutput,
-		Lines:strings.Split(findNameOutput, "\n"),
-		Regex: regexp.MustCompile(`,`),
+		Output:   findNameOutput,
+		Lines:    strings.Split(findNameOutput, "\n"),
+		Regex:    regexp.MustCompile(`\s{2,}`),
 	}
-
 
 	findPIDIndex(&infoFindProcess)
 
 	findPIDIndex(&infoFindName)
 
-
 	processMap := make(map[string]string)
 	for _, line := range strings.Split(findNameOutput, "\n") {
 		fields := strings.Fields(line)
 		if len(fields) >= 2 {
-			pid := fields[1]
-			name := fields[0]
+			pid := fields[0]
+			name := fields[1]
 			processMap[pid] = name
 		}
 	}
-
-	// var joinedLines []string
-
 
 	initProcessInfo(&infoFindProcess)
 	initProcessInfo(&infoFindName)
 	var rowsWithPIDAndName []map[string]string
 
-	for _ , row := range infoFindProcess.Rows{
+	for _, row := range infoFindProcess.Rows {
 
 		var nameRow map[string]string
 		for _, r := range infoFindName.Rows {
@@ -193,28 +185,29 @@ func KillPorts(options KillPortsOptions) {
 		for k, v := range nameRow {
 			unionRow[k] = v
 		}
-		rowsWithPIDAndName = append(rowsWithPIDAndName,unionRow )
+		rowsWithPIDAndName = append(rowsWithPIDAndName, unionRow)
 	}
 
-
-
-
-
-
-  var pidsToDelete  []string
+	var pidsToDelete []string
 	for _, row := range rowsWithPIDAndName {
 		for _, port := range options.Ports {
 			formattedPort := fmt.Sprintf(":%s", port)
 			isInTargetProgramNames := true
-			if len(options.ProgramNames) != 0{
-				isInTargetProgramNames = ArrayContainsAny(options.ProgramNames,[]string{row["Nombre de imagen"]} )
+			if len(options.ProgramNames) != 0 {
+				isInTargetProgramNames = ArrayContainsAny(options.ProgramNames, []string{row["Name"]})
 			}
+			foreignAddressContainsPort := strings.Contains(row["Foreign Address"], formattedPort)
+			localAddressContainsPort := strings.Contains(row["Local Address"], formattedPort)
+			pidIsNotZero := row["PID"] != "0"
 			switch runtime.GOOS {
-				// TODO see if you need listening
+			// TODO see if you need listening
 			case "windows":
-				if (
-					(strings.Contains(row["Direcci\xa2n remota"],formattedPort) ||  strings.Contains(row["Direcci\xa2n local"],formattedPort)) && strings.Contains(row["Estado"], "LISTENING") || strings.Contains(row["Estado"], "TIME_WAIT") && row["PID"] !="0"  && isInTargetProgramNames ) {
-					pid:= row["PID"]
+				stateIsListen := strings.Contains(row["State"], "Listen")
+				stateIsTimeWait := strings.Contains(row["State"], "TimeWait")
+				cantKillByName := ArrayContainsAny([]string{"svchost", "SearchHost"}, []string{row["Name"]})
+
+				if ((foreignAddressContainsPort || localAddressContainsPort) && stateIsListen || (stateIsTimeWait && pidIsNotZero && isInTargetProgramNames)) && !cantKillByName {
+					pid := row["PID"]
 					pidsToDelete = append(pidsToDelete, pid)
 				}
 			// case "darwin", "linux", "freebsd", "openbsd", "netbsd", "dragonfly","aix", "solaris", "illumos":
@@ -234,104 +227,101 @@ func KillPorts(options KillPortsOptions) {
 		}
 	}
 
+	pidsToDelete = RemoveDuplicates(pidsToDelete)
+	if options.OutputFile != "" {
+		file, err := os.Create(ConvertPathToOSFormat(options.OutputFile))
+		if err != nil {
+			log.Printf("Failed to create output file: %v\n", err)
+			return
+		}
+		defer file.Close()
 
-  if len(pidsToDelete) == 0 {
-    log.Println("No processes found on the specified ports")
-    return
-  }
+		writer := bufio.NewWriter(file)
+		defer writer.Flush()
 
-  if options.OutputFile != "" {
-    file, err := os.Create(ConvertPathToOSFormat(options.OutputFile))
-    if err != nil {
-      log.Printf("Failed to create output file: %v\n", err)
-      return
-    }
-    defer file.Close()
+		firstRow := rowsWithPIDAndName[0]
+		columnNames := make([]string, 0, len(firstRow))
+		for key := range firstRow {
+			columnNames = append(columnNames, key)
+		}
 
-    writer := bufio.NewWriter(file)
-    defer writer.Flush()
+		// Write column names
+		writer.WriteString(strings.Join(columnNames, ",") + "\n")
 
-    writer.WriteString("Matched Processes:\n")
-    firstRow := rowsWithPIDAndName[0]
-    columnNames := make([]string, 0, len(firstRow))
-    for key := range firstRow {
-      columnNames = append(columnNames, key)
-    }
+		// Write each row
+		for _, row := range rowsWithPIDAndName {
+			values := make([]string, len(columnNames))
+			for i, columnName := range columnNames {
+				values[i] = row[columnName]
+			}
+			writer.WriteString(strings.Join(values, ",") + "\n")
+		}
 
-    // Write column names
-    for _, columnName := range columnNames {
-      writer.WriteString(columnName + "\t")
-    }
-    writer.WriteString("\n")
+		var deleteProcessHeader = strings.Join(
+			append([]string{"Processes","to","Delete:"}, strings.Split(strings.Repeat("==== ", len(columnNames)-1), " ")...), ",",
+		) + "\n"
+		writer.WriteString(deleteProcessHeader)
+		writer.WriteString(strings.Join(columnNames, ",") + "\n")
 
-    // Write each row
-    for _, row := range rowsWithPIDAndName {
-      for _, columnName := range columnNames {
-        writer.WriteString(row[columnName] + "\t")
-      }
-      writer.WriteString("\n")
-    }
+		for _, row := range rowsWithPIDAndName {
+			for _, pid := range pidsToDelete {
+				if row["PID"] == pid {
+					values := make([]string, len(columnNames))
+					for i, columnName := range columnNames {
+						values[i] = row[columnName]
+					}
+					writer.WriteString(strings.Join(values, ",") + "\n")
+				}
+			}
+		}
 
-    writer.WriteString("\nProcesses to Delete:\n")
-    for _, columnName := range columnNames {
-      writer.WriteString(columnName + "\t")
-    }
-    writer.WriteString("\n")
+		log.Printf("Process details saved to %s\n", options.OutputFile)
+		if options.OpenOutputFile {
+			vscodeOpenFileOptions := CommandOptions{
+				Command:     "code",
+				Args:        []string{options.OutputFile},
+				NonBlocking: true,
+			}
+			RunCommandWithOptions(vscodeOpenFileOptions)
+		}
+	}
 
-    for _, row := range rowsWithPIDAndName {
-      for _, pid := range pidsToDelete {
-        if row["PID"] == pid {
-          for _, columnName := range columnNames {
-            writer.WriteString(row[columnName] + "\t")
-          }
-          writer.WriteString("\n")
-        }
-      }
-    }
+	if len(pidsToDelete) == 0 {
+		log.Println("No processes found on the specified ports")
+		return
+	}
 
-    log.Printf("Process details saved to %s\n", options.OutputFile)
-    if options.OpenOutputFile {
-      vscodeOpenFileOptions := CommandOptions{
-        Command:     "code",
-        Args:        []string{options.OutputFile},
-        NonBlocking: true,
-      }
-      RunCommandWithOptions(vscodeOpenFileOptions)
-    }
-  }
+	if options.DryRun {
+		return
+	}
 
-  if options.DryRun {
-    return
-  }
-
-  var killArgs []string
-  if runtime.GOOS == "windows" {
-    killArgs = append(killArgs, "/F")
-    for _, pid := range pidsToDelete {
-      killArgs = append(killArgs, "/PID", pid)
-    }
-    killCmdOptions = CommandOptions{
-      Command: "taskkill",
-      Args:    killArgs,
-    }
-  } else {
-    killArgs = append(killArgs, "-9")
+	var killArgs []string
+	if runtime.GOOS == "windows" {
+		killArgs = append(killArgs, "/F")
+		for _, pid := range pidsToDelete {
+			killArgs = append(killArgs, "/PID", pid)
+		}
+		killCmdOptions = CommandOptions{
+			Command: "taskkill",
+			Args:    killArgs,
+		}
+	} else {
+		killArgs = append(killArgs, "-9")
 		killArgs = append(killArgs, pidsToDelete...)
 
-    killCmdOptions = CommandOptions{
-      Command: "kill",
-      Args:    killArgs,
-    }
-  }
+		killCmdOptions = CommandOptions{
+			Command: "kill",
+			Args:    killArgs,
+		}
+	}
 
-  _, err = RunCommandWithOptions(killCmdOptions)
-  if err != nil {
-    log.Printf("Failed to kill processes: %v\n", err)
-  } else {
-    log.Println("Killed processes on the specified ports")
-  }
+	_, err = RunCommandWithOptions(killCmdOptions)
+	if err != nil {
+		log.Printf("Failed to kill processes: %v\n", err)
+	} else {
+		log.Println("Killed processes on the specified ports")
+	}
 }
-
 
 type TakeVariableArgsStruct struct {
 	Prompt    string
@@ -521,7 +511,6 @@ type CommandOptions struct {
 	Args               []string
 	TargetDir          string
 	GetOutput          bool
-	// TODO PrintOutput does not play well it says nothing is on the path
 	PrintOutput        bool
 	PrintOutputOnly    bool
 	PanicOnError       bool
@@ -567,10 +556,10 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 
 	if options.EnvVars != nil {
 		for key, value := range options.EnvVars {
-			os.Setenv(key,value)
+			os.Setenv(key, value)
 			// cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", key, value))
 		}
-		cmd.Env =nil
+		cmd.Env = nil
 	}
 
 	// Creating buffers and DualWriters for stdout and stderr
@@ -588,14 +577,14 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	cmd.Stderr = stderrWriter
 
 	sigs := make(chan os.Signal, 1)
-  signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	// done := make(chan error, 1)
-  go func() {
-    sig := <-sigs
-    if cmd.Process != nil {
-      cmd.Process.Signal(sig)
-    }
-  }()
+	go func() {
+		sig := <-sigs
+		if cmd.Process != nil {
+			cmd.Process.Signal(sig)
+		}
+	}()
 
 	var err error
 	if options.NonBlocking {
@@ -605,13 +594,13 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	}
 
 	// go func() {
-  //   done <- cmd.Wait()
-  // }()
-  // err = <-done
+	//   done <- cmd.Wait()
+	// }()
+	// err = <-done
 
-  // if err == nil {
-  //   sigs <- syscall.SIGINT
-  // }
+	// if err == nil {
+	//   sigs <- syscall.SIGINT
+	// }
 
 	if err != nil {
 		// Construct error message
@@ -666,6 +655,3 @@ func RunElevatedCommand(command string, args []string) error {
 	_, err := RunCommandWithOptions(options)
 	return err
 }
-
-
-

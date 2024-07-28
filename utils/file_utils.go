@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -13,10 +14,10 @@ import (
 	"runtime"
 	"strings"
 	"time"
-
 	"github.com/fsnotify/fsnotify"
 	"github.com/gobwas/glob"
 )
+
 
 
 func FilterFilesByExtension(files []string, extensions []string, include bool) []string {
@@ -25,18 +26,18 @@ func FilterFilesByExtension(files []string, extensions []string, include bool) [
 	// Create a map for faster extension checks
 	extensionMap := make(map[string]bool)
 	for _, ext := range extensions {
-			extensionMap[ext] = true
+		extensionMap[ext] = true
 	}
 
 	// Iterate over the files and filter based on the extension and include flag
 	for _, file := range files {
-			_, extPresent := extensionMap[strings.ToLower(strings.TrimPrefix(filepath.Ext(file), "."))]
+		_, extPresent := extensionMap[strings.ToLower(strings.TrimPrefix(filepath.Ext(file), "."))]
 
-			// If include is true, keep the file if the extension is in the list
-			// If include is false, keep the file if the extension is not in the list
-			if (include && extPresent) || (!include && !extPresent) {
-					filteredFiles = append(filteredFiles, file)
-			}
+		// If include is true, keep the file if the extension is in the list
+		// If include is false, keep the file if the extension is not in the list
+		if (include && extPresent) || (!include && !extPresent) {
+			filteredFiles = append(filteredFiles, file)
+		}
 	}
 
 	return filteredFiles
@@ -54,10 +55,31 @@ func ReadFile(filePath string) (string, error) {
 	return string(content), nil
 }
 
+func ReadFileFromPackage(fullPath string) (string, error) {
+
+	absPath,_ := GetFilePathFromPackage(fullPath)
+	file, err := ReadFile(absPath)
+	if err != nil {
+		return "", err
+	}
+	return file, nil
+}
+
+func GetFilePathFromPackage(fullPath string) (string, error) {
+  _, filename, _, ok := runtime.Caller(0)
+  if !ok {
+    return "", errors.New("Error during package FilePath retrieval")
+  }
+  absPath := JoinAndConvertPathToOSFormat(filepath.Dir(filename), fullPath)
+
+  return absPath, nil
+}
+
+
 func OverwriteFile(filePath string, content string) error {
 	err := os.WriteFile(filePath, []byte(content), 0644)
 	if err != nil {
-		fmt.Printf("Error writing to file", err)
+		fmt.Printf("Error writing to file %v", err)
 	}
 	return err
 }
@@ -225,7 +247,7 @@ func ProcessFoldersMatchingPattern(directory, pattern string, predicateFn func(s
 	return err
 }
 
-func AddContentToFile(filePath, valueToAdd string,positon string) error {
+func AddContentToFile(filePath, valueToAdd string, positon string) error {
 	// Read the original file content
 	originalContent, err := os.ReadFile(filePath)
 	if err != nil {
@@ -234,10 +256,10 @@ func AddContentToFile(filePath, valueToAdd string,positon string) error {
 
 	// Prepend the prefix to the content
 	var newContent []byte
-	if positon == "prefix"{
+	if positon == "prefix" {
 		newContent = []byte(valueToAdd + string(originalContent))
 	} else {
-		newContent = []byte(  string(originalContent)+valueToAdd)
+		newContent = []byte(string(originalContent) + valueToAdd)
 	}
 
 	// Write the modified content back to the file
@@ -405,29 +427,29 @@ func TraverseDirectory(config TraverseDirectoryParams) error {
 func DownloadFile(url, localPath string) error {
 	outFile, err := os.Create(localPath)
 	if err != nil {
-			return fmt.Errorf("error creating file: %v", err)
+		return fmt.Errorf("error creating file: %v", err)
 	}
 	defer outFile.Close()
 
 	response, err := http.Get(url)
 	if err != nil {
-			return fmt.Errorf("error making GET request: %v", err)
+		return fmt.Errorf("error making GET request: %v", err)
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-			return fmt.Errorf("bad status: %s", response.Status)
+		return fmt.Errorf("bad status: %s", response.Status)
 	}
 
 	_, err = io.Copy(outFile, response.Body)
 	if err != nil {
-			return fmt.Errorf("error writing to file: %v", err)
+		return fmt.Errorf("error writing to file: %v", err)
 	}
 
 	return nil
 }
 
-func ExtractArchive(archiveURL string,removeArchiveFile bool) string {
+func ExtractArchive(archiveURL string, removeArchiveFile bool) string {
 	// Get the filename from the URL
 	segments := strings.Split(archiveURL, "/")
 	filename := segments[len(segments)-1]
@@ -435,7 +457,7 @@ func ExtractArchive(archiveURL string,removeArchiveFile bool) string {
 	// Get the current working directory
 	sourceDir, err := GetSourceFilePath()
 	if err != nil {
-			return fmt.Sprintf("error getting source file directory: %v", err)
+		return fmt.Sprintf("error getting source file directory: %v", err)
 	}
 
 	// Construct the full path for the archive
@@ -443,27 +465,27 @@ func ExtractArchive(archiveURL string,removeArchiveFile bool) string {
 
 	// Check if the file exists locally, if not, download it
 	if _, err := os.Stat(archivePath); os.IsNotExist(err) {
-			fmt.Printf("File not found locally. Downloading from %s\n", archiveURL)
-			if err := DownloadFile(archiveURL, archivePath); err != nil {
-					return fmt.Sprintf("error downloading file: %v", err)
-			}
+		fmt.Printf("File not found locally. Downloading from %s\n", archiveURL)
+		if err := DownloadFile(archiveURL, archivePath); err != nil {
+			return fmt.Sprintf("error downloading file: %v", err)
+		}
 	}
 
 	// Extract the archive using 7z
-	sevenZCommandOptions :=CommandOptions{
-		Command: "7z",
-		Args: []string{"x",archivePath,"-aoa"},
+	sevenZCommandOptions := CommandOptions{
+		Command:   "7z",
+		Args:      []string{"x", archivePath, "-aoa"},
 		TargetDir: filepath.Dir(archivePath),
 	}
 	RunCommandWithOptions(sevenZCommandOptions)
 
 	fmt.Printf("Archive extracted successfully: %s\n", archivePath)
-	if removeArchiveFile == true{
+	if removeArchiveFile == true {
 		if err := os.Remove(archivePath); err != nil {
 			return fmt.Sprintf("error removing archive file: %v", err)
-	}
+		}
 
-	fmt.Println("Archive file deleted successfully")
+		fmt.Println("Archive file deleted successfully")
 	}
 
 	return filepath.Dir(archivePath)
@@ -472,7 +494,7 @@ func ExtractArchive(archiveURL string,removeArchiveFile bool) string {
 func GetSourceFilePath() (string, error) {
 	executable, err := os.Executable()
 	if err != nil {
-			return "", fmt.Errorf("unable to get this programs executable path")
+		return "", fmt.Errorf("unable to get this programs executable path")
 	}
 	return filepath.Dir(executable), nil
 }
@@ -484,18 +506,18 @@ func FindExecutable(executablePrefix, searchDir string) string {
 	// Define the executable name pattern based on the OS
 	executablePattern := executablePrefix
 	if runtime.GOOS == "windows" {
-			executablePattern += ".exe"
+		executablePattern += ".exe"
 	}
 
 	// Define the filter function to limit the search to executable files
 	filterFunc := func(path string, info os.FileInfo) bool {
-			return !info.IsDir() && filepath.Base(path) == executablePattern
+		return !info.IsDir() && filepath.Base(path) == executablePattern
 	}
 
 	// Define the predicate function to capture the path of the first matching file
 	predicateFunc := func(path string, info os.FileInfo) {
-			executablePath = path
-			found = true
+		executablePath = path
+		found = true
 	}
 
 	// Traverse the directory
@@ -508,16 +530,15 @@ func FindExecutable(executablePrefix, searchDir string) string {
 	)
 
 	if err != nil {
-			return  fmt.Sprintf("error traversing directory: %v", err)
+		return fmt.Sprintf("error traversing directory: %v", err)
 	}
 
 	if !found {
-			return  fmt.Sprintf("NOTFOUND")
+		return fmt.Sprintf("NOTFOUND")
 	}
 
 	return executablePath
 }
-
 
 type WatchDirectoryParams struct {
 	DirectoryToWatch string
@@ -556,7 +577,6 @@ func WatchDirectory(options WatchDirectoryParams) {
 		testEvent := fsnotify.Event{Name: options.DirectoryToWatch, Op: fsnotify.Write}
 		options.Predicate(testEvent)
 	}
-
 
 	// Setup the watcher
 	if err := filepath.Walk(options.DirectoryToWatch,
@@ -632,9 +652,9 @@ func MatchAnyGlob(globs []glob.Glob, path string) bool {
 
 func RemovePathPrefix(path string, prefixArray []string) string {
 	for _, prefix := range prefixArray {
-			if strings.HasPrefix(path, prefix) {
-					return strings.TrimPrefix(path, prefix)
-			}
+		if strings.HasPrefix(path, prefix) {
+			return strings.TrimPrefix(path, prefix)
+		}
 	}
 	return path // Return the original path if no prefix matches
 }

@@ -11,6 +11,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gobwas/glob v0.2.3
 	github.com/iancoleman/strcase v0.3.0
+	golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561
 )
 
 require (

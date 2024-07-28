@@ -4,6 +4,8 @@ package utils
 import (
 	"errors"
 	"fmt"
+
+	"golang.org/x/exp/constraints"
 )
 
 func FindElement[T any](arr []T, predicate func(T) bool) (int, T, error) {
@@ -15,6 +17,19 @@ func FindElement[T any](arr []T, predicate func(T) bool) (int, T, error) {
 	var zero T
 	return -1, zero, errors.New("element not found")
 }
+
+func RemoveDuplicates[T constraints.Ordered](items []T) []T {
+    seen := make(map[T]struct{})
+    var result []T
+
+    for _, item := range items {
+      if _, ok := seen[item]; !ok {
+        seen[item] = struct{}{}
+        result = append(result, item)
+      }
+    }
+    return result
+  }
 
 func RemoveElementsNotInSource[T comparable](source, toRemove []T) []T {
 	sourceSet := make(map[T]bool)
