@@ -10,5 +10,5 @@ udp_connections=$(netstat -an -p udp | awk 'NR>2 {print "UDP", $4, "*", "*", $7}
 all_connections=$(echo -e "$tcp_connections\n$udp_connections")
 
 # Format the output similar to netstat -ano with more space between column headers
-echo -e "Proto       Local Address            Foreign Address          State           PID"
+echo "Proto       Local Address            Foreign Address          State           PID"
 echo "$all_connections" | awk '{printf "%-10s %-25s %-25s %-15s %s\n", $1, $2, $3, $4, $5}'
