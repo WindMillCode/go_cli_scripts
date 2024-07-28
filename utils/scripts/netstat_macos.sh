@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # Get TCP connections
-tcp_connections=$(netstat -an -p tcp | awk 'NR>2 {print "TCP", $4, $5, $6, $7}')
+tcp_connections=$(netstat -an -p tcp | awk 'NR>2 {print "TCP", $4, $5, $6, $9}')
 
 # Get UDP listeners
 udp_connections=$(netstat -an -p udp | awk 'NR>2 {print "UDP", $4, "*", "*", $7}')

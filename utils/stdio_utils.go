@@ -114,7 +114,7 @@ func KillPorts(options KillPortsOptions) {
 		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_macos.sh"))
 		if err != nil {
 			log.Fatalf("Failed to extract ps_macos.sh: %v", err)
-	}
+		}
 		findProcessOptions = CommandOptions{
 			Command:   "sh",
 			Args:      []string{netstatPath},
@@ -322,7 +322,7 @@ func KillPorts(options KillPortsOptions) {
 		}
 
 		var deleteProcessHeader = strings.Join(
-			append([]string{"Processes","to","Delete:"}, strings.Split(strings.Repeat("==== ", len(columnNames)-1), " ")...), ",",
+			append([]string{"Processes", "to", "Delete:"}, strings.Split(strings.Repeat("==== ", len(columnNames)-1), " ")...), ",",
 		) + "\n"
 		writer.WriteString(deleteProcessHeader)
 		writer.WriteString(strings.Join(columnNames, ",") + "\n")
