@@ -106,16 +106,80 @@ func KillPorts(options KillPortsOptions) {
 			Args:      []string{"-c", tasklistPath},
 			GetOutput: true,
 		}
-	case "darwin", "linux", "freebsd", "openbsd", "netbsd", "dragonfly":
+	case "darwin":
+		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_macos.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract netstat_macos.sh: %v", err)
+		}
+		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_macos.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract ps_macos.sh: %v", err)
+	}
 		findProcessOptions = CommandOptions{
-			Command:   "lsof",
-			Args:      []string{"-i", "-P"},
+			Command:   "sh",
+			Args:      []string{netstatPath},
+			GetOutput: true,
+		}
+		findNameOptions = CommandOptions{
+			Command:   "sh",
+			Args:      []string{psPath},
+			GetOutput: true,
+		}
+	case "linux":
+		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_linux.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract netstat_linux.sh: %v", err)
+		}
+		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_linux.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract ps_linux.sh: %v", err)
+		}
+		findProcessOptions = CommandOptions{
+			Command:   "sh",
+			Args:      []string{netstatPath},
+			GetOutput: true,
+		}
+		findNameOptions = CommandOptions{
+			Command:   "sh",
+			Args:      []string{psPath},
+			GetOutput: true,
+		}
+	case "freebsd", "openbsd", "netbsd", "dragonfly":
+		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_bsd.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract netstat_bsd.sh: %v", err)
+		}
+		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_bsd.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract ps_bsd.sh: %v", err)
+		}
+		findProcessOptions = CommandOptions{
+			Command:   "sh",
+			Args:      []string{netstatPath},
+			GetOutput: true,
+		}
+		findNameOptions = CommandOptions{
+			Command:   "sh",
+			Args:      []string{psPath},
 			GetOutput: true,
 		}
 	case "aix", "solaris", "illumos":
+		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_unix.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract netstat_unix.sh: %v", err)
+		}
+		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_unix.sh"))
+		if err != nil {
+			log.Fatalf("Failed to extract ps_unix.sh: %v", err)
+		}
 		findProcessOptions = CommandOptions{
-			Command:   "netstat",
-			Args:      []string{"-an"},
+			Command:   "sh",
+			Args:      []string{netstatPath},
+			GetOutput: true,
+		}
+		findNameOptions = CommandOptions{
+			Command:   "sh",
+			Args:      []string{psPath},
 			GetOutput: true,
 		}
 	default:

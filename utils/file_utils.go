@@ -18,8 +18,6 @@ import (
 	"github.com/gobwas/glob"
 )
 
-
-
 func FilterFilesByExtension(files []string, extensions []string, include bool) []string {
 	var filteredFiles []string
 
