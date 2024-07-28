@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Get running processes
 processes=$(ps -axo pid,comm,session,rsz | tail -n +2)

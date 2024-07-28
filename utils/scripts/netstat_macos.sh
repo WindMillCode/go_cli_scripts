@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Get TCP connections
 tcp_connections=$(netstat -an -p tcp | awk 'NR>2 {print "TCP", $4, $5, $6, $7}')
