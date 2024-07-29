@@ -12,7 +12,7 @@
       }
     },
     {
-      "label": "misc: package project ",
+      "label": "misc: package project for golang packages",
       "runOptions": {
         "runOn": ""
       },

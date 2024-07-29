@@ -404,3 +404,8 @@ Updated `utils/vscode_settings_utils.go`
 [PATCH] Updated `FirebaseCloudRunEmulatorsStruct` in `vscode_settings_utils.go` to include `KillPortOutputFileAcceptDefault` field.
 
 These changes improve handling of non-interactive modes across various functions and structs. Developers should now set global variables using `SetGlobalVars` and can use defaults in non-interactive mode by leveraging these updates.
+
+
+## v5.6.1 7/29/2024 03:15:45 PM EST
+
+[UPDATE] Made some JSON fields optional in FirebaseConfig in main.go
