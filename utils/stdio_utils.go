@@ -213,6 +213,11 @@ func KillPorts(options KillPortsOptions) {
 		Regex:    regexp.MustCompile(`\s{2,}`),
 	}
 
+	switch runtime.GOOS {
+	case "darwin":
+		infoFindProcess.Regex = regexp.MustCompile(`\s{2,}|->`)
+	}
+
 	findPIDIndex(&infoFindProcess)
 
 	findPIDIndex(&infoFindName)
@@ -263,26 +268,26 @@ func KillPorts(options KillPortsOptions) {
 			foreignAddressContainsPort := strings.Contains(row["Foreign Address"], formattedPort)
 			localAddressContainsPort := strings.Contains(row["Local Address"], formattedPort)
 			pidIsNotZero := row["PID"] != "0"
+			stateIsListen := strings.Contains(strings.ToLower(row["State"]), "listen")
+			stateIsTimeWait := strings.Contains(strings.ToLower(row["State"]), "timewait")
+
 			switch runtime.GOOS {
 			// TODO see if you need listening
 			case "windows":
-				stateIsListen := strings.Contains(row["State"], "Listen")
-				stateIsTimeWait := strings.Contains(row["State"], "TimeWait")
+
 				cantKillByName := ArrayContainsAny([]string{"svchost", "SearchHost"}, []string{row["Name"]})
 
 				if ((foreignAddressContainsPort || localAddressContainsPort) && stateIsListen || (stateIsTimeWait && pidIsNotZero && isInTargetProgramNames)) && !cantKillByName {
 					pid := row["PID"]
 					pidsToDelete = append(pidsToDelete, pid)
 				}
-			// case "darwin", "linux", "freebsd", "openbsd", "netbsd", "dragonfly","aix", "solaris", "illumos":
-			// 	if strings.Contains(line, fmt.Sprintf(":%s", port)) && strings.Contains(line, "LISTEN") {
-			// 		fields := strings.Fields(line)
-			// 		if len(fields) > 1 {
-			// 			pid := fields[1]
-			// 			pids[pid] = true
-			// 			processesToDelete = append(processesToDelete, line)
-			// 		}
-			// 	}
+			case "darwin":
+
+				cantKillByName := ArrayContainsAny([]string{"svchost", "SearchHost"}, []string{row["Name"]})
+				if ((foreignAddressContainsPort || localAddressContainsPort) && stateIsListen || (stateIsTimeWait && pidIsNotZero && isInTargetProgramNames)) && !cantKillByName {
+					pid := row["PID"]
+					pidsToDelete = append(pidsToDelete, pid)
+				}
 
 			default:
 				log.Printf("Unsupported OS: %s", runtime.GOOS)
@@ -642,7 +647,6 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	// done := make(chan error, 1)
 	go func() {
 		sig := <-sigs
 		if cmd.Process != nil {
@@ -657,14 +661,7 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 		err = cmd.Run() // Default to blocking execution
 	}
 
-	// go func() {
-	//   done <- cmd.Wait()
-	// }()
-	// err = <-done
 
-	// if err == nil {
-	//   sigs <- syscall.SIGINT
-	// }
 
 	if err != nil {
 		// Construct error message
