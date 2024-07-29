@@ -9,20 +9,25 @@ import (
 )
 
 type ShowMenuModel struct {
-	Default     string
-	Other       bool
-	OtherString string
-	Prompt      string
-	Choices     []string       // items on the to-do list
-	Selected    map[int]string // which to-do items are selected
-	cursor      int            // which to-do list item our cursor is pointing at
-	typing     bool           // if the user is typing
-	textInput   textinput.Model
+	Default            string
+	Other              bool
+	OtherString        string
+	Prompt             string
+	Choices            []string       // items on the to-do list
+	Selected           map[int]string // which to-do items are selected
+	cursor             int            // which to-do list item our cursor is pointing at
+	typing             bool           // if the user is typing
+	textInput          textinput.Model
+	// TODO implement per coommand nonintreactive
+	nonInteractive      bool
 }
 
 func ShowMenu(cliInfo ShowMenuModel, enableOtherOption interface{}) string {
 	cliInfo.Selected = make(map[int]string)
 
+	if cliInfo.Default != "" && GLOBAL_VARS.NonInteractive.Global {
+		return cliInfo.Default
+	}
 	if cliInfo.OtherString == "" {
 		cliInfo.OtherString = "Other: "
 	}
@@ -166,6 +171,10 @@ type ShowMenuMultipleModel struct {
 }
 
 func ShowMenuMultipleOptions(cliInfo ShowMenuMultipleModel, enableOtherOption interface{}) []string {
+
+	if len(cliInfo.Defaults) != 0 && GLOBAL_VARS.NonInteractive.Global {
+		return cliInfo.Defaults
+	}
 	cliInfo.Selected = make(map[int]string)
 	cliInfo.textInput = textinput.New()
 

@@ -29,6 +29,10 @@ type AngularFrontendStruct struct{
 	Configurations   []string `json:"configurations"`
 }
 
+type ShopifyRunStruct struct{
+	ProjectName string `json:"projectName"`
+}
+
 type FlutterMobileBuildStruct struct {
 	ToolArgs                     []string `json:"toolArgs"`
 	Args                         []string `json:"args"`
@@ -40,17 +44,18 @@ type FlutterMobileBuildStruct struct {
 }
 
 type FirebaseCloudRunEmulatorsStruct struct {
-	GlobalDomain          string `json:"globalDomain"`
-	UIDomain0             string `json:"UIDomain0"`
-  AuthDomain0           string `json:"AuthDomain0"`
-  StorageDomain0        string `json:"StorageDomain0"`
-  DatabaseDomain0       string `json:"DatabaseDomain0"`
-  HostingDomain0        string `json:"HostingDomain0"`
-  FunctionsDomain0      string `json:"FunctionsDomain0"`
-  PubSubDomain0         string `json:"PubSubDomain0"`
-  FirestoreDomain0      string `json:"FirestoreDomain0"`
-	KillPortOutputFile    string `json:"killPortOutputFile"`
-	AdditonalPortsToKill  []int  `json:"additonalPortsToKill"`
+	GlobalDomain                      string `json:"globalDomain"`
+	UIDomain0                         string `json:"UIDomain0"`
+  AuthDomain0                       string `json:"AuthDomain0"`
+  StorageDomain0                    string `json:"StorageDomain0"`
+  DatabaseDomain0                   string `json:"DatabaseDomain0"`
+  HostingDomain0                    string `json:"HostingDomain0"`
+  FunctionsDomain0                  string `json:"FunctionsDomain0"`
+  PubSubDomain0                     string `json:"PubSubDomain0"`
+  FirestoreDomain0                  string `json:"FirestoreDomain0"`
+	KillPortOutputFile                string `json:"killPortOutputFile"`
+	KillPortOutputFileAcceptDefault   bool   `json:"killPortOutputFileAcceptDefault"`
+	AdditonalPortsToKill              []int  `json:"additonalPortsToKill"`
 }
 
 type ProcessIfDefaultIsPresentStruct struct{
@@ -135,6 +140,7 @@ type WindmillcodeExtensionPack struct {
 	GitPushingWorkToGitRemote    GitPushingWorkToGitRemoteStruct  `json:"gitPushingWorkingToGitRemote"`
 	MiscOptimizeImages           MiscOptimizeImagesStruct         `json:"miscOptimizeImages"`
 	AngularFrontend              AngularFrontendStruct            `json:"angularFrontend"`
+	ShopifyRun                   ShopifyRunStruct                 `json:"shopifyRun"`
 }
 
 

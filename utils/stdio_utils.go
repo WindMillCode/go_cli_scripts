@@ -15,6 +15,17 @@ import (
 	"syscall"
 )
 
+
+type SetGlobalVarsOptions struct{
+	NonInteractive ProcessIfDefaultIsPresentStruct
+}
+
+var GLOBAL_VARS SetGlobalVarsOptions
+
+func  SetGlobalVars(options  SetGlobalVarsOptions){
+	GLOBAL_VARS =options
+}
+
 type KillPortsOptions struct {
 	Ports          []string
 	ProgramNames   []string
@@ -405,6 +416,8 @@ type TakeVariableArgsResultStruct struct {
 }
 
 func TakeVariableArgs(obj TakeVariableArgsStruct) TakeVariableArgsResultStruct {
+
+
 	var innerScriptArguments []string
 	prompt0 := obj.Prompt
 
@@ -414,19 +427,26 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) TakeVariableArgsResultStruct {
 	if obj.Default != "" {
 		prompt0 = fmt.Sprintf("%s (Default is %s)", obj.Prompt, obj.Default)
 	}
-	fmt.Println(prompt0)
-	fmt.Println("Enter the arguments to pass to the script (press ENTER to enter another argument, leave blank and press ENTER once done):")
-	for {
-		var argument string
-		fmt.Scanln(&argument)
 
-		if strings.TrimSpace(argument) == "" {
-			break
+	var input string
+	if obj.Default != "" && GLOBAL_VARS.NonInteractive.Global {
+		input = obj.Default
+		innerScriptArguments = strings.Split(input,obj.Delimiter)
+	} else{
+		fmt.Println(prompt0)
+		fmt.Println("Enter the arguments to pass to the script (press ENTER to enter another argument, leave blank and press ENTER once done):")
+		for {
+			var argument string
+			fmt.Scanln(&argument)
+
+			if strings.TrimSpace(argument) == "" {
+				break
+			}
+
+			innerScriptArguments = append(innerScriptArguments, argument)
 		}
-
-		innerScriptArguments = append(innerScriptArguments, argument)
 	}
-	input := strings.Join(innerScriptArguments, obj.Delimiter)
+	input = strings.Join(innerScriptArguments, obj.Delimiter)
 	if input == "" && obj.ErrMsg != "" {
 		panic(obj.ErrMsg)
 	} else if input == "" && obj.Default != "" {
@@ -447,6 +467,10 @@ type GetInputFromStdinStruct struct {
 }
 
 func GetInputFromStdin(obj GetInputFromStdinStruct) string {
+
+	if len(obj.Default) != 0 && GLOBAL_VARS.NonInteractive.Global {
+		return obj.Default
+	}
 	if len(obj.Prompt) == 0 {
 		obj.Prompt = []string{"Enter your input: "} // Default value
 	} else {

@@ -372,14 +372,6 @@ Added:
 - `KillPorts` function to kill processes running on specified ports
 - Expanded `CommandOptions` struct to include `EnvVars` and `IsElevated`
 
-[DEPRECATED]
-Deprecated:
-- `RunCommandInSpecificDirectory`
-- `RunCommandAndGetOutput`
-- `RunCommandInSpecifcDirectoryAndGetOutput`
-- `RunElevatedCommand`
-
-Updated `utils/string_utils.go`
 
 [ADDED]
 Added:
@@ -395,3 +387,20 @@ Updated `utils/vscode_settings_utils.go`
 - `settings.WindmillcodeExtensionPack.WMLPorts` struct to define various ports
 - New methods to `WMLPorts` to get Firebase ports
 
+
+## v5.6.0
+[7/29/2024 4:15:00 PM EST]
+
+[UPDATE] Added `nonInteractive` field to `ShowMenuModel` and `ShowMenuMultipleModel` structs in `utils/show_menu.go`.
+
+[PATCH] Modified `ShowMenu` and `ShowMenuMultipleOptions` functions in `utils/show_menu.go` to use default choices in non-interactive mode.
+
+[UPDATE] Added `SetGlobalVarsOptions` struct and `SetGlobalVars` function in `utils/stdio_utils.go` for setting global variables.
+
+[PATCH] Updated `TakeVariableArgs`, `GetInputFromStdin`, and other input functions in `utils/stdio_utils.go` to handle non-interactive mode based on global variables.
+
+[UPDATE] Added `ShopifyRunStruct` to `vscode_settings_utils.go` and included it in `WindmillcodeExtensionPack` struct.
+
+[PATCH] Updated `FirebaseCloudRunEmulatorsStruct` in `vscode_settings_utils.go` to include `KillPortOutputFileAcceptDefault` field.
+
+These changes improve handling of non-interactive modes across various functions and structs. Developers should now set global variables using `SetGlobalVars` and can use defaults in non-interactive mode by leveraging these updates.
