@@ -333,4 +333,65 @@ Added `FindElement` function to `utils/array_utils.go`
   - Returns index, element, and an error if the element is not found
 
 
-v5.4.3
+## v5.5.0
+7/28/2024 06:15:00 PM EST
+
+
+Updated `CHANGELOG.md`
+
+[ADDED]
+Added:
+- CDToShopifyApp function to `utils/cd_utils.go`
+
+[UPDATED]
+Updated:
+- `FindElement` function to `utils/array_utils.go`
+  - This function helps find an element in an array based on a predicate
+  - Returns index, element, and an error if the element is not found
+
+
+Updated `utils/array_utils.go`
+
+[ADDED]
+Added:
+- `FindElement` function to find an element in an array
+- `RemoveDuplicates` function to remove duplicate elements from an array
+- New conditions to `ConvertToStringArray` to handle integer types
+
+Updated `utils/file_utils.go`
+
+[ADDED]
+Added:
+- `ReadFileFromPackage` function to read a file from package directory
+- `GetFilePathFromPackage` function to get the absolute path of a file in the package
+
+Updated `utils/stdio_utils.go`
+
+[ADDED]
+Added:
+- `KillPorts` function to kill processes running on specified ports
+- Expanded `CommandOptions` struct to include `EnvVars` and `IsElevated`
+
+[DEPRECATED]
+Deprecated:
+- `RunCommandInSpecificDirectory`
+- `RunCommandAndGetOutput`
+- `RunCommandInSpecifcDirectoryAndGetOutput`
+- `RunElevatedCommand`
+
+Updated `utils/string_utils.go`
+
+[ADDED]
+Added:
+- `IntToStr` function to convert an integer to a string
+
+Updated `utils/vscode_settings_utils.go`
+
+[ADDED]
+- `WindmillcodeExtensionPack` struct to include new propertiesAdded:
+
+- `settings.WindmillcodeExtensionPack.FirebaseCloudRunEmulatorsStruct` for Firebase Cloud Run emulator settings
+- `settings.WindmillcodeExtensionPack.ProcessIfDefaultIsPresentStruct` to handle default process settings
+- `settings.WindmillcodeExtensionPack.WMLPorts` struct to define various ports
+- New methods to `WMLPorts` to get Firebase ports
+
