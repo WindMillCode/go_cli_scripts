@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -15,15 +14,16 @@ import (
 	"syscall"
 )
 
-
-type SetGlobalVarsOptions struct{
+type SetGlobalVarsOptions struct {
 	NonInteractive ProcessIfDefaultIsPresentStruct
+	Infinity       int
 }
 
 var GLOBAL_VARS SetGlobalVarsOptions
 
-func  SetGlobalVars(options  SetGlobalVarsOptions){
-	GLOBAL_VARS =options
+func SetGlobalVars(options SetGlobalVarsOptions) {
+	GLOBAL_VARS = options
+	GLOBAL_VARS.Infinity = 1<<31 - 1
 }
 
 type KillPortsOptions struct {
@@ -101,11 +101,11 @@ func KillPorts(options KillPortsOptions) {
 	case "windows":
 		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat.ps1"))
 		if err != nil {
-			log.Fatalf("Failed to extract netstat.ps1: %v", err)
+			fmt.Printf("Failed to extract netstat.ps1: %v", err)
 		}
 		tasklistPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "tasklist.ps1"))
 		if err != nil {
-			log.Fatalf("Failed to extract tasklist.ps1: %v", err)
+			fmt.Printf("Failed to extract tasklist.ps1: %v", err)
 		}
 		findProcessOptions = CommandOptions{
 			Command:   "powershell",
@@ -120,11 +120,11 @@ func KillPorts(options KillPortsOptions) {
 	case "darwin":
 		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_macos.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract netstat_macos.sh: %v", err)
+			fmt.Printf("Failed to extract netstat_macos.sh: %v", err)
 		}
 		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_macos.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract ps_macos.sh: %v", err)
+			fmt.Printf("Failed to extract ps_macos.sh: %v", err)
 		}
 		findProcessOptions = CommandOptions{
 			Command:   "sh",
@@ -139,11 +139,11 @@ func KillPorts(options KillPortsOptions) {
 	case "linux":
 		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_linux.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract netstat_linux.sh: %v", err)
+			fmt.Printf("Failed to extract netstat_linux.sh: %v", err)
 		}
 		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_linux.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract ps_linux.sh: %v", err)
+			fmt.Printf("Failed to extract ps_linux.sh: %v", err)
 		}
 		findProcessOptions = CommandOptions{
 			Command:   "sh",
@@ -158,11 +158,11 @@ func KillPorts(options KillPortsOptions) {
 	case "freebsd", "openbsd", "netbsd", "dragonfly":
 		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_bsd.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract netstat_bsd.sh: %v", err)
+			fmt.Printf("Failed to extract netstat_bsd.sh: %v", err)
 		}
 		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_bsd.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract ps_bsd.sh: %v", err)
+			fmt.Printf("Failed to extract ps_bsd.sh: %v", err)
 		}
 		findProcessOptions = CommandOptions{
 			Command:   "sh",
@@ -177,11 +177,11 @@ func KillPorts(options KillPortsOptions) {
 	case "aix", "solaris", "illumos":
 		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat_unix.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract netstat_unix.sh: %v", err)
+			fmt.Printf("Failed to extract netstat_unix.sh: %v", err)
 		}
 		psPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "ps_unix.sh"))
 		if err != nil {
-			log.Fatalf("Failed to extract ps_unix.sh: %v", err)
+			fmt.Printf("Failed to extract ps_unix.sh: %v", err)
 		}
 		findProcessOptions = CommandOptions{
 			Command:   "sh",
@@ -194,19 +194,19 @@ func KillPorts(options KillPortsOptions) {
 			GetOutput: true,
 		}
 	default:
-		log.Printf("Unsupported OS: %s", runtime.GOOS)
+		fmt.Printf("Unsupported OS: %s", runtime.GOOS)
 		return
 	}
 
 	findProcessOutput, err := RunCommandWithOptions(findProcessOptions)
 	if err != nil {
-		log.Printf("Error finding processes: %v\n", err)
+		fmt.Printf("Error finding processes: %v\n", err)
 		return
 	}
 
 	findNameOutput, err := RunCommandWithOptions(findNameOptions)
 	if err != nil {
-		log.Printf("Error finding processes: %v\n", err)
+		fmt.Printf("Error finding processes: %v\n", err)
 		return
 	}
 
@@ -301,7 +301,7 @@ func KillPorts(options KillPortsOptions) {
 				}
 
 			default:
-				log.Printf("Unsupported OS: %s", runtime.GOOS)
+				fmt.Printf("Unsupported OS: %s", runtime.GOOS)
 				return
 			}
 		}
@@ -311,7 +311,7 @@ func KillPorts(options KillPortsOptions) {
 	if options.OutputFile != "" {
 		file, err := os.Create(ConvertPathToOSFormat(options.OutputFile))
 		if err != nil {
-			log.Printf("Failed to create output file: %v\n", err)
+			fmt.Printf("Failed to create output file: %v\n", err)
 			return
 		}
 		defer file.Close()
@@ -355,7 +355,7 @@ func KillPorts(options KillPortsOptions) {
 			}
 		}
 
-		log.Printf("Process details saved to %s\n", options.OutputFile)
+		fmt.Printf("Process details saved to %s\n", options.OutputFile)
 		if options.OpenOutputFile {
 			vscodeOpenFileOptions := CommandOptions{
 				Command:     "code",
@@ -367,7 +367,7 @@ func KillPorts(options KillPortsOptions) {
 	}
 
 	if len(pidsToDelete) == 0 {
-		log.Println("No processes found on the specified ports")
+		fmt.Println("No processes found on the specified ports")
 		return
 	}
 
@@ -397,9 +397,9 @@ func KillPorts(options KillPortsOptions) {
 
 	_, err = RunCommandWithOptions(killCmdOptions)
 	if err != nil {
-		log.Printf("Failed to kill processes: %v\n", err)
+		fmt.Printf("Failed to kill processes: %v\n", err)
 	} else {
-		log.Println("Killed processes on the specified ports")
+		fmt.Println("Killed processes on the specified ports")
 	}
 }
 
@@ -417,7 +417,6 @@ type TakeVariableArgsResultStruct struct {
 
 func TakeVariableArgs(obj TakeVariableArgsStruct) TakeVariableArgsResultStruct {
 
-
 	var innerScriptArguments []string
 	prompt0 := obj.Prompt
 
@@ -431,8 +430,8 @@ func TakeVariableArgs(obj TakeVariableArgsStruct) TakeVariableArgsResultStruct {
 	var input string
 	if obj.Default != "" && GLOBAL_VARS.NonInteractive.Global {
 		input = obj.Default
-		innerScriptArguments = strings.Split(input,obj.Delimiter)
-	} else{
+		innerScriptArguments = strings.Split(input, obj.Delimiter)
+	} else {
 		fmt.Println(prompt0)
 		fmt.Println("Enter the arguments to pass to the script (press ENTER to enter another argument, leave blank and press ENTER once done):")
 		for {
@@ -684,8 +683,6 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	} else {
 		err = cmd.Run() // Default to blocking execution
 	}
-
-
 
 	if err != nil {
 		// Construct error message

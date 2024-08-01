@@ -122,7 +122,7 @@ func RemoveComments(data []byte) ([]byte, error) {
 	}
 
 	if !json.Valid(result) {
-		return nil, fmt.Errorf("invalid JSON after removing comments")
+		return nil, fmt.Errorf("Hey there your JSON is no good  after removing comments. Try to paste the json into an online JSON validator to find the issue (Comments should work fine its usually you have a comma at the end of the last element in an array in your JSON which is invalid)")
 	}
 
 	return result, nil

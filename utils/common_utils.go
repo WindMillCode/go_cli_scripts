@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -15,7 +14,6 @@ import (
 func GetType(value interface{}) string {
 	return reflect.TypeOf(value).String()
 }
-
 
 func GetParamValue(parameterName string, parameterValue interface{}) interface{} {
 	if parameterValue != nil {
@@ -48,14 +46,13 @@ func GetCurrentBranch() (string, error) {
 	return branch, nil
 }
 
-
 // Function to clear the console screen
 func ClearScreen() {
 	fmt.Print("\033[H\033[2J")
 }
 
 func LogErrorWithTraceBack(message string, err error) {
-  if err != nil {
-    log.Printf("%s: %v\n%s", message, err, debug.Stack())
-  }
+	if err != nil {
+		fmt.Printf("%s: %v\n%s", message, err, debug.Stack())
+	}
 }
