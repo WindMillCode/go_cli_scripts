@@ -8,6 +8,13 @@ import (
 
 )
 
+func ParseJSONFromString[T any](jsonString string, target *T) error {
+	err := json.Unmarshal([]byte(jsonString), target)
+	if err != nil {
+		return fmt.Errorf("error parsing JSON: %v", err)
+	}
+	return nil
+}
 
 
 func FilterJSONByPredicate(inputJSON []byte, predicate func(key string, value interface{}) bool) ([]byte, error) {

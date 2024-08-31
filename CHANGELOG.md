@@ -20,7 +20,7 @@
 * added index to element
 
 ## v1.1.0
-* added FilterMapByKeys all all the respective casting fns
+* added FilterMapByKeys all  the respective casting fns
 
 ## v1.1.1
 * added func OverwriteMap which is like js Object.assign
@@ -414,3 +414,7 @@ These changes improve handling of non-interactive modes across various functions
 
 [UPDATE]
 - console log message optimizations
+
+## v5.6.3 8/31/2024 03:58:12 PM EST
+
+[UPDATE] Added a new function `ParseJSONFromString[T any]` in `utils/json_utils.go`. This function makes it easier to parse JSON strings into Go structs, and it includes error handling to catch JSON parsing issues. If you're working with JSON in Go, this is a handy new tool to use.
