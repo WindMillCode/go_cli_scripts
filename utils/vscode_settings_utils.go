@@ -141,8 +141,25 @@ type WindmillcodeExtensionPack struct {
 	MiscOptimizeImages           MiscOptimizeImagesStruct         `json:"miscOptimizeImages"`
 	AngularFrontend              AngularFrontendStruct            `json:"angularFrontend"`
 	ShopifyRun                   ShopifyRunStruct                 `json:"shopifyRun"`
+	WxtBuildSafari               WxtBuildSafariStruct             `json:"wxtBuildSafari"`
+	AngularDeployToFirebase      AngularDeployToFirebaseStruct    `json:"angularDeployToFirebase"`
 }
 
+type AngularDeployToFirebaseStruct struct {
+	Environments                   []string `json:"environments"`
+	RunLint                        bool     `json:"runLint"`
+	RunSSGScript                   bool     `json:"runSSGScript"`
+	RemoveBuildDirectories         bool     `json:"removeBuildDirectories"`
+	DeployToSentry                 bool     `json:"deployToSentry"`
+	SentryOrg                      string   `json:"sentryOrg"`
+	SentryProject                  string   `json:"sentryProject"`
+	SentryAuthToken	               string   `json:"sentryAuthToken"`
+	DeployToFirebase               bool     `json:"deployToFirebase"`
+}
+
+type WxtBuildSafariStruct struct {
+	BundleIdentifier  string `json:"bundleIdentifier"`
+}
 
 type VSCodeSettings struct {
 	ExtensionPack WindmillcodeExtensionPack `json:"windmillcode-extension-pack-0"`

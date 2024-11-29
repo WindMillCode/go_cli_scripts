@@ -58,6 +58,10 @@ func CDToFlutterApp() {
 	CDToLocation(filepath.Join("apps", "mobile", "FlutterApp"))
 }
 
+func CDToWxtApp() {
+	CDToLocation(filepath.Join("apps", "extensions", "WxtApp"))
+}
+
 
 
 

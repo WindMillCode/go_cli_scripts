@@ -419,3 +419,22 @@ eConfig in main.go
 ## v5.6.3 8/31/2024 03:58:12 PM EST
 
 [UPDATE] Added a new function `ParseJSONFromString[T any]` in `utils/json_utils.go`. This function makes it easier to parse JSON strings into Go structs, and it includes error handling to catch JSON parsing issues. If you're working with JSON in Go, this is a handy new tool to use.
+
+## v5.6.4 [11/29/2024 11:23:45 AM EST]
+
+[UPDATE] Added a new function `ParseJSONFromString[T any]` in `utils/json_utils.go`. This function makes it easier to parse JSON strings into Go structs. It also handles errors when the JSON format is bad. If you're dealing with JSON in Go, this will save you time.
+
+[UPDATE] Added a new function `CDToWxtApp` in `utils/cd_utils.go`. It changes the directory to the location of the `WxtApp`. Use this when working with apps/extensions under the `apps/extensions/WxtApp` path.
+
+[UPDATE] Updated `WindmillcodeExtensionPack` in `utils/vscode_settings_utils.go`. Added two new fields:
+- `WxtBuildSafari`: Contains `BundleIdentifier` for Safari builds.
+- `AngularDeployToFirebase`: Includes settings for deploying Angular apps to Firebase and Sentry.
+
+`AngularDeployToFirebase` has options like:
+- **RunLint**: Run lint checks before deployment.
+- **RunSSGScript**: Run the SSG script for static site generation.
+- **RemoveBuildDirectories**: Clears old build folders.
+- **DeployToSentry**: Pushes source maps to Sentry (requires `SentryOrg`, `SentryProject`, and `SentryAuthToken`).
+- **DeployToFirebase**: Deploys the app to Firebase.
+
+If you're using these features, update your settings JSON to include these fields.
