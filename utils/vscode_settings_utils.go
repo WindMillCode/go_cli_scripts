@@ -155,6 +155,7 @@ type AngularDeployToFirebaseStruct struct {
 	SentryProject                  string   `json:"sentryProject"`
 	SentryAuthToken	               string   `json:"sentryAuthToken"`
 	DeployToFirebase               bool     `json:"deployToFirebase"`
+	FirebaseProjectId             string    `json:"firebaseProjectId"`
 }
 
 type WxtBuildSafariStruct struct {

@@ -438,3 +438,10 @@ eConfig in main.go
 - **DeployToFirebase**: Deploys the app to Firebase.
 
 If you're using these features, update your settings JSON to include these fields.
+
+
+## v5.6.5 [11/29/2024 12:23:45 AM EST]
+
+[UPDATE] `AngularDeployToFirebase` has an additional option :
+	FirebaseProjectId             string    `json:"firebaseProjectId"`
+  to specify the firebase projec
