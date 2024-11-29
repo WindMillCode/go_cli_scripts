@@ -47,12 +47,13 @@ if err != nil {
 |---------------|----------------------------------------------|
 | error         | An error if the operation fails, otherwise nil. |
 
-## [RemoveComments]
+## [CleanJSON]
 ### Usage
-`RemoveComments` removes single line (`//`) and multi-line (`/* */`) comments from a byte slice containing JSON data, ensuring the remaining data is valid JSON.
+`CleanJSON` removes single line (`//`) and multi-line (`/* */`) comments from a byte slice containing JSON data, ensuring the remaining data is valid JSON.
+It also removes trailing commans from the last element in arrays and objects.
 
 ```go
-cleanData, err := RemoveComments(jsonDataWithComments)
+cleanData, err := CleanJSON(jsonDataWithComments)
 if err != nil {
     log.Fatal(err)
 }

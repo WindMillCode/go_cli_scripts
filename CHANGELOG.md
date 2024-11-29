@@ -445,3 +445,16 @@ If you're using these features, update your settings JSON to include these field
 [UPDATE] `AngularDeployToFirebase` has an additional option :
 	FirebaseProjectId             string    `json:"firebaseProjectId"`
   to specify the firebase projec
+
+## v5.7.0 [11/29/2024 16:23:45 PM EST]
+
+[UPDATE]
+Renamed `RemoveComments` function to `CleanJSON` in `utils/json_utils.go`. It now:
+1. Removes comments (both `//` and `/* */`).
+2. Removes trailing commas from arrays and objects.
+3. Throws better error messages when the JSON is invalid.
+
+
+
+
+
