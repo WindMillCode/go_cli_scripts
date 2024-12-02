@@ -455,6 +455,23 @@ Renamed `RemoveComments` function to `CleanJSON` in `utils/json_utils.go`. It no
 3. Throws better error messages when the JSON is invalid.
 
 
+## v6.0.0 [12/1/2024 12:50:00 PM EST]
+
+[BREAKING CHANGE] Changed `cd_utils.md` to rename **CDToTestNGApp** to **CDToSeleniumApp** for clarity. Updated the description to match the function's purpose.
+
+[FIX] Renamed `CDToTestNGApp` to `CDToSeleniumApp` in `cd_utils.go`. Updated the directory path to `"apps/testing/SeleniumApp"`.
+
+[FIX] Improved the `TraverseDirectory` function in `file_utils.go` to skip missing paths gracefully. Added a check for `os.IsNotExist` errors and adjusted the behavior to print a message and continue processing.
+
+[UPDATE] Added the `ReplaceAllSubstrings` function in `string_utils.go`. Developers can use this to replace all occurrences of a target substring in a string. It includes validation to ensure the target substring is not empty.
+
+[PATCH] Enhanced the `Capitalize` function in `string_utils.go` to handle cases where the input string is empty. Returns only the suffix in such cases. Adjusted logic to properly capitalize the first letter of non-empty strings.
+
+[UPDATE] Added `omitempty` tags to multiple struct fields in `vscode_settings_utils.go` for improved JSON serialization. This change reduces unnecessary fields in serialized outputs when values are empty.
+
+[BUG] Fixed directory paths in `testng_utils.go` to ensure compatibility with OS-specific formats. Updated the `EnvVarsFile` and `TestNGFolder` default paths using `JoinAndConvertPathToOSFormat`.
+
+[PATCH] Added a new struct `MiscReinitializeProjectStruct` in `vscode_settings_utils.go` to support reinitialization logic for projects. Includes fields like `ProjectName`, `OrganizationName`, and various platform-specific configuration options.
 
 
 

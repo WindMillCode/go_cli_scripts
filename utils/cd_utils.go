@@ -50,8 +50,8 @@ func CDToFlaskApp() {
 	CDToLocation(filepath.Join("apps", "backend", "FlaskApp"))
 }
 
-func CDToTestNGApp() {
-	CDToLocation(filepath.Join("apps", "testing", "testng"))
+func CDToSeleniumApp() {
+	CDToLocation(filepath.Join("apps", "testing", "SeleniumApp"))
 }
 
 func CDToFlutterApp() {

@@ -409,7 +409,11 @@ type TraverseDirectoryParams struct {
 func TraverseDirectory(config TraverseDirectoryParams) error {
 	return filepath.Walk(config.RootDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			return err // Return any error that occurs during traversal
+			if os.IsNotExist(err) {
+				fmt.Printf("Skipping missing path: %s\n", path)
+				return nil // Gracefully skip paths that no longer exist
+			}
+			return err // Return other errors
 		}
 
 		// Apply the filter function if provided
@@ -421,6 +425,7 @@ func TraverseDirectory(config TraverseDirectoryParams) error {
 		return nil
 	})
 }
+
 
 func DownloadFile(url, localPath string) error {
 	outFile, err := os.Create(localPath)

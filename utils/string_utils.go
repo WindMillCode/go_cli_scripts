@@ -35,6 +35,16 @@ func UnicodeUnquote(bs []byte) []byte {
 	})
 }
 
+func ReplaceAllSubstrings(input string, target string, replacement string) string {
+	if target == "" {
+		fmt.Println("Target substring cannot be empty.")
+		return input
+	}
+
+	// Replace all occurrences using strings.ReplaceAll
+	result := strings.ReplaceAll(input, target, replacement)
+	return result
+}
 
 
 type TruncateStringByRegexOptions struct {
@@ -91,7 +101,11 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 	}
 
 	result.Capitalize = func(stripSuffix bool, suffix string) string {
-		return strings.ToTitle(grabString(stripSuffix, result))+suffix
+		str := grabString(stripSuffix, result)
+		if len(str) == 0 {
+			return suffix // Return only the suffix if the string is empty
+		}
+		return strings.ToUpper(str[:1]) + str[1:] + suffix
 	}
 
 	result.Dasherize = func(stripSuffix bool, suffix string) string {

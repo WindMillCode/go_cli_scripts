@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/windmillcode/go_cli_scripts/v6/utils"
 	"os"
 	"strings"
-	"github.com/windmillcode/go_cli_scripts/v5/utils"
 )
 
 func main() {

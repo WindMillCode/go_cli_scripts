@@ -25,7 +25,7 @@ CDToLocation(location, opts...)
 - **CDToAngularApp**: Changes the directory to the Angular application within a predefined project structure.
 - **CDToFirebaseApp**: Navigates to the Firebase application directory.
 - **CDToFlaskApp**: Changes the current working directory to the Flask backend application.
-- **CDToTestNGApp**: Sets the current directory to the TestNG application's location.
+- **CDToSeleniumApp**: Sets the current directory to the TestNG application's location.
 - **CDToFlutterApp**: Moves the working directory to the Flutter mobile application's location.
 
 Each of these functions leverages `CDToLocation` to change the working directory, providing a convenient way to navigate through a project's directory structure programmatically.
