@@ -473,5 +473,15 @@ Renamed `RemoveComments` function to `CleanJSON` in `utils/json_utils.go`. It no
 
 [PATCH] Added a new struct `MiscReinitializeProjectStruct` in `vscode_settings_utils.go` to support reinitialization logic for projects. Includes fields like `ProjectName`, `OrganizationName`, and various platform-specific configuration options.
 
+## v6.0.1 [12/7/2024 12:03:22 PM EST]
 
+[UPDATE] Updated the `go get` command in the `README.md` file from `v5` to `v6` for the `go_cli_scripts` package. If you're integrating the library, make sure to use the updated version `v6`.
+
+[UPDATE] Updated import statements in the `README.md` file from `v5` to `v6` for the `go_cli_scripts` package. Developers need to replace `v5` with `v6` in their imports.
+
+[CHECKPOINT] Added a new function `CDToReactNativeExpoApp` in `utils/cd_utils.go` that lets you navigate to the React Native Expo app directory. If you're working on this project type, you can now use this utility function.
+
+[PATCH] Introduced a new file `utils/vscode_tasks_utils.go` that handles creating and reading `tasks.json` for VSCode. If you're dealing with VSCode tasks, this file has utilities to help generate or read dynamic task configurations.
+
+[BUG] Fixed an issue in `utils/vscode_tasks_utils.go` where the `CreateTasksJson` function might fail if the `tasks.json` file didn’t exist. The function now creates the file if it’s missing. Developers can now safely use this utility without manually creating the file.
 
