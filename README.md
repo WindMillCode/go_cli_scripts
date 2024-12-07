@@ -31,7 +31,7 @@ To integrate the `go_cli_scripts` package into your Go project, follow these ste
 3. Use the `go get` command to fetch the package from its repository. Since this is a local package, you would typically copy it into your project's directory or reference it locally. If it were hosted, you would use a command like:
 
 ```sh
-go get github.com/windmillcode/go_cli_scripts/v5/utils
+go get github.com/windmillcode/go_cli_scripts/v6/utils
 ```
 
 
@@ -39,7 +39,7 @@ go get github.com/windmillcode/go_cli_scripts/v5/utils
 
    ```go
    import (
-       "github.com/windmillcode/go_cli_scripts/v5/utils"
+       "github.com/windmillcode/go_cli_scripts/v6/utils"
    )
    ```
 
