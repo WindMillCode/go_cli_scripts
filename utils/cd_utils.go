@@ -50,6 +50,10 @@ func CDToFlaskApp() {
 	CDToLocation(filepath.Join("apps", "backend", "FlaskApp"))
 }
 
+func CDToLaravelApp() {
+	CDToLocation(filepath.Join("apps", "backend", "LaravelApp"))
+}
+
 func CDToSeleniumApp() {
 	CDToLocation(filepath.Join("apps", "testing", "SeleniumApp"))
 }

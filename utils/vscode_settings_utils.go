@@ -96,13 +96,13 @@ func (w *WMLPorts) GetFirebasePorts() []int {
 }
 
 type MiscReinitializeProjectStruct struct {
-	ProjectName                      string `json:"projectName,omitempty"`
-	OrganizationName                 string `json:"organizationName,omitempty"`
-	AmountToAppendToPortNumberString int    `json:"amountToAppendToPortNumberString,omitempty"`
-	VCSPrivateKey                    string `json:"vcsPrivateKey,omitempty"`
-	WebSEODescription                string `json:"webSEODescription,omitempty"`
-	WebSEOKeywords                   string `json:"webSEOKeywords,omitempty"`
-	ProxyURLs                        []string `json:"proxyURLs,omitempty"`
+	AmountToAppendToPortNumberString  int      `json:"amountToAppendToPortNumberString,omitempty"`
+	ProjectName                       string   `json:"projectName,omitempty"`
+	OrganizationName                  string   `json:"organizationName,omitempty"`
+	VCSPrivateKey                     string   `json:"vcsPrivateKey,omitempty"`
+	WebSEODescription                 string   `json:"webSEODescription,omitempty"`
+	WebSEOKeywords                    string   `json:"webSEOKeywords,omitempty"`
+	ProxyURLs                         []string `json:"proxyURLs"`
 	FlutterAndroidGoogleAdsID        string `json:"flutterAndroidGoogleAdsID,omitempty"`
 	FlutterAndroidGoogleApplicationID string `json:"flutterAndroidGoogleApplicationID,omitempty"`
 	FlutterIosGoogleAdsID            string `json:"flutterIosGoogleAdsID,omitempty"`

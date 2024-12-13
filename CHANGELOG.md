@@ -485,3 +485,9 @@ Renamed `RemoveComments` function to `CleanJSON` in `utils/json_utils.go`. It no
 
 [BUG] Fixed an issue in `utils/vscode_tasks_utils.go` where the `CreateTasksJson` function might fail if the `tasks.json` file didn’t exist. The function now creates the file if it’s missing. Developers can now safely use this utility without manually creating the file.
 
+## v6.0.2 [12/13/2024 01:47:00 PM EST]
+
+[UPDATE] Added a new function `CDToLaravelApp` in `utils/cd_utils.go`. It helps developers quickly change directories to the Laravel app folder at `apps/backend/LaravelApp`. Super handy for Laravel developers.
+
+
+[PATCH] Fixed `ProxyURLs` in `MiscReinitializeProjectStruct` in `utils/vscode_settings_utils.go`. It will now always include `ProxyURLs`, even if it’s empty. This ensures consistency for developers relying on this property during JSON handling.
