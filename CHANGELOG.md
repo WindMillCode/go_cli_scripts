@@ -491,3 +491,11 @@ Renamed `RemoveComments` function to `CleanJSON` in `utils/json_utils.go`. It no
 
 
 [PATCH] Fixed `ProxyURLs` in `MiscReinitializeProjectStruct` in `utils/vscode_settings_utils.go`. It will now always include `ProxyURLs`, even if it’s empty. This ensures consistency for developers relying on this property during JSON handling.
+
+## v6.0.3 [12/14/2024 10:45:23 AM EST]
+
+[UPDATE]
+Added two new properties `MySQL0`, `ReactNativeExpoRun0`, and `LaravelRun0` to the `WMLPorts` struct in `utils/vscode_settings_utils.go`. Developers can now specify ports for MySQL, React Native Expo, and Laravel in their JSON configurations.
+
+[CHECKPOINT]
+This update extends the WMLPorts struct to support more frameworks and services. Be sure to update any dependent JSON files to include these new properties if needed.

@@ -71,6 +71,9 @@ type WMLPorts struct {
 	FlaskRun0                  int `json:"Flask_Run_0,omitempty"`
 	FlaskTest0                 int `json:"Flask_Test_0,omitempty"`
 	Postgres0                  int `json:"Postgres_0,omitempty"`
+	MySQL0                     int `json:"My_SQL_0,omitempty"`
+  ReactNativeExpoRun0        int `json:"React_Native_Expo_Run_0,omitempty"`
+  LaravelRun0                int `json:"Laravel_Run_0,omitempty"`
 	FirebaseEmulatorUI0        int `json:"Firebase_Emulator_UI_0,omitempty"`
 	FirebaseEmulatorAuth0      int `json:"Firebase_Emulator_Auth_0,omitempty"`
 	FirebaseEmulatorStorage0   int `json:"Firebase_Emulator_Storage_0,omitempty"`
