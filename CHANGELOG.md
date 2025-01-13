@@ -499,3 +499,10 @@ Added two new properties `MySQL0`, `ReactNativeExpoRun0`, and `LaravelRun0` to t
 
 [CHECKPOINT]
 This update extends the WMLPorts struct to support more frameworks and services. Be sure to update any dependent JSON files to include these new properties if needed.
+
+## v6.0.4 [1/13/2025 1:43:12 PM EST]
+
+[UPDATE]
+**File:** `utils/stdio_utils.go`
+**What changed:** Added a new property `ExitRegex` in the `CommandOptions` struct.
+**Why it matters:** Developers can now specify to decide when a process should be terminated

@@ -597,19 +597,20 @@ func (w DualWriter) Write(p []byte) (n int, err error) {
 }
 
 type CommandOptions struct {
-	CmdObj             *exec.Cmd
-	Self               *CommandOptions
-	Command            string
-	Args               []string
-	TargetDir          string
-	GetOutput          bool
-	PrintOutput        bool
-	PrintOutputOnly    bool
-	PanicOnError       bool
-	NonBlocking        bool
-	IsInputFromProgram bool
-	IsElevated         bool
-	EnvVars            map[string]string
+	CmdObj             							*exec.Cmd
+	Self               							*CommandOptions
+	Command            							string
+	Args               							[]string
+	TargetDir          							string
+	GetOutput          							bool
+	PrintOutput        							bool
+	PrintOutputOnly    							bool
+	PanicOnError       							bool
+	NonBlocking        							bool
+	IsInputFromProgram 							bool
+	IsElevated         							bool
+	EnvVars            							map[string]string
+  ExitRegex          							string
 }
 
 func (c CommandOptions) EndProcess() error {
@@ -641,72 +642,207 @@ func RunCommandWithOptions(options CommandOptions) (string, error) {
 	if options.TargetDir != "" {
 		cmd.Dir = options.TargetDir
 	}
-
 	if options.IsInputFromProgram != true {
 		cmd.Stdin = os.Stdin
 	}
-
 	if options.EnvVars != nil {
 		for key, value := range options.EnvVars {
 			os.Setenv(key, value)
-			// cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", key, value))
 		}
 		cmd.Env = nil
 	}
 
 	// Creating buffers and DualWriters for stdout and stderr
-	var stdoutBuffer, stderrBuffer bytes.Buffer
-	stdoutWriter := DualWriter{TerminalWriter: os.Stdout, Buffer: &stdoutBuffer}
-	stderrWriter := DualWriter{TerminalWriter: os.Stderr, Buffer: &stderrBuffer}
+	if options.ExitRegex == "" {
 
-	cmd.Stdout = stdoutWriter
-	if options.PrintOutput == false {
-		cmd.Stdout = &stdoutBuffer
-	}
-	if options.PrintOutputOnly == true {
-		cmd.Stdout = os.Stdout
-	}
-	cmd.Stderr = stderrWriter
+		var stdoutBuffer, stderrBuffer bytes.Buffer
+		stdoutWriter := DualWriter{TerminalWriter: os.Stdout, Buffer: &stdoutBuffer}
+		stderrWriter := DualWriter{TerminalWriter: os.Stderr, Buffer: &stderrBuffer}
 
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	go func() {
-		sig := <-sigs
-		if cmd.Process != nil {
-			cmd.Process.Signal(sig)
+		cmd.Stdout = stdoutWriter
+		if options.PrintOutput == false {
+			cmd.Stdout = &stdoutBuffer
 		}
-	}()
+		if options.PrintOutputOnly == true {
+			cmd.Stdout = os.Stdout
+		}
+		cmd.Stderr = stderrWriter
 
-	var err error
-	if options.NonBlocking {
-		err = cmd.Start() // Non-blocking execution if NonBlocking is true
+		sigs := make(chan os.Signal, 1)
+		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+		go func() {
+			sig := <-sigs
+			if cmd.Process != nil {
+				cmd.Process.Signal(sig)
+			}
+		}()
+
+		var err error
+		if options.NonBlocking {
+			err = cmd.Start() // Non-blocking execution if NonBlocking is true
+		} else {
+			err = cmd.Run() // Default to blocking execution
+		}
+
+		if err != nil {
+			// Construct error message
+			msg := fmt.Sprintf(
+				"Could not run command %s %s\n\nThis was the err: %s \n %s\n\n",
+				options.Command,
+				strings.Join(options.Args, " "),
+				err.Error(),
+				fmt.Sprintf("Standard Error: %s\n", stderrBuffer.String()),
+			)
+			fmt.Println(msg)
+
+			if options.PanicOnError {
+				panic(msg)
+			}
+
+			return "", err
+		}
+
+		if options.GetOutput {
+			return stdoutBuffer.String(), nil
+		}
+
+		return "", nil
+
 	} else {
-		err = cmd.Run() // Default to blocking execution
-	}
 
-	if err != nil {
-		// Construct error message
-		msg := fmt.Sprintf(
-			"Could not run command %s %s\n\nThis was the err: %s \n %s\n\n",
-			options.Command,
-			strings.Join(options.Args, " "),
-			err.Error(),
-			fmt.Sprintf("Standard Error: %s\n", stderrBuffer.String()),
-		)
-		fmt.Println(msg)
+    re, compileErr := regexp.Compile(options.ExitRegex)
+    if compileErr != nil {
+      return "", fmt.Errorf("invalid regex pattern '%s': %w", options.ExitRegex, compileErr)
+    }
 
-		if options.PanicOnError {
-			panic(msg)
-		}
+    // We'll read from StdoutPipe to monitor lines in real-time
+    stdoutPipe, err := cmd.StdoutPipe()
+    if err != nil {
+      return "", err
+    }
+    stderrPipe, err := cmd.StderrPipe()
+    if err != nil {
+      return "", err
+    }
 
-		return "", err
-	}
+    // Start the command
+    if options.NonBlocking {
+      // Non-blocking: start now, but we'll watch the stdout in a goroutine
+      err = cmd.Start()
+      if err != nil {
+        return "", err
+      }
+    } else {
+      // We'll block on .Run() after we finish setting up the reading logic
+      // but we must start first to get the pipes.
+      err = cmd.Start()
+      if err != nil {
+        return "", err
+      }
+    }
 
-	if options.GetOutput {
-		return stdoutBuffer.String(), nil
-	}
+    // Buffers for final output
+    var stdoutBuffer, stderrBuffer bytes.Buffer
 
-	return "", nil
+    // Start a goroutine to handle stderr (if you want to capture it)
+    go func() {
+      ioScanner := bufio.NewScanner(stderrPipe)
+      for ioScanner.Scan() {
+        line := ioScanner.Text()
+        stderrBuffer.WriteString(line + "\n")
+        // Optionally, print live
+        if options.PrintOutput || options.PrintOutputOnly {
+          fmt.Fprintln(os.Stderr, line)
+        }
+      }
+    }()
+
+    // We'll monitor stdout line by line for a match
+    foundRegex := make(chan bool, 1)
+    go func() {
+      ioScanner := bufio.NewScanner(stdoutPipe)
+      for ioScanner.Scan() {
+        line := ioScanner.Text()
+
+        // Always store in the buffer
+        stdoutBuffer.WriteString(line + "\n")
+
+        // Optionally print
+        if options.PrintOutput || options.PrintOutputOnly {
+          fmt.Fprintln(os.Stdout, line)
+        }
+
+        // Check regex
+        if re.MatchString(line) {
+          foundRegex <- true
+          return
+        }
+      }
+      close(foundRegex)
+    }()
+
+    // Also forward signals
+    sigs := make(chan os.Signal, 1)
+    signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+    go func() {
+      sig := <-sigs
+      if cmd.Process != nil {
+        cmd.Process.Signal(sig)
+      }
+    }()
+
+    if options.NonBlocking {
+      // NonBlocking: we wait in the background for a match
+      go func() {
+        <-foundRegex
+        // We found the line => kill the process or do what you'd like
+        cmd.Process.Kill()
+      }()
+      return "", nil
+
+    } else {
+
+      done := make(chan error, 1)
+      go func() {
+        done <- cmd.Wait()
+      }()
+
+      select {
+      case <-foundRegex:
+
+        _ = cmd.Process.Kill()
+
+        // Optionally wait for final exit
+        <-done
+
+      case err = <-done:
+        // The process ended on its own
+      }
+
+      // Now check for any run error
+      if err != nil {
+        msg := fmt.Sprintf(
+          "Could not run command %s %s\n\nThis was the err: %s\n%s\n\n",
+          options.Command,
+          strings.Join(options.Args, " "),
+          err.Error(),
+          fmt.Sprintf("Standard Error: %s\n", stderrBuffer.String()),
+        )
+        fmt.Println(msg)
+        if options.PanicOnError {
+          panic(msg)
+        }
+        return stdoutBuffer.String(), err
+      }
+
+      // Finally, return the captured stdout if requested
+      if options.GetOutput {
+        return stdoutBuffer.String(), nil
+      }
+      return "", nil
+    }
+  }
+
 }
 
 // Deprecated: Its recommended to use RunCommandWithOptions instead. Wont be moved anytime soon
