@@ -452,6 +452,7 @@ func DownloadFile(url, localPath string) error {
 	return nil
 }
 
+// Deprecated:  utils.ExtractArchiveWithOptions instead
 func ExtractArchive(archiveURL string, removeArchiveFile bool) string {
 	// Get the filename from the URL
 	segments := strings.Split(archiveURL, "/")
@@ -493,6 +494,64 @@ func ExtractArchive(archiveURL string, removeArchiveFile bool) string {
 
 	return filepath.Dir(archivePath)
 }
+
+type ExtractArchiveOptions struct {
+  ArchiveURL        string
+  DestinationPath   string
+  RemoveArchiveFile bool
+}
+
+func ExtractArchiveWithOptions(options ExtractArchiveOptions) string {
+  var archivePath string
+
+  if strings.HasPrefix(options.ArchiveURL, "http://") || strings.HasPrefix(options.ArchiveURL, "https://") {
+    segments := strings.Split(options.ArchiveURL, "/")
+    filename := segments[len(segments)-1]
+    sourceDir, err := GetSourceFilePath()
+    if err != nil {
+      return fmt.Sprintf("error getting source file directory: %v", err)
+    }
+    archivePath = JoinAndConvertPathToOSFormat(sourceDir, filename)
+    if _, err := os.Stat(archivePath); os.Iswnloading from %s\n", options.ArchiveURL)
+      if err := DownloadFile(optioNotExist(err) {
+      fmt.Printf("File not found locally. Dons.ArchiveURL, archivePath); err != nil {
+        return fmt.Sprintf("error downloading file: %v", err)
+      }
+    }
+  } else {
+    if !filepath.IsAbs(options.ArchiveURL) {
+      sourceDir, err := GetSourceFilePath()
+      if err != nil {
+        return fmt.Sprintf("error getting source file directory: %v", err)
+      }
+      archivePath = JoinAndConvertPathToOSFormat(sourceDir, options.ArchiveURL)
+    } else {
+      archivePath = JoinAndConvertPathToOSFormat("", options.ArchiveURL)
+    }
+  }
+
+  if err := os.MkdirAll(options.DestinationPath, os.ModePerm); err != nil {
+    return fmt.Sprintf("error creating destination directory: %v", err)
+  }
+
+  sevenZCommandOptions := CommandOptions{
+    Command:   "7z",
+    Args:      []string{"x", archivePath, "-aoa", fmt.Sprintf("-o%s", options.DestinationPath)},
+    TargetDir: filepath.Dir(archivePath),
+  }
+  RunCommandWithOptions(sevenZCommandOptions)
+
+  fmt.Printf("Archive extracted successfully to: %s\n", options.DestinationPath)
+  if options.RemoveArchiveFile {
+    if err := os.Remove(archivePath); err != nil {
+      return fmt.Sprintf("error removing archive file: %v", err)
+    }
+    fmt.Println("Archive file deleted successfully")
+  }
+
+  return options.DestinationPath
+}
+
 
 func GetSourceFilePath() (string, error) {
 	executable, err := os.Executable()

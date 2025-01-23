@@ -1,6 +1,6 @@
 module github.com/windmillcode/go_cli_scripts/v6
 
-go 1.21
+go 1.23
 
 replace github.com/windmillcode/go_cli_scripts/utils => /go_cli_scripts/utils
 
