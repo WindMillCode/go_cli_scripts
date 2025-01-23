@@ -512,9 +512,9 @@ func ExtractArchiveWithOptions(options ExtractArchiveOptions) string {
       return fmt.Sprintf("error getting source file directory: %v", err)
     }
     archivePath = JoinAndConvertPathToOSFormat(sourceDir, filename)
-    if _, err := os.Stat(archivePath); os.Iswnloading from %s\n", options.ArchiveURL)
-      if err := DownloadFile(optioNotExist(err) {
-      fmt.Printf("File not found locally. Dons.ArchiveURL, archivePath); err != nil {
+    if _, err := os.Stat(archivePath); os.IsNotExist(err) {
+      fmt.Printf("File not found locally. Downloading from %s\n", options.ArchiveURL)
+      if err := DownloadFile(options.ArchiveURL, archivePath); err != nil {
         return fmt.Sprintf("error downloading file: %v", err)
       }
     }
@@ -551,6 +551,8 @@ func ExtractArchiveWithOptions(options ExtractArchiveOptions) string {
 
   return options.DestinationPath
 }
+
+
 
 
 func GetSourceFilePath() (string, error) {

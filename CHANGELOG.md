@@ -507,10 +507,10 @@ This update extends the WMLPorts struct to support more frameworks and services.
 **What changed:** Added a new property `ExitRegex` in the `CommandOptions` struct.
 **Why it matters:** Developers can now specify to decide when a process should be terminated
 
-## v6.0.5  [1/23/2025 4:53:06 PM EST]
+## v6.0.6  [1/23/2025 4:53:06 PM EST]
 
 [UPDATE] Updated `go.mod` to require Go version 1.23. This means you'll need Go 1.23 or newer to use this module. ([Go](https://go.dev/doc/modules/gomod-ref?utm_source=chatgpt.com))
 
 [DEPRECATED] Added a note that `ExtractArchive` function in `utils/file_utils.go` is now deprecated. You should start using `ExtractArchiveWithOptions` instead. ([HashiCorp Developer](https://developer.hashicorp.com/terraform/plugin/sdkv2/best-practices/deprecations?utm_source=chatgpt.com))
 
-[UPDATE] Introduced a new function `ExtractArchiveWithOptions` in `utils/file_utils.go`. This function gives you more flexibility when extracting archives. 
+[UPDATE] Introduced a new function `ExtractArchiveWithOptions` in `utils/file_utils.go`. This function gives you more flexibility when extracting archives.
