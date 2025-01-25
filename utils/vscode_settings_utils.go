@@ -119,52 +119,70 @@ type MiscReinitializeProjectStruct struct {
 	OperaDriverPath                  string `json:"operaDriverPath,omitempty"`
 	EdgeDriverPath 	               string `json:"edgeDriverPath,omitempty"`
 }
+type NPMInstallAppDepsStruct struct {
+  AppLocations []string `json:"appLocations,omitempty"`
+}
+type NPMInstallSpecifcPackagesStruct struct {
+  NPMInstallAppDepsStruct
+}
+type PythonInstallAppDepsStruct struct {
+	NPMInstallAppDepsStruct
+}
+type PythonInstallSpecifcPackagesStruct struct {
+	NPMInstallAppDepsStruct
+}
 type WindmillcodeExtensionPack struct {
-	MiscReinitializeProject      MiscReinitializeProjectStruct   `json:"miscReinitializeProject,omitempty"`
-	TasksToRunOnFolderOpen       []string                        `json:"tasksToRunOnFolderOpen,omitempty"`
-	FlaskBackendDevHelperScript  string                          `json:"flaskBackendDevHelperScript,omitempty"`
-	FlaskBackendTestHelperScript string                          `json:"flaskBackendTestHelperScript,omitempty"`
-	ProxyURLs                    string                          `json:"proxyURLs,omitempty"`
-	SQLDockerContainerName       string                          `json:"sqlDockerContainerName,omitempty"`
-	DatabaseName                 string                          `json:"databaseName,omitempty"`
-	DatabaseOptions              []string                        `json:"databaseOptions,omitempty"`
-	Environments                 []string                        `json:"environments,omitempty"`
-	SentryDSN                    string                          `json:"sentryDSN,omitempty"`
-	OpenAIAPIKey0                string                          `json:"openAIAPIKey0,omitempty"`
-	OpenAIAPIBase0               string                          `json:"openAIAPIBase0,omitempty"`
-	LangCodes0                   string                          `json:"langCodes0,omitempty"`
-	PythonVersion0               string                          `json:"pythonVersion0,omitempty"`
-	NodeJSVersion0               string                          `json:"nodeJSVersion0,omitempty"`
-	JavaVersion0                 string                          `json:"javaVersion0,omitempty"`
-	GoVersion0                   string                          `json:"goVersion0,omitempty"`
-	RubyVersion0                 string                          `json:"rubyVersion0,omitempty"`
-	DartVersion0                 string                          `json:"dartVersion0,omitempty"`
-	CSharpVersion0               string                          `json:"cSharpVersion0,omitempty"`
-	SwiftVersion0                string                          `json:"swiftVersion0,omitempty"`
-	PHPVersion0                  string                          `json:"phpVersion0,omitempty"`
-	RustVersion0                 string                          `json:"rustVersion0,omitempty"`
-	KotlinVersion0               string                          `json:"kotlinVersion0,omitempty"`
-	ScalaVersion0                string                          `json:"scalaVersion0,omitempty"`
-	PerlVersion0                 string                          `json:"perlVersion0,omitempty"`
-	LuaVersion0                  string                          `json:"luaVersion0,omitempty"`
-	HaskellVersion0              string                          `json:"haskellVersion0,omitempty"`
-	ClojureVersion0              string                          `json:"clojureVersion0,omitempty"`
-	ErlangVersion0               string                          `json:"erlangVersion0,omitempty"`
-	JuliaVersion0                string                          `json:"juliaVersion0,omitempty"`
-	ObjectiveCVersion0           string                          `json:"objectiveCVersion0,omitempty"`
-	FSharpVersion0               string                          `json:"fSharpVersion0,omitempty"`
-	VisualBasicVersion0          string                          `json:"visualBasicVersion0,omitempty"`
-	Ports                        WMLPorts                        `json:"ports,omitempty"`
-	ProcessIfDefaultIsPresent    ProcessIfDefaultIsPresentStruct `json:"processIfDefaultIsPresent,omitempty"`
-	FirebaseCloudRunEmulators    FirebaseCloudRunEmulatorsStruct `json:"firebaseCloudRunEmulators,omitempty"`
-	FlutterMobileBuild           FlutterMobileBuildStruct        `json:"flutterMobileBuild,omitempty"`
-	GitCloneSubdirs              GitCloneSubdirsStruct           `json:"gitCloneSubdirs,omitempty"`
-	GitPushingWorkToGitRemote    GitPushingWorkToGitRemoteStruct `json:"gitPushingWorkingToGitRemote,omitempty"`
-	MiscOptimizeImages           MiscOptimizeImagesStruct        `json:"miscOptimizeImages,omitempty"`
-	AngularFrontend              AngularFrontendStruct           `json:"angularFrontend,omitempty"`
-	ShopifyRun                   ShopifyRunStruct                `json:"shopifyRun,omitempty"`
-	WxtBuildSafari               WxtBuildSafariStruct            `json:"wxtBuildSafari,omitempty"`
-	AngularDeployToFirebase      AngularDeployToFirebaseStruct   `json:"angularDeployToFirebase,omitempty"`
+	PythonInstallAppDeps         							PythonInstallAppDepsStruct            `json:"pythonInstallAppDeps,omitempty"`
+	PythonInstallSpecifcPackages 							PythonInstallSpecifcPackagesStruct    `json:"pythonInstallSpecifcPackages,omitempty"`
+	NPMInstallSpecifcPackages    							NPMInstallSpecifcPackagesStruct 		  `json:"npmInstallSpecifcPackages,omitempty"`
+	NPMInstallAppDeps            							NPMInstallAppDepsStruct         		  `json:"npmInstallAppDeps,omitempty"`
+	MiscReinitializeProject      							MiscReinitializeProjectStruct   		  `json:"miscReinitializeProject,omitempty"`
+	TasksToRunOnFolderOpen       							[]string                        		  `json:"tasksToRunOnFolderOpen,omitempty"`
+	FlaskBackendDevHelperScript  							string                          		  `json:"flaskBackendDevHelperScript,omitempty"`
+	FlaskBackendTestHelperScript 							string                          		  `json:"flaskBackendTestHelperScript,omitempty"`
+	ProxyURLs                    							string                          		  `json:"proxyURLs,omitempty"`
+	SQLDockerContainerName       							string                          		  `json:"sqlDockerContainerName,omitempty"`
+	DatabaseName                 							string                          		  `json:"databaseName,omitempty"`
+	DatabaseOptions              							[]string                        		  `json:"databaseOptions,omitempty"`
+	Environments                 							[]string                        		  `json:"environments,omitempty"`
+	SentryDSN                    							string                          		  `json:"sentryDSN,omitempty"`
+	OpenAIAPIKey0                							string                          		  `json:"openAIAPIKey0,omitempty"`
+	OpenAIAPIBase0               							string                          		  `json:"openAIAPIBase0,omitempty"`
+	LangCodes0                   							string                          		  `json:"langCodes0,omitempty"`
+	PythonVersion0               							string                          		  `json:"pythonVersion0,omitempty"`
+	NodeJSVersion0               							string                          		  `json:"nodeJSVersion0,omitempty"`
+	JavaVersion0                 							string                          		  `json:"javaVersion0,omitempty"`
+	GoVersion0                   							string                          		  `json:"goVersion0,omitempty"`
+	RubyVersion0                 							string                          		  `json:"rubyVersion0,omitempty"`
+	DartVersion0                 							string                          		  `json:"dartVersion0,omitempty"`
+	CSharpVersion0               							string                          		  `json:"cSharpVersion0,omitempty"`
+	SwiftVersion0                							string                          		  `json:"swiftVersion0,omitempty"`
+	PHPVersion0                  							string                          		  `json:"phpVersion0,omitempty"`
+	RustVersion0                 							string                          		  `json:"rustVersion0,omitempty"`
+	KotlinVersion0               							string                          		  `json:"kotlinVersion0,omitempty"`
+	ScalaVersion0                							string                          		  `json:"scalaVersion0,omitempty"`
+	PerlVersion0                 							string                          		  `json:"perlVersion0,omitempty"`
+	LuaVersion0                  							string                          		  `json:"luaVersion0,omitempty"`
+	HaskellVersion0              							string                          		  `json:"haskellVersion0,omitempty"`
+	ClojureVersion0              							string                          		  `json:"clojureVersion0,omitempty"`
+	ErlangVersion0               							string                          		  `json:"erlangVersion0,omitempty"`
+	JuliaVersion0                							string                          		  `json:"juliaVersion0,omitempty"`
+	ObjectiveCVersion0           							string                          		  `json:"objectiveCVersion0,omitempty"`
+	FSharpVersion0               							string                          		  `json:"fSharpVersion0,omitempty"`
+	VisualBasicVersion0          							string                          		  `json:"visualBasicVersion0,omitempty"`
+	NodeJSAppLocations           							[]string                        		  `json:"nodeJSAppLocations,omitempty"`
+	PythonAppLocations           							[]string                        		  `json:"pythonAppLocations,omitempty"`
+	Ports                        							WMLPorts                        		  `json:"ports,omitempty"`
+	ProcessIfDefaultIsPresent    							ProcessIfDefaultIsPresentStruct 		  `json:"processIfDefaultIsPresent,omitempty"`
+	FirebaseCloudRunEmulators    							FirebaseCloudRunEmulatorsStruct 		  `json:"firebaseCloudRunEmulators,omitempty"`
+	FlutterMobileBuild           							FlutterMobileBuildStruct        		  `json:"flutterMobileBuild,omitempty"`
+	GitCloneSubdirs              							GitCloneSubdirsStruct           		  `json:"gitCloneSubdirs,omitempty"`
+	GitPushingWorkToGitRemote    							GitPushingWorkToGitRemoteStruct 		  `json:"gitPushingWorkingToGitRemote,omitempty"`
+	MiscOptimizeImages           							MiscOptimizeImagesStruct        		  `json:"miscOptimizeImages,omitempty"`
+	AngularFrontend              							AngularFrontendStruct           		  `json:"angularFrontend,omitempty"`
+	ShopifyRun                   							ShopifyRunStruct                		  `json:"shopifyRun,omitempty"`
+	WxtBuildSafari               							WxtBuildSafariStruct            		  `json:"wxtBuildSafari,omitempty"`
+	AngularDeployToFirebase      							AngularDeployToFirebaseStruct   		  `json:"angularDeployToFirebase,omitempty"`
 }
 
 type AngularDeployToFirebaseStruct struct {
@@ -207,6 +225,21 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 	if err != nil {
 		LogErrorWithTraceBack("Error unmarshalling JSON:", err)
 		return settings, err
+	}
+	if settings.ExtensionPack.NodeJSAppLocations == nil{
+		settings.ExtensionPack.NodeJSAppLocations = []string{
+			JoinAndConvertPathToOSFormat("./apps/frontend/AngularApp"),
+			JoinAndConvertPathToOSFormat("./apps/cloud/FirebaseApp"),
+			JoinAndConvertPathToOSFormat("./apps/extensions/WxtApp"),
+			JoinAndConvertPathToOSFormat("./apps/mobile/ReactNativeExpoApp"),
+			JoinAndConvertPathToOSFormat("."),
+		}
+	}
+	if settings.ExtensionPack.PythonAppLocations == nil{
+		settings.ExtensionPack.PythonAppLocations = []string{
+			JoinAndConvertPathToOSFormat("./apps/backend/FlaskApp"),
+			JoinAndConvertPathToOSFormat("."),
+		}
 	}
 	return settings, nil
 }
