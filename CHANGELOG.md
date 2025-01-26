@@ -515,11 +515,15 @@ This update extends the WMLPorts struct to support more frameworks and services.
 
 [UPDATE] Introduced a new function `ExtractArchiveWithOptions` in `utils/file_utils.go`. This function gives you more flexibility when extracting archives.
 
-## v6.0.7
-[1/25/2025 10:45:12 AM EST]
+## v6.0.7 [1/25/2025 10:45:12 AM EST]
 
 [UPDATE] Added new structs `NPMInstallAppDepsStruct`, `NPMInstallSpecifcPackagesStruct`, `PythonInstallAppDepsStruct`, and `PythonInstallSpecifcPackagesStruct` to the file `utils/vscode_settings_utils.go`. These structs handle app dependencies and package installations, giving developers more granular control over settings.
 
 [UPDATE] Updated `WindmillcodeExtensionPack` in `utils/vscode_settings_utils.go` to include properties for managing `PythonInstallAppDeps`, `PythonInstallSpecifcPackages`, `NPMInstallSpecifcPackages`, and `NPMInstallAppDeps`. Developers now have fields to configure these in their settings.
 
 [UPDATE] In `GetSettingsJSON` function, added initialization for `NodeJSAppLocations` and `PythonAppLocations` if they are `nil`. This ensures default paths are set for Node.js and Python apps when not provided, saving developers time in configuring paths manually.
+
+## v6.0.8 [1/25/2025 6:42:15 PM EST]
+
+[UPDATE] Added a new `PascalCase` property to the `CreateStringObjectType` struct in `utils/string_utils.go`. Developers can now generate PascalCase strings using the `CreateStringObject` function.
+

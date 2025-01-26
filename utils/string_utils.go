@@ -46,7 +46,6 @@ func ReplaceAllSubstrings(input string, target string, replacement string) strin
 	return result
 }
 
-
 type TruncateStringByRegexOptions struct {
 	InputString  string
 	RegexPattern string
@@ -91,8 +90,6 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 	}
 
 	result.CamelCase = func(stripSuffix bool, suffix string) string {
-
-
 		return strcase.ToLowerCamel(grabString(stripSuffix, result))+suffix
 	}
 
@@ -128,6 +125,12 @@ func CreateStringObject(myStr string, entitySuffix string) (CreateStringObjectTy
 		return strcase.ToKebab(grabString(stripSuffix, result)) + suffix
 	}
 
+	result.PascalCase = func(stripSuffix bool, suffix string) string {
+		return strcase.ToCamel(grabString(stripSuffix, result)) + suffix
+	}
+
+
+
 
 
 	return result, nil
@@ -153,6 +156,7 @@ type CreateStringObjectType struct {
 	Uppercase  func(stripSuffix bool, suffix string) string
 	Snakecase  func(stripSuffix bool, suffix string) string
 	KebabCase  func(stripSuffix bool, suffix string) string
+	PascalCase func(stripSuffix bool, suffix string) string
 }
 
 func ContainsAny(s string, substrs []string) bool {
