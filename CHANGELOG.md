@@ -527,3 +527,8 @@ This update extends the WMLPorts struct to support more frameworks and services.
 
 [UPDATE] Added a new `PascalCase` property to the `CreateStringObjectType` struct in `utils/string_utils.go`. Developers can now generate PascalCase strings using the `CreateStringObject` function.
 
+## v6.0.9 [1/27/2025 10:34:15 AM EST]
+
+[UPDATE]
+Added a new struct `MiscTranslateJsonStruct` to `vscode_settings_utils.go`. If you're dealing with translations, this struct is mapped in `WindmillcodeExtensionPack`. Developers can now leverage `MiscTranslateJson` for JSON translation features.
+

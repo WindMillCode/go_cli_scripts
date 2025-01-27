@@ -12,10 +12,7 @@ type GitCloneSubdirsStruct struct {
 	DestDir    string `json:"destDir,omitempty"`
 }
 
-type GitPushingWorkToGitRemoteStruct struct {
-	RelativePaths []string `json:"relativePaths,omitempty"`
-	AbsolutePaths []string `json:"absolutePaths,omitempty"`
-}
+
 
 type MiscOptimizeImagesStruct struct {
 	Location        string `json:"location,omitempty"`
@@ -131,7 +128,16 @@ type PythonInstallAppDepsStruct struct {
 type PythonInstallSpecifcPackagesStruct struct {
 	NPMInstallAppDepsStruct
 }
+type MiscTranslateJsonStruct struct {
+	NPMInstallAppDepsStruct
+}
+type GitPushingWorkToGitRemoteStruct struct {
+	RelativePaths []string `json:"relativePaths,omitempty"`
+	AbsolutePaths []string `json:"absolutePaths,omitempty"`
+}
+
 type WindmillcodeExtensionPack struct {
+	MiscTranslateJson                          MiscTranslateJsonStruct              `json:"miscTranslateJson,omitempty"`
 	PythonInstallAppDeps         							PythonInstallAppDepsStruct            `json:"pythonInstallAppDeps,omitempty"`
 	PythonInstallSpecifcPackages 							PythonInstallSpecifcPackagesStruct    `json:"pythonInstallSpecifcPackages,omitempty"`
 	NPMInstallSpecifcPackages    							NPMInstallSpecifcPackagesStruct 		  `json:"npmInstallSpecifcPackages,omitempty"`
@@ -240,6 +246,15 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 			JoinAndConvertPathToOSFormat("./apps/backend/FlaskApp"),
 			JoinAndConvertPathToOSFormat("."),
 		}
+	}
+	if settings.ExtensionPack.MiscTranslateJson.AppLocations == nil{
+		settings.ExtensionPack.MiscTranslateJson.AppLocations = []string{
+			JoinAndConvertPathToOSFormat(".", "apps", "frontend", "AngularApp", "src", "assets", "i18n"),
+			JoinAndConvertPathToOSFormat(".", "apps", "mobile", "FlutterApp", "assets", "i18n"),
+			JoinAndConvertPathToOSFormat(".", "apps", "mobile", "ReactNativeExpoApp", "i18n"),
+			JoinAndConvertPathToOSFormat(".", "apps", "extensions", "WxtApp", "locales"),
+		}
+
 	}
 	return settings, nil
 }
