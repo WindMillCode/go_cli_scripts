@@ -532,3 +532,9 @@ This update extends the WMLPorts struct to support more frameworks and services.
 [UPDATE]
 Added a new struct `MiscTranslateJsonStruct` to `vscode_settings_utils.go`. If you're dealing with translations, this struct is mapped in `WindmillcodeExtensionPack`. Developers can now leverage `MiscTranslateJson` for JSON translation features.
 
+
+## v6.0.10 [3/9/2025 12:20:15 AM EST]
+
+
+[UPDATE] Added `ReactNativeExpoMobileBuild` to `WindmillcodeExtensionPack` in `vscode_settings_utils.go`. Developers can now add Sentry org, project, and release details for React Native Expo builds.
+

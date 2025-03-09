@@ -136,7 +136,13 @@ type GitPushingWorkToGitRemoteStruct struct {
 	AbsolutePaths []string `json:"absolutePaths,omitempty"`
 }
 
+type ReactNativeExpoMobileBuildStruct struct {
+	SentryOrg 						string `json:"sentryOrg,omitempty"`
+	SentryProject         string `json:"sentryProject,omitempty"`
+	SentryRelease         string `json:"sentryRelease,omitempty"`
+}
 type WindmillcodeExtensionPack struct {
+	ReactNativeExpoMobileBuild ReactNativeExpoMobileBuildStruct `json:"reactNativeExpoMobileBuild,omitempty"`
 	MiscTranslateJson                          MiscTranslateJsonStruct              `json:"miscTranslateJson,omitempty"`
 	PythonInstallAppDeps         							PythonInstallAppDepsStruct            `json:"pythonInstallAppDeps,omitempty"`
 	PythonInstallSpecifcPackages 							PythonInstallSpecifcPackagesStruct    `json:"pythonInstallSpecifcPackages,omitempty"`
