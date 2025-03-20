@@ -99,22 +99,24 @@ func KillPorts(options KillPortsOptions) {
 
 	switch runtime.GOOS {
 	case "windows":
+		// netstatPath := ConvertPathToOSFormat("C:\\My_Apps\\go-libs\\go_cli_scripts\\package\\utils\\scripts\\netstat.ps1")
 		netstatPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "netstat.ps1"))
 		if err != nil {
 			fmt.Printf("Failed to extract netstat.ps1: %v", err)
 		}
+		// tasklistPath := ConvertPathToOSFormat("C:\\My_Apps\\go-libs\\go_cli_scripts\\package\\utils\\scripts\\tasklist.ps1")
 		tasklistPath, err := GetFilePathFromPackage(JoinAndConvertPathToOSFormat("scripts", "tasklist.ps1"))
 		if err != nil {
 			fmt.Printf("Failed to extract tasklist.ps1: %v", err)
 		}
 		findProcessOptions = CommandOptions{
 			Command:   "powershell",
-			Args:      []string{"-c", netstatPath},
+			Args:      []string{"-ExecutionPolicy", "Bypass", "-NoProfile", "-c", netstatPath},
 			GetOutput: true,
 		}
 		findNameOptions = CommandOptions{
 			Command:   "powershell",
-			Args:      []string{"-c", tasklistPath},
+			Args:      []string{"-ExecutionPolicy", "Bypass", "-NoProfile", "-c", tasklistPath},
 			GetOutput: true,
 		}
 	case "darwin":

@@ -538,3 +538,6 @@ Added a new struct `MiscTranslateJsonStruct` to `vscode_settings_utils.go`. If y
 
 [UPDATE] Added `ReactNativeExpoMobileBuild` to `WindmillcodeExtensionPack` in `vscode_settings_utils.go`. Developers can now add Sentry org, project, and release details for React Native Expo builds.
 
+## v6.0.11 [3/20/2025 12:20:15 PM EST]
+
+[UPDATE] for KillPorts added logic to bypass execution policy as need be
