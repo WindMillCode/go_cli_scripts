@@ -541,3 +541,6 @@ Added a new struct `MiscTranslateJsonStruct` to `vscode_settings_utils.go`. If y
 ## v6.0.11 [3/20/2025 12:20:15 PM EST]
 
 [UPDATE] for KillPorts added logic to bypass execution policy as need be
+
+## v6.1.0 [4/1/2025 12:20:15 PM EST]
+* [BREAKING CHANGE] - replaced react native expo app with expo app for convenience
