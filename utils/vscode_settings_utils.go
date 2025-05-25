@@ -113,6 +113,10 @@ type MiscReinitializeProjectStruct struct {
 	FirefoxDriverPath                 string   `json:"firefoxDriverPath,omitempty"`
 	OperaDriverPath                   string   `json:"operaDriverPath,omitempty"`
 	EdgeDriverPath                    string   `json:"edgeDriverPath,omitempty"`
+	CrossPlatformPackageIdentifier    string   `json:"crossPlatformPackageIdentifier,omitempty"`
+	AndroidPackageIdentifier          string   `json:"androidPackageIdentifier,omitempty"`
+	AndroidMainActivityClass          string   `json:"androidMainActivityClass,omitempty"`
+	IosBundleIdentifier               string   `json:"iosBundleIdentifier,omitempty"`
 }
 type NPMInstallAppDepsStruct struct {
 	AppLocations []string `json:"appLocations,omitempty"`
@@ -139,6 +143,10 @@ type ReactNativeExpoMobileBuildStruct struct {
 	SentryProject string `json:"sentryProject,omitempty"`
 	SentryRelease string `json:"sentryRelease,omitempty"`
 }
+type TestNGE2ECreatePageStruct struct {
+	AppLocations []string `json:"appLocations,omitempty"`
+}
+
 type WindmillcodeExtensionPack struct {
 	ReactNativeExpoMobileBuild   ReactNativeExpoMobileBuildStruct   `json:"reactNativeExpoMobileBuild,omitempty"`
 	MiscTranslateJson            MiscTranslateJsonStruct            `json:"miscTranslateJson,omitempty"`
@@ -147,6 +155,7 @@ type WindmillcodeExtensionPack struct {
 	NPMInstallSpecifcPackages    NPMInstallSpecifcPackagesStruct    `json:"npmInstallSpecifcPackages,omitempty"`
 	NPMInstallAppDeps            NPMInstallAppDepsStruct            `json:"npmInstallAppDeps,omitempty"`
 	MiscReinitializeProject      MiscReinitializeProjectStruct      `json:"miscReinitializeProject,omitempty"`
+	TestNGE2ECreatePage          TestNGE2ECreatePageStruct          `json:"testNGE2ECreatePage,omitempty"`
 	TasksToRunOnFolderOpen       []string                           `json:"tasksToRunOnFolderOpen,omitempty"`
 	FlaskBackendDevHelperScript  string                             `json:"flaskBackendDevHelperScript,omitempty"`
 	FlaskBackendTestHelperScript string                             `json:"flaskBackendTestHelperScript,omitempty"`
@@ -182,6 +191,7 @@ type WindmillcodeExtensionPack struct {
 	VisualBasicVersion0          string                             `json:"visualBasicVersion0,omitempty"`
 	NodeJSAppLocations           []string                           `json:"nodeJSAppLocations,omitempty"`
 	PythonAppLocations           []string                           `json:"pythonAppLocations,omitempty"`
+	JavaSuiteLocations           []string                           `json:"javaSuiteLocations,omitempty"`
 	Ports                        WMLPorts                           `json:"ports,omitempty"`
 	ProcessIfDefaultIsPresent    ProcessIfDefaultIsPresentStruct    `json:"processIfDefaultIsPresent,omitempty"`
 	FirebaseCloudRunEmulators    FirebaseCloudRunEmulatorsStruct    `json:"firebaseCloudRunEmulators,omitempty"`
@@ -241,6 +251,7 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 			JoinAndConvertPathToOSFormat("./apps/frontend/AngularApp"),
 			JoinAndConvertPathToOSFormat("./apps/cloud/FirebaseApp"),
 			JoinAndConvertPathToOSFormat("./apps/extensions/WxtApp"),
+			JoinAndConvertPathToOSFormat("./apps/extensions/VSCodeExtensionApp"),
 			JoinAndConvertPathToOSFormat("./apps/mobile/ExpoApp"),
 			JoinAndConvertPathToOSFormat("."),
 		}
@@ -248,6 +259,13 @@ func GetSettingsJSON(workSpaceFolder string) (VSCodeSettings, error) {
 	if settings.ExtensionPack.PythonAppLocations == nil {
 		settings.ExtensionPack.PythonAppLocations = []string{
 			JoinAndConvertPathToOSFormat("./apps/backend/FlaskApp"),
+			JoinAndConvertPathToOSFormat("."),
+		}
+	}
+	if settings.ExtensionPack.JavaSuiteLocations == nil {
+		settings.ExtensionPack.JavaSuiteLocations = []string{
+			JoinAndConvertPathToOSFormat("./apps/testing/SeleniumSuite"),
+			JoinAndConvertPathToOSFormat("./apps/testing/AppiumSuite"),
 			JoinAndConvertPathToOSFormat("."),
 		}
 	}

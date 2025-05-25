@@ -19,12 +19,6 @@ func GetTestNGArgs(c GetTestNGArgsStruct) GetTestNGArgsStruct {
 		},
 	)
 
-	c.TestNGFolder = GetInputFromStdin(
-		GetInputFromStdinStruct{
-			Prompt: []string{"testng app location"},
-			Default: JoinAndConvertPathToOSFormat(c.WorkspaceFolder,ConvertPathToOSFormat("apps\\testing\\SeleniumApp")),
-		},
-	)
 
 	c.SuiteFile = GetInputFromStdin(
 		GetInputFromStdinStruct{

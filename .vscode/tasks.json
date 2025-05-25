@@ -1304,13 +1304,13 @@
       }
     },
     {
-      "label": "testng: e2e create testng page",
+      "label": "testng: e2e create page",
       "type": "shell",
       "windows": {
-        "command": "cd .windmillcode\\go_scripts\\testng_e2e_create_testng_page ; .\\main.exe"
+        "command": "cd .windmillcode\\go_scripts\\testng_e2e_create_page ; .\\main.exe"
       },
       "linux": {
-        "command": "cd .windmillcode//go_scripts//testng_e2e_create_testng_page ; .//main",
+        "command": "cd .windmillcode//go_scripts//testng_e2e_create_page ; .//main",
         "options": {
           "shell": {
             "executable": "bash",
@@ -1321,7 +1321,7 @@
         }
       },
       "osx": {
-        "command": "cd .windmillcode//go_scripts//testng_e2e_create_testng_page ; .//main"
+        "command": "cd .windmillcode//go_scripts//testng_e2e_create_page ; .//main"
       },
       "runOptions": {
         "runOn": "",
