@@ -142,12 +142,18 @@ type ReactNativeExpoMobileBuildStruct struct {
 	SentryOrg     string `json:"sentryOrg,omitempty"`
 	SentryProject string `json:"sentryProject,omitempty"`
 	SentryRelease string `json:"sentryRelease,omitempty"`
+	SentryAuthToken string `json:"sentryAuthToken,omitempty"`
 }
 type TestNGE2ECreatePageStruct struct {
 	AppLocations []string `json:"appLocations,omitempty"`
 }
 
+type TailscaleRunProxiesStruct struct {
+	Ports []int `json:"ports,omitempty"`
+}
+
 type WindmillcodeExtensionPack struct {
+	TailscaleRunProxiesStruct    TailscaleRunProxiesStruct         `json:"tailscaleRunProxies,omitempty"`
 	ReactNativeExpoMobileBuild   ReactNativeExpoMobileBuildStruct   `json:"reactNativeExpoMobileBuild,omitempty"`
 	MiscTranslateJson            MiscTranslateJsonStruct            `json:"miscTranslateJson,omitempty"`
 	PythonInstallAppDeps         PythonInstallAppDepsStruct         `json:"pythonInstallAppDeps,omitempty"`

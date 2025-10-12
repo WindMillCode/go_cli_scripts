@@ -547,9 +547,13 @@ Added a new struct `MiscTranslateJsonStruct` to `vscode_settings_utils.go`. If y
 
 ## v6.2.0 [5/25/2025 12:20:15 PM EST]
 
- [BREAKING CHANGE] `CDToSeleniumApp` function renamed to `CDToSeleniumSuite` in utils/cd_utils.go - update existing code references  
- [UPDATE] Added new `CDToAppiumSuite` function for Appium testing in utils/cd_utils.go  
+ [BREAKING CHANGE] `CDToSeleniumApp` function renamed to `CDToSeleniumSuite` in utils/cd_utils.go - update existing code references
+ [UPDATE] Added new `CDToAppiumSuite` function for Appium testing in utils/cd_utils.go
  [BREAKING CHANGE] Removed TestNGFolder configuration from testng_utils.go - you can choose from a series of options or set JavaSuiteLocations in your settings.json
- [COMPLEX MERGE] Added mobile testing identifiers (Android/iOS) to VSCode settings in utils/vscode_settings_utils.go  
- [UPDATE] New TestNG page creation structure added to Windmillcode extension pack settings  
+ [COMPLEX MERGE] Added mobile testing identifiers (Android/iOS) to VSCode settings in utils/vscode_settings_utils.go
+ [UPDATE] New TestNG page creation structure added to Windmillcode extension pack settings
  [UPDATE] Java testing suites now include SeleniumSuite and AppiumSuite locations in VSCode config
+ 
+## v6.2.1 [10/12/2025 12:20:15 PM EST]
+[UPDATE] added TailscaleRunProxiesStruct for the tailscale run proxies for the windmillcode vscode extension
+[UPDATE] added SentryAuthToken to ReactNativeExpoMobileBuildStruct
